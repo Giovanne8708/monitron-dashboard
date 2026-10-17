@@ -1,0 +1,1331 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Comercial — TRON Controles Elétricos</title>
+<style>:root{--blue:#0b4f9e;--blue-d:#083a75;--blue-l:#e6eef8;--navy:#0f2742;--ink:#1c2b3d;--mut:#5d6b7c;--line:#dde3ea;--bg:#f3f5f8;--card:#fff;--ok:#1b8a5a;--warn:#c27a00;--bad:#c0392b;--ok-bg:#e4f4ec;--warn-bg:#fdf1dc;--bad-bg:#fbe7e4;--r:6px;
+--s1:#0b4f9e;--s2:#d9822b;--s3:#2a9d8f}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:Inter,"Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-size:15px;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;color:var(--navy)}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid #7aa7e0;outline-offset:1px}
+.num{font-variant-numeric:tabular-nums}
+/* header */
+#app{min-height:100%;display:flex;flex-direction:column}
+.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.top-in{display:flex;align-items:center;gap:16px;padding:10px 24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--navy)}
+.brand img{height:38px;max-width:180px;object-fit:contain}
+.wm{display:flex;flex-direction:column;line-height:1}
+.wm b{font-size:28px;letter-spacing:.14em;color:var(--blue);font-weight:800}
+.wm small{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-top:3px}
+.nav{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:thin}
+.nav a{padding:9px 12px;border-radius:var(--r);text-decoration:none;color:var(--mut);font-weight:600;white-space:nowrap}
+.nav a:hover{background:var(--bg);color:var(--ink)}
+.nav a.on{background:var(--blue-l);color:var(--blue-d)}
+.tools{display:flex;gap:8px;align-items:center}
+.gs{position:relative}
+.gs input{width:240px;padding:9px 12px;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+.gs-res{position:absolute;right:0;top:44px;width:380px;max-width:92vw;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 8px 24px rgba(15,39,66,.15);z-index:40;max-height:60vh;overflow:auto}
+.gs-res a{display:block;padding:9px 12px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line)}
+.gs-res a:hover{background:var(--blue-l)}.gs-res small{color:var(--mut);display:block}
+.gs-res h4{margin:0;padding:8px 12px 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.menu{position:relative}
+.menu-pop{position:absolute;right:0;top:44px;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 8px 24px rgba(15,39,66,.15);min-width:210px;z-index:40;padding:4px}
+.menu-pop button{display:block;width:100%;text-align:left;border:0;background:none;padding:9px 12px;border-radius:4px;cursor:pointer}
+.menu-pop button:hover{background:var(--blue-l)}
+/* buttons */
+.btn{border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:var(--r);cursor:pointer;font-weight:600;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:#b9c4d0;background:#f8fafc}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}.btn.pri:hover{background:var(--blue-d)}
+.btn.dng{color:var(--bad);border-color:#e7c3be}.btn.sm{padding:5px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+main{padding:22px 24px 40px;max-width:1800px;width:100%;margin:0 auto;flex:1}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.ph h1{font-size:24px}.ph .sub{color:var(--mut);margin-top:2px}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+/* cards/panels */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;min-width:0}
+.panel>h2,.pt{font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 12px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.pt .u{font-weight:600;letter-spacing:0;text-transform:none;font-size:12px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+/* kpi */
+.kgroups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.kg{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.kg>h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:8px;display:flex;justify-content:space-between}
+.kg>h3 span{color:var(--blue);font-weight:700}
+.kr{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:8px}
+.kpi{border:0;background:var(--bg);border-radius:var(--r);padding:10px 12px;text-align:left;cursor:pointer;min-width:0}
+.kpi:hover{background:var(--blue-l)}
+.kpi b{display:block;font-size:30px;font-weight:700;color:var(--navy);line-height:1.1}
+.kpi span{display:block;font-size:13px;color:var(--mut);margin-top:3px;line-height:1.25}
+.kpi.warn b{color:var(--warn)}.kpi.ok b{color:var(--ok)}.kpi.bad b{color:var(--bad)}
+/* tables */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid #edf0f4;vertical-align:middle}
+tr.cl{cursor:pointer}tr.cl:hover td{background:#f6f9fd}
+td.r,th.r{text-align:right}
+.empty{padding:28px;text-align:center;color:var(--mut)}
+/* badges */
+.bd{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;background:var(--bg);color:var(--mut);white-space:nowrap}
+.bd.ok{background:var(--ok-bg);color:var(--ok)}.bd.warn{background:var(--warn-bg);color:var(--warn)}.bd.bad{background:var(--bad-bg);color:var(--bad)}.bd.bl{background:var(--blue-l);color:var(--blue-d)}
+/* forms */
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 16px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}.f.w2{grid-column:span 2}.f.wf{grid-column:1/-1}
+.f label{font-size:12px;font-weight:600;color:var(--mut);letter-spacing:.03em}
+.f input,.f select,.f textarea{padding:9px 10px;border:1px solid #c9d2dc;border-radius:var(--r);background:#fff;min-width:0;width:100%}
+.f textarea{min-height:70px;resize:vertical}
+.f .err{color:var(--bad);font-size:12px}
+.f.bad input,.f.bad select{border-color:var(--bad)}
+.chk{display:flex;gap:8px;align-items:center}.chk input{width:auto}
+.fb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.fb input,.fb select{padding:8px 10px;border:1px solid #c9d2dc;border-radius:var(--r);background:#fff;min-width:0}
+.fb .grow{flex:1;min-width:180px}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(15,39,66,.45);z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:4vh 12px;overflow:auto}
+.md{background:#fff;border-radius:8px;width:100%;max-width:720px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.md.lg{max-width:1000px}
+.md-h{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line)}
+.md-h h2{font-size:18px}.md-b{padding:18px 20px}.md-f{padding:12px 20px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.x{border:0;background:none;font-size:24px;cursor:pointer;color:var(--mut);line-height:1}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 18px;border-radius:var(--r);z-index:90;max-width:90vw}
+.toast.bad{background:var(--bad)}
+/* tabs & stepper */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:14px;overflow-x:auto}
+.tabs button{border:0;background:none;padding:10px 14px;cursor:pointer;font-weight:600;color:var(--mut);border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button.on{color:var(--blue-d);border-color:var(--blue)}
+.steps{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.steps button{flex:1;min-width:140px;border:1px solid var(--line);background:#fff;padding:10px 12px;border-radius:var(--r);text-align:left;cursor:pointer;font-weight:600;color:var(--mut)}
+.steps button.on{border-color:var(--blue);background:var(--blue-l);color:var(--blue-d)}
+.steps button.done{color:var(--ok)}
+.dl{display:grid;grid-template-columns:140px 1fr;gap:6px 12px}.dl dt{color:var(--mut)}.dl dd{margin:0}
+/* bars */
+.br{display:grid;grid-template-columns:minmax(90px,var(--lw,30%)) 1fr auto;gap:10px;align-items:center;margin:7px 0}
+.br .l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.br .t{background:#edf1f6;border-radius:3px;height:var(--bh,14px);overflow:hidden}
+.br .t i{display:block;height:100%;background:var(--s1);border-radius:0 3px 3px 0}
+.br .v{font-weight:700;min-width:30px;text-align:right}
+/* map */
+.mapw{position:relative}.mapw svg{width:100%;height:auto;display:block}
+.uf{fill:#eef1f5;stroke:#fff;stroke-width:1.2;cursor:pointer;transition:fill .15s}
+.uf:hover,.uf:focus{stroke:var(--navy);stroke-width:2;outline:none}
+.uf.sel{stroke:var(--navy);stroke-width:2.5}
+.ufl{font-size:11px;font-weight:700;pointer-events:none;fill:var(--navy);text-anchor:middle;dominant-baseline:central}
+.ufl.lt{fill:#fff}
+.leg{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut);margin-top:6px}
+.leg i{width:26px;height:10px;display:inline-block}
+.pod{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:10px;align-items:end;margin-bottom:14px}
+.pod>div{border:1px solid var(--line);border-radius:var(--r);padding:12px;text-align:center;background:#fff}
+.pod .p1{background:var(--blue-l);border-color:#b9cfec;padding-bottom:20px}
+.pod .rk{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.08em}
+.pod .nm{font-weight:700;font-size:16px;margin:4px 0 2px;overflow-wrap:anywhere}.pod .vl{font-size:24px;font-weight:700;color:var(--navy)}
+.pod small{color:var(--mut)}
+.lg-row{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mut);margin-top:6px}
+.lg-row i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.alert{padding:10px 14px;border-radius:var(--r);background:var(--warn-bg);color:#6f4600;margin-bottom:14px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.hint{color:var(--mut);font-size:13px}
+.item-row{display:grid;grid-template-columns:minmax(180px,2fr) repeat(4,minmax(80px,1fr)) minmax(120px,1.4fr) auto;gap:10px;align-items:end;padding:12px 0;border-bottom:1px solid var(--line)}
+.item-row .f label{font-size:11px}
+.res-list{border:1px solid var(--line);border-radius:var(--r);max-height:280px;overflow:auto;margin-top:6px}
+.res-list div{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 12px;border-bottom:1px solid #edf0f4}
+.res-list small{color:var(--mut)}
+/* TV */
+#tv{display:none}
+body.tv #app{display:none}body.tv #tv{display:block}
+body.tv{background:#e9edf2;overflow:hidden}
+#tvbox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1920px;height:1080px;background:var(--bg);transform-origin:center center;flex:none;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.tvh{height:96px;background:#fff;border-bottom:2px solid var(--blue);display:flex;align-items:center;padding:0 40px;gap:36px;flex:none}
+.tvh .wm b{font-size:40px}.tvh .wm small{font-size:12px}.tvh img{height:56px}
+.tvh h1{font-size:34px;font-weight:700}
+.tvh .sp{flex:1}.tvh .upd{text-align:right;color:var(--mut);font-size:20px;line-height:1.3}.tvh .upd b{color:var(--navy);font-size:26px;display:block}
+.tvtabs{display:flex;gap:6px}
+.tvtabs span{padding:8px 16px;border-radius:99px;font-size:18px;font-weight:600;color:var(--mut);background:var(--bg)}
+.tvtabs span.on{background:var(--blue);color:#fff}
+.tvb{flex:1;padding:22px 40px;display:grid;gap:20px;min-height:0}
+.tvb .panel{padding:18px 22px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.tvb .panel>h2{font-size:20px}
+.tvb .kpi b{font-size:54px}.tvb .kpi span{font-size:19px}.tvb .kpi{padding:12px 16px;cursor:default}.tvb .kg>h3{font-size:17px}.tvb .kg{padding:14px 16px}
+.tvb .br{font-size:22px;margin:9px 0;--bh:22px}.tvb th{font-size:17px}.tvb td{font-size:22px;padding:11px 12px}
+.tvb .pod .nm{font-size:26px}.tvb .pod .vl{font-size:44px}.tvb .pod .rk{font-size:18px}.tvb .pod small{font-size:18px}
+.tvb .bd{font-size:17px;padding:3px 12px}.tvb .leg{font-size:17px}.tvb .lg-row{font-size:19px}
+.tvb .ufl{font-size:13px}
+.tvf{height:44px;flex:none;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 40px;color:var(--mut);font-size:17px}
+.tvx{position:absolute;right:14px;bottom:50px;z-index:5;opacity:.0;transition:opacity .3s}
+body.tv:hover .tvx{opacity:1}
+.tvx .btn{font-size:15px}
+.fill{flex:1;min-height:0}
+@media(max-width:1100px){.kgroups,.g3,.g4{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}}
+@media(max-width:700px){main{padding:14px 12px 40px}.top-in{padding:8px 12px}.kgroups,.g2,.g3,.g4{grid-template-columns:1fr}.gs input{width:150px}.item-row{grid-template-columns:1fr 1fr}.item-row>.f:first-child{grid-column:1/-1}.f.w2{grid-column:auto}.dl{grid-template-columns:1fr}.pod{grid-template-columns:1fr}.kpi b{font-size:26px}}
+@media print{.top,.ph .acts,.fb,.noprint,.toast,.tools{display:none!important}body{background:#fff}main{padding:0;max-width:none}.panel{border:0;padding:0}#tv{display:none!important}.ov{position:static;background:none;padding:0}.md{box-shadow:none;max-width:none}.md-f,.md-h .x{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+[hidden]{display:none!important}
+.rep{padding:4px}.rep-h{display:flex;align-items:center;gap:20px;border-bottom:2px solid var(--blue);padding-bottom:12px;margin-bottom:14px}.rep-h h1{font-size:22px}.rep h2{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue-d);margin:18px 0 8px}
+.tvb .mapw{flex:1;display:flex;flex-direction:column;min-height:0}.tvb .mapw svg{flex:1;min-height:0;width:100%;height:100%}
+.tvb .fill{display:flex;flex-direction:column}
+.tvb .kr{gap:10px}
+.tvb .pod{margin-bottom:0}
+.gs-res a b{display:block}
+@media print{body.printing #app,body.printing .tvx{display:none!important}body.printing{background:#fff}.rep table{font-size:12px}.rep .tw{overflow:visible}}
+
+.panel>h2 .u,.pt .u{white-space:nowrap}
+.panel>h2{flex-wrap:wrap}
+.tvb .panel>h2 .u{font-size:15px;font-weight:600}
+.tvb td:first-child{white-space:nowrap}
+main .mapw svg{max-height:640px;margin:0 auto}
+.dash-map .mapw svg{max-height:400px}
+.kpi{overflow-wrap:anywhere}
+@media(max-width:700px){.kr{grid-template-columns:repeat(2,minmax(0,1fr))!important}.tools{flex-wrap:wrap}.top-in{gap:8px}.ph h1{font-size:21px}}
+
+/* ===== Acesso protegido e sincronização online ===== */
+.auth-screen{min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef3f9,#f8fafc)}
+.auth-card{width:min(100%,440px);background:#fff;border:1px solid var(--line);border-radius:12px;padding:28px;box-shadow:0 18px 55px rgba(15,39,66,.12)}
+.auth-card h1{font-size:24px;margin:0 0 8px}.auth-card p{color:var(--mut);line-height:1.5}.auth-card form{display:grid;gap:14px;margin-top:20px}.auth-card label{display:block;font-size:13px;font-weight:700;color:var(--mut);margin-bottom:5px}.auth-card input{width:100%;padding:11px;border:1px solid #c9d2dc;border-radius:6px}.auth-msg{font-size:13px;color:var(--bad);min-height:18px}.cloud-state{font-size:12px;color:var(--ok);font-weight:600;padding:0 4px}
+</style></head>
+<body><div id="app"></div><div id="tv"><div id="tvbox"><div id="stage"></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+<script>'use strict';
+/* ===== Utilidades ===== */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const pad=n=>String(n).padStart(2,'0');
+const isoDate=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today=()=>isoDate(new Date());
+const nowISO=()=>new Date().toISOString();
+const fmtD=s=>{if(!s)return '—';const p=String(s).slice(0,10).split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:s};
+const fmtDT=s=>{if(!s)return '—';const d=new Date(s);return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const nf=n=>Number(n||0).toLocaleString('pt-BR');
+const money=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const norm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isNaN(n)?0:n};
+const UFS={AC:'Acre',AL:'Alagoas',AM:'Amazonas',AP:'Amapá',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MG:'Minas Gerais',MS:'Mato Grosso do Sul',MT:'Mato Grosso',PA:'Pará',PB:'Paraíba',PE:'Pernambuco',PI:'Piauí',PR:'Paraná',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RO:'Rondônia',RR:'Roraima',RS:'Rio Grande do Sul',SC:'Santa Catarina',SE:'Sergipe',SP:'São Paulo',TO:'Tocantins'};
+const MESES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const INT_STATUS=['Ativo','Em negociação','Prospecto','Inativo'];
+const CTR_STATUS=['Fechado','Em vigor','Encerrado','Cancelado'];
+const MODAL=['Venda','Comodato','Locação','Outra'];
+const MOV_TIPOS={entrada:'Entrada',saida:'Saída',instalacao:'Instalação',devolucao:'Devolução',ajuste:'Ajuste'};
+const UF_OPTS=o=>Object.entries(UFS).map(([k,v])=>`<option value="${k}"${o===k?' selected':''}>${k} — ${v}</option>`).join('');
+
+/* ===== Persistência ===== */
+const LS_KEY='tron_painel_comercial_v1';
+let DB, memOnly=false, DBV=0;
+let cloudClient=null, cloudReady=false, cloudWriting=false, cloudPoll=null, cloudWriteChain=Promise.resolve(), lastCloudStamp=null, appInitialized=false;
+const emptyDB=()=>({v:1,meta:{createdAt:nowISO(),updatedAt:null,lastBackup:null},cfg:{tvSec:20,tvAuto:true,logo:null},
+  cats:['Monitoramento','Proteção elétrica','Controle de bombas','Sensores','Comunicação','Acessórios'],
+  ints:[],prods:[],peds:[],movs:[],est:[],emovs:[],ctrs:[],log:[]});
+function loadDB(){
+  try{const r=localStorage.getItem(LS_KEY);if(r){const d=JSON.parse(r);DB=Object.assign(emptyDB(),d);DB.meta=Object.assign(emptyDB().meta,d.meta);DB.cfg=Object.assign(emptyDB().cfg,d.cfg);DBV++;return}}catch(e){memOnly=true}
+  DB=emptyDB();DBV++;
+}
+function save(quiet){
+  DB.meta.updatedAt=nowISO();DBV++;
+  try{localStorage.setItem(LS_KEY,JSON.stringify(DB));memOnly=false}
+  catch(e){memOnly=true;toast('Não foi possível gravar no navegador (armazenamento cheio ou bloqueado). Exporte um backup agora.',1)}
+  if(cloudReady && cloudClient) {
+    const snapshot=JSON.parse(JSON.stringify(DB));
+    cloudWriteChain=cloudWriteChain.then(async()=>{
+      cloudWriting=true;
+      const stamp=nowISO();
+      const {error}=await cloudClient.from('panel_state').upsert({id:'main',data:snapshot,updated_at:stamp},{onConflict:'id'});
+      cloudWriting=false;
+      if(error){console.error('Falha na sincronização:',error);toast('Dados salvos neste navegador, mas a sincronização online falhou. Verifique a conexão.',1)}
+      else lastCloudStamp=stamp;
+    }).catch(err=>{cloudWriting=false;console.error(err);toast('Erro ao sincronizar com o banco online.',1)});
+  }
+}
+function logA(txt){DB.log.unshift({ts:nowISO(),txt});if(DB.log.length>500)DB.log.length=500}
+function toast(msg,bad){const t=document.createElement('div');t.className='toast'+(bad?' bad':'');t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),bad?6000:2800)}
+
+/* ===== Lookups ===== */
+const I=id=>DB.ints.find(x=>x.id===id), P=id=>DB.prods.find(x=>x.id===id), PD=id=>DB.peds.find(x=>x.id===id);
+const iName=id=>{const i=I(id);return i?(i.fantasia||i.nome):'(removido)'};
+const pName=id=>{const p=P(id);return p?p.nome:'(removido)'};
+const activeInts=()=>DB.ints.filter(i=>!i.arq);
+
+/* ===== Período ===== */
+function periodRange(k,from,to){
+  const t=new Date(),y=t.getFullYear();
+  if(k==='30d'){const f=new Date(t);f.setDate(f.getDate()-30);return [isoDate(f),today()]}
+  if(k==='90d'){const f=new Date(t);f.setDate(f.getDate()-90);return [isoDate(f),today()]}
+  if(k==='ano')return [`${y}-01-01`,`${y}-12-31`];
+  if(k==='12m'){const f=new Date(t);f.setFullYear(f.getFullYear()-1);return [isoDate(f),today()]}
+  if(k==='custom')return [from||'0000-01-01',to||'9999-12-31'];
+  return null;
+}
+const inR=(d,r)=>!r||(d&&d.slice(0,10)>=r[0]&&d.slice(0,10)<=r[1]);
+const prevRange=r=>{if(!r||r[0]==='0000-01-01'||r[1]==='9999-12-31')return null;const a=new Date(r[0]+'T00:00'),b=new Date(r[1]+'T00:00');const days=Math.round((b-a)/864e5)+1;const pe=new Date(a);pe.setDate(pe.getDate()-1);const ps=new Date(pe);ps.setDate(ps.getDate()-days+1);return [isoDate(ps),isoDate(pe)]};
+const PERIODS=[['all','Todo o período'],['30d','Últimos 30 dias'],['90d','Últimos 90 dias'],['ano','Ano atual'],['12m','Últimos 12 meses'],['custom','Personalizado']];
+
+/* ===== Cálculos derivados ===== */
+let _calc=null,_calcV=-1;
+function calc(){
+  if(_calc&&_calcV===DBV)return _calc;
+  const peds={};
+  DB.peds.forEach(p=>{
+    const itens=p.itens.map(it=>{
+      const prod=P(it.prodId);const req=prod?prod.inst!==false:true;
+      const ms=DB.movs.filter(m=>m.itemId===it.id);
+      const ent=ms.filter(m=>m.tipo==='entrega').reduce((a,m)=>a+m.qtd,0);
+      const inst=ms.filter(m=>m.tipo==='instalacao').reduce((a,m)=>a+m.qtd,0);
+      return {...it,req,ent,inst,pend:Math.max(0,it.qtd-ent),aInst:req?Math.max(0,ent-inst):0};
+    });
+    const sum=k=>itens.reduce((a,i)=>a+i[k],0);
+    const T={qtd:sum('qtd'),ent:sum('ent'),inst:sum('inst'),pend:sum('pend'),aInst:sum('aInst')};
+    const instItens=itens.filter(i=>i.req);
+    const instReq=instItens.reduce((a,i)=>a+i.qtd,0),instDone=instItens.reduce((a,i)=>a+Math.min(i.inst,i.qtd),0);
+    let st;
+    if(p.cancelado)st='Cancelado';
+    else if(p.rascunho)st='Rascunho';
+    else if(T.qtd>0&&T.pend===0&&(instReq===0||instDone>=instReq))st=instReq===0?'Entregue':'Instalação concluída';
+    else if(T.inst>0)st='Parcialmente instalado';
+    else if(T.qtd>0&&T.pend===0)st=DB.movs.some(m=>m.pedId===p.id&&m.tipo==='instalacao'&&m.status==='andamento')?'Em instalação':'Entregue';
+    else if(T.ent>0)st='Parcialmente entregue';
+    else st='Pedido aberto';
+    // em instalação (andamento) com entrega parcial não muda
+    const ativo=!p.cancelado&&!p.rascunho;
+    const aberto=ativo&&st!=='Instalação concluída'&&st!=='Entregue';
+    const pendente=ativo&&(T.pend>0||T.aInst>0);
+    peds[p.id]={itens,T,st,ativo,aberto,pendente};
+  });
+  _calc={peds};_calcV=DBV;return _calc;
+}
+const PC=id=>calc().peds[id];
+const stClass=s=>({'Cancelado':'bad','Rascunho':'','Pedido aberto':'warn','Parcialmente entregue':'warn','Entregue':'bl','Em instalação':'bl','Parcialmente instalado':'bl','Instalação concluída':'ok'}[s]||'');
+const saldo=(intId,prodId)=>DB.emovs.filter(e=>e.intId===intId&&e.prodId===prodId).reduce((a,e)=>a+(['entrada','devolucao'].includes(e.tipo)?e.qtd:['saida','instalacao'].includes(e.tipo)?-e.qtd:e.qtd),0);
+function estRows(){
+  const keys=new Map();
+  DB.est.forEach(e=>keys.set(e.intId+'|'+e.prodId,{intId:e.intId,prodId:e.prodId,min:e.min||0,obs:e.obs||'',has:1}));
+  DB.emovs.forEach(e=>{const k=e.intId+'|'+e.prodId;if(!keys.has(k))keys.set(k,{intId:e.intId,prodId:e.prodId,min:0,obs:''})});
+  return [...keys.values()].filter(r=>I(r.intId)&&!I(r.intId).arq).map(r=>{
+    const ms=DB.emovs.filter(e=>e.intId===r.intId&&e.prodId===r.prodId);
+    const upd=ms.reduce((a,e)=>e.ts>a?e.ts:a,'');
+    const s=saldo(r.intId,r.prodId);return {...r,saldo:s,upd,baixo:r.min>0&&s<r.min};
+  });
+}
+const ctrAtivo=c=>c.status!=='Cancelado';
+
+/* estatísticas por integrador (período opcional) */
+function intStats(id,rg){
+  const peds=DB.peds.filter(p=>p.intId===id&&PC(p.id).ativo);
+  let solic=0,ent=0,inst=0,pend=0,aInst=0;
+  peds.forEach(p=>{const c=PC(p.id);
+    if(!rg||inRP(p,rg))solic+=c.T.qtd;
+    pend+=c.T.pend;aInst+=c.T.aInst});
+  DB.movs.forEach(m=>{const p=PD(m.pedId);if(!p||p.intId!==id||!PC(p.id).ativo)return;if(!inR(m.data,rg))return;if(m.tipo==='entrega')ent+=m.qtd;else inst+=m.qtd});
+  const ctrs=DB.ctrs.filter(c=>c.intId===id&&ctrAtivo(c)&&inR(c.data,rg));
+  const estoque=estRows().filter(r=>r.intId===id).reduce((a,r)=>a+r.saldo,0);
+  return {pedidos:peds.filter(p=>inR(p.data,rg)).length,solic,ent,inst,pend,aInst,contratos:ctrs.length,valor:ctrs.reduce((a,c)=>a+(c.valor||0),0),estoque};
+}
+function inRP(p,rg){return inR(p.data,rg)}
+/* estatísticas por UF */
+function ufStats(uf){
+  const ints=activeInts().filter(i=>i.uf===uf);
+  const o={uf,integradores:ints.length,ativos:ints.filter(i=>i.status==='Ativo').length,estoque:0,pedidos:0,solic:0,ent:0,inst:0,contratos:0,ints};
+  ints.forEach(i=>{const s=intStats(i.id);o.estoque+=s.estoque;o.pedidos+=s.pedidos;o.solic+=s.solic;o.ent+=s.ent;o.inst+=s.inst;o.contratos+=s.contratos});
+  return o;
+}
+/* resumo geral */
+function totals(){
+  const ints=activeInts();const C=calc().peds;
+  const ped=DB.peds.filter(p=>C[p.id].ativo);
+  const t={ints:ints.length,intsAtivos:ints.filter(i=>i.status==='Ativo').length,estoque:estRows().reduce((a,r)=>a+r.saldo,0),
+    pedAbertos:ped.filter(p=>C[p.id].aberto).length,pedTotal:ped.length,solic:0,ent:0,inst:0,pedPend:ped.filter(p=>C[p.id].pendente).length,
+    contratos:DB.ctrs.filter(c=>ctrAtivo(c)&&I(c.intId)&&!I(c.intId).arq).length,baixo:estRows().filter(r=>r.baixo).length};
+  ped.forEach(p=>{t.solic+=C[p.id].T.qtd});
+  DB.movs.forEach(m=>{const p=PD(m.pedId);if(!p||!C[p.id]||!C[p.id].ativo)return;if(m.tipo==='entrega')t.ent+=m.qtd;else t.inst+=m.qtd});
+  return t;
+}
+/* série mensal (últimos n meses) */
+function monthly(n=12){
+  const out=[];const t=new Date();
+  for(let k=n-1;k>=0;k--){const d=new Date(t.getFullYear(),t.getMonth()-k,1);out.push({key:`${d.getFullYear()}-${pad(d.getMonth()+1)}`,label:MESES[d.getMonth()]+'/'+String(d.getFullYear()).slice(2),ped:0,solic:0,ent:0,inst:0,ctr:0})}
+  const ix=Object.fromEntries(out.map((o,i)=>[o.key,i]));const C=calc().peds;
+  DB.peds.forEach(p=>{if(!C[p.id].ativo)return;const i=ix[p.data.slice(0,7)];if(i!=null){out[i].ped++;out[i].solic+=C[p.id].T.qtd}});
+  DB.movs.forEach(m=>{const p=PD(m.pedId);if(!p||!C[p.id]||!C[p.id].ativo)return;const i=ix[m.data.slice(0,7)];if(i==null)return;if(m.tipo==='entrega')out[i].ent+=m.qtd;else out[i].inst+=m.qtd});
+  DB.ctrs.forEach(c=>{if(!ctrAtivo(c))return;const i=ix[c.data.slice(0,7)];if(i!=null)out[i].ctr++});
+  return out;
+}
+/* ranking */
+const CRIT=[['estoque','Produtos em estoque','un.'],['ent','Produtos recebidos (entregas)','un.'],['inst','Produtos instalados','un.'],['contratos','Contratos fechados','contratos'],['pedidos','Pedidos realizados','pedidos'],['valor','Valor comercial registrado','R$']];
+function ranking(crit,uf,rg){
+  const pr=prevRange(rg);
+  let list=activeInts().filter(i=>!uf||i.uf===uf);
+  const get=(i,r)=>{const s=intStats(i.id,r);return crit==='ent'?s.ent:s[crit]};
+  let rows=list.map(i=>{const v=get(i,rg);const pv=pr&&crit!=='estoque'?get(i,pr):null;return {int:i,v,pv}});
+  rows=rows.filter(r=>r.v>0).sort((a,b)=>b.v-a.v||iName(a.int.id).localeCompare(iName(b.int.id)));
+  return rows;
+}
+const fmtCrit=(crit,v)=>crit==='valor'?money(v):nf(v);
+/* integridade */
+const normDoc=s=>String(s||'').replace(/[^0-9A-Za-z]/g,'').toUpperCase();
+const fmtDoc=s=>{const d=normDoc(s);return d.length===14?d.replace(/^(.{2})(.{3})(.{3})(.{4})(.{2})$/,'$1.$2.$3/$4-$5'):s};
+
+const GEO={"w":760.5,"h":780.5,"uf":{"AC":{"n":"Acre","d":"M139.3,301.7L142.9,303.3L142.8,304.2L138.0,307.1L135.2,310.6L127.6,312.9L126.9,314.5L122.4,317.5L121.8,319.7L118.8,318.3L115.5,318.5L111.5,324.6L105.6,327.6L102.2,328.3L101.4,325.5L98.4,325.9L88.5,324.0L82.4,324.9L78.6,323.9L71.4,326.8L68.8,326.2L67.0,324.1L65.3,325.4L65.2,301.9L66.9,300.7L65.7,296.7L66.5,296.9L67.7,294.0L65.8,294.3L58.0,301.8L54.7,303.0L53.8,304.8L34.6,305.4L35.6,301.4L33.3,300.4L33.0,296.2L23.9,293.6L15.0,293.7L19.2,289.4L20.2,285.2L18.2,283.5L16.2,279.1L13.5,277.8L13.2,274.9L11.5,274.8L8.7,272.4L7.0,266.0L4.1,263.5L4.3,262.6L5.5,262.8L5.8,261.0L0.0,256.8L1.2,254.8L0.3,252.5L2.2,253.0L5.5,251.5L3.5,247.7L27.2,256.5L76.3,262.4L103.6,286.4L125.5,296.6Z","cx":68.2,"cy":289.7},"AL":{"n":"Alagoas","d":"M753.6,283.7L749.7,290.5L731.8,310.9L729.6,315.4L728.3,313.6L726.2,313.8L725.0,310.6L720.9,309.5L717.8,304.9L713.1,303.4L709.6,300.7L706.4,300.1L703.9,298.1L702.5,298.2L697.9,294.8L694.3,293.8L693.7,292.0L696.5,288.9L698.7,288.4L703.0,282.6L704.2,285.3L708.2,284.8L708.6,286.0L711.6,287.3L713.2,290.2L713.9,289.7L714.5,291.0L715.6,290.2L718.6,293.1L720.2,290.8L723.7,290.9L725.4,292.3L728.6,289.7L732.8,288.9L731.9,287.5L734.8,286.0L734.6,284.6L739.1,282.5L741.1,282.4L742.0,283.8L747.4,281.7Z","cx":725.1,"cy":295.7},"AM":{"n":"Amazonas","d":"M129.2,64.8L130.1,67.9L132.5,68.5L133.6,70.8L133.8,82.1L138.3,80.8L148.8,90.7L153.2,90.3L153.6,89.3L155.6,89.2L157.3,86.8L163.0,85.3L164.8,87.8L162.9,91.0L163.9,92.5L166.1,91.3L168.0,86.8L170.8,87.0L171.3,82.9L172.3,82.3L173.9,83.1L175.1,80.8L176.9,80.8L178.0,79.1L179.3,80.9L186.0,74.9L187.0,75.4L186.0,77.5L187.2,78.2L187.9,76.1L191.9,73.1L192.6,66.8L193.8,65.8L200.2,65.1L201.2,63.3L205.0,62.8L205.9,61.2L207.7,62.4L210.4,62.0L212.1,64.9L216.3,65.1L218.9,66.7L218.5,71.2L216.9,73.6L220.1,76.7L224.0,86.1L223.7,89.7L222.2,91.6L222.2,95.3L223.9,97.9L224.3,103.6L227.8,108.9L227.7,111.5L228.9,112.1L226.6,115.7L226.8,118.5L224.7,120.0L223.1,119.1L222.7,120.6L232.2,128.3L234.6,133.3L239.6,134.1L242.8,137.0L241.5,134.1L240.0,133.3L241.4,126.7L240.6,124.2L243.0,118.7L247.6,116.6L247.8,115.4L253.5,116.5L256.6,120.7L256.8,122.7L258.4,123.3L261.1,122.9L262.1,120.9L265.4,119.9L263.6,115.6L265.6,109.7L270.6,100.2L292.8,100.2L293.3,112.3L296.0,114.1L296.5,119.0L301.7,123.1L301.8,126.0L303.9,128.3L305.2,128.1L307.0,130.0L309.8,127.6L311.0,133.5L315.8,135.5L316.4,137.3L317.9,136.8L319.3,138.5L321.8,138.9L322.0,139.9L326.4,139.9L328.4,141.6L328.9,143.7L332.5,145.8L334.8,145.9L334.1,148.8L335.8,149.7L338.8,148.2L341.0,149.0L347.1,146.0L344.7,149.4L341.5,150.8L340.0,153.9L341.2,154.6L305.2,234.5L300.9,239.4L301.8,243.6L306.1,248.2L307.5,252.6L306.1,254.6L306.3,257.9L302.7,262.3L304.6,267.2L304.1,271.9L302.1,275.3L302.6,277.3L301.7,279.5L303.9,279.8L302.7,280.9L240.7,281.4L238.1,279.2L236.9,280.4L235.7,280.1L235.3,282.5L232.9,283.0L232.0,281.4L230.1,281.5L228.9,277.2L227.3,277.0L227.1,278.2L226.1,277.6L225.5,273.3L223.5,272.2L222.4,273.1L219.2,268.9L219.1,267.3L216.2,265.2L201.1,264.8L198.0,272.0L196.3,271.2L194.8,272.1L194.2,275.2L195.3,276.8L194.0,277.1L193.2,279.7L191.0,280.3L190.9,284.6L187.7,285.4L187.5,284.0L181.9,285.8L177.5,285.3L176.0,286.3L175.5,290.7L172.4,294.1L170.8,294.0L169.6,290.6L166.9,292.2L165.7,291.8L165.9,294.8L162.8,293.7L159.0,297.1L155.5,293.7L147.0,293.6L147.3,295.4L145.2,298.1L139.9,300.5L139.2,301.8L129.2,297.3L125.5,296.6L103.6,286.4L76.3,262.4L27.2,256.5L3.5,247.7L6.6,240.7L12.2,237.3L15.0,237.0L16.4,235.4L17.0,233.6L14.2,228.3L14.5,226.1L19.8,218.5L19.9,214.7L21.7,210.9L21.3,208.8L22.7,207.6L26.3,206.5L31.0,202.9L31.3,201.6L36.0,199.9L40.8,195.8L45.9,194.8L46.2,196.1L47.5,194.8L48.3,195.2L48.0,194.4L51.8,194.6L52.5,193.2L53.9,193.0L54.0,194.0L58.0,193.1L58.0,192.3L59.0,193.2L61.6,189.1L64.1,189.4L64.6,188.0L65.2,189.3L66.7,188.2L67.6,189.4L68.8,188.1L70.7,189.2L71.0,188.4L71.5,191.3L72.4,191.0L73.5,192.8L75.2,190.7L76.7,192.5L78.0,191.4L89.0,132.8L89.0,128.1L88.5,125.4L84.6,120.4L85.8,118.2L84.8,115.6L78.8,112.1L76.2,109.2L76.5,94.3L81.0,94.0L83.5,92.0L85.0,92.9L87.4,90.7L89.8,93.2L94.5,92.4L93.1,90.8L94.1,87.9L91.6,84.1L83.4,83.9L82.9,82.9L80.3,83.7L80.4,71.0L86.0,69.6L89.1,71.0L113.1,70.8L111.0,68.9L112.1,66.2L113.4,65.7L117.3,68.8L120.6,64.6L123.5,65.0L127.6,60.5L128.9,61.3Z","cx":181.1,"cy":188.5},"AP":{"n":"Amapá","d":"M463.6,91.4L457.5,93.0L454.6,99.3L452.3,101.9L447.3,104.0L444.4,107.2L441.8,107.8L433.1,120.7L432.4,126.7L430.3,128.6L427.5,128.8L426.9,127.9L425.6,130.1L424.6,130.0L424.3,128.4L418.3,126.5L418.8,123.0L417.8,122.0L416.2,122.5L416.5,117.2L414.2,117.1L413.0,114.6L413.3,111.5L410.0,108.4L408.5,108.3L403.8,98.0L405.2,91.8L399.2,86.9L398.3,82.8L399.5,82.3L398.9,80.6L396.8,81.2L396.7,78.5L394.6,78.7L394.7,77.3L390.7,77.6L387.6,75.0L386.1,75.7L385.0,72.6L384.1,72.9L381.8,70.6L373.4,69.9L373.2,66.0L372.0,64.2L373.0,61.4L370.8,56.9L373.4,56.0L374.5,56.5L375.0,58.9L376.1,58.7L379.3,61.2L384.1,61.9L388.9,60.6L389.0,59.5L392.3,57.9L393.2,58.4L392.7,59.2L396.5,60.3L400.7,58.4L402.8,60.2L401.8,61.7L409.0,61.7L415.9,55.1L415.8,52.8L419.2,47.2L420.2,42.0L422.9,39.4L428.1,29.8L433.5,24.5L436.1,16.7L441.1,21.6L442.6,26.5L444.6,27.6L444.3,36.5L445.3,42.7L449.1,52.7L448.8,55.6L449.8,55.3L450.6,56.5L451.8,62.7L456.8,61.5L460.8,69.4L463.7,69.6L467.1,71.5L467.5,81.6Z","cx":427.4,"cy":76.7},"BA":{"n":"Bahia","d":"M672.8,276.6L674.5,279.6L678.1,280.1L679.8,281.5L682.7,281.2L684.6,282.7L685.4,285.0L687.8,281.9L689.2,282.8L688.2,284.4L689.3,285.8L692.6,285.9L692.1,288.2L694.3,293.8L698.3,295.4L697.5,297.5L698.5,298.4L697.5,299.7L699.0,301.8L698.4,303.8L701.5,305.4L703.5,312.1L701.0,314.0L701.9,319.3L698.6,320.6L697.4,319.3L694.2,319.8L693.9,323.8L696.3,325.7L697.1,328.9L698.8,329.3L698.0,331.1L698.7,333.3L700.9,334.0L701.9,335.8L704.6,336.8L705.1,335.8L707.6,336.4L711.1,334.3L705.6,345.4L697.3,358.1L691.6,364.5L688.8,365.7L687.0,365.4L687.4,363.8L686.3,364.1L685.6,366.0L679.6,371.1L681.1,374.3L680.2,376.6L681.0,378.6L679.5,378.8L678.9,380.3L680.3,384.2L677.6,399.5L680.2,419.0L681.7,422.6L678.5,430.6L678.7,432.9L676.2,440.6L676.7,443.3L674.8,448.8L675.1,457.0L676.3,459.2L673.6,462.9L670.3,464.3L667.6,467.1L668.2,467.4L665.9,472.4L655.2,465.0L654.4,463.9L656.1,462.5L655.1,460.1L647.4,453.6L648.9,451.1L648.4,446.7L650.0,443.1L654.0,443.5L654.5,441.6L652.8,441.2L654.1,436.9L656.4,437.0L657.6,433.9L658.2,434.6L659.7,431.7L661.1,431.1L662.3,427.7L661.1,425.4L659.4,425.5L657.8,423.4L656.2,423.6L655.0,421.5L652.2,421.9L650.5,420.5L648.6,421.5L645.9,418.8L644.6,419.7L643.6,418.4L642.4,419.3L640.8,418.4L637.3,420.9L633.7,420.3L633.1,415.4L624.6,407.5L618.9,409.2L617.3,407.2L615.5,407.9L612.1,406.7L612.2,405.9L606.6,403.1L602.5,399.6L597.9,398.4L592.8,399.9L591.0,401.7L590.0,400.5L584.1,398.5L586.1,392.2L577.7,390.1L570.9,392.2L565.7,395.4L565.5,397.1L560.9,400.4L558.5,400.3L553.6,404.5L551.5,404.4L548.5,407.7L544.0,408.2L541.6,410.7L540.7,409.3L542.1,408.7L543.7,404.7L542.0,402.1L543.5,396.2L542.7,393.9L544.3,393.7L544.9,392.5L541.9,389.3L537.9,387.4L539.0,385.7L537.9,384.3L538.5,382.3L537.6,381.4L538.7,380.7L538.0,379.2L539.9,377.3L538.5,376.7L538.3,374.0L542.3,371.0L537.9,372.4L536.9,371.5L536.8,367.4L540.8,363.8L537.1,364.4L537.6,357.1L540.1,355.1L538.1,355.3L538.1,353.9L536.2,352.2L535.3,346.2L539.7,343.4L535.8,342.8L537.0,338.0L541.4,338.2L533.8,335.8L531.1,331.2L533.9,329.3L535.3,325.3L537.6,323.6L538.2,320.6L539.3,319.8L539.0,318.4L546.3,314.2L546.4,312.8L548.0,312.4L548.9,310.7L548.4,308.5L550.7,307.6L554.8,314.3L553.8,315.6L554.1,318.1L557.7,321.9L561.0,322.2L563.8,324.0L568.9,320.6L568.9,319.1L570.7,318.0L572.1,318.5L575.4,316.4L576.7,317.9L579.3,318.1L581.4,313.6L583.5,314.0L586.4,307.1L587.8,307.0L588.4,305.5L587.5,303.7L588.6,302.2L586.0,300.7L584.8,296.4L591.9,290.7L595.9,293.9L599.0,292.9L601.9,293.6L602.3,295.8L605.8,297.8L606.7,296.1L611.2,295.3L614.6,291.8L623.8,290.3L626.0,285.7L629.5,284.6L632.7,279.6L637.9,279.5L637.7,280.5L639.7,282.3L641.6,282.1L643.9,287.4L646.5,288.6L644.4,294.5L647.4,295.1L651.3,292.5L653.0,292.5L654.5,286.7L657.0,287.6L660.3,286.4L661.9,284.1L661.6,282.0L665.8,281.2L665.5,278.7L671.0,276.2Z","cx":626.1,"cy":354.9},"CE":{"n":"Ceará","d":"M712.8,202.1L705.3,204.0L700.2,215.5L696.7,218.9L697.4,220.0L695.1,224.4L692.4,227.2L689.6,227.1L687.1,231.0L686.6,233.2L688.3,233.6L685.2,239.4L686.4,241.1L683.5,243.7L683.5,245.3L685.3,246.4L685.0,249.2L687.9,251.3L685.6,256.7L680.1,260.6L679.6,262.3L678.5,261.7L677.1,262.6L676.3,259.9L669.7,256.9L670.0,254.9L668.2,255.0L665.0,252.1L657.0,253.1L654.1,251.4L651.1,252.8L649.3,251.8L650.0,247.8L651.6,245.5L651.2,242.7L652.3,241.5L645.3,238.5L644.1,235.7L644.3,231.8L641.9,226.3L642.5,224.8L641.3,218.9L642.0,217.7L641.5,209.1L637.5,206.4L635.2,202.8L636.1,201.0L635.2,200.6L636.7,198.8L635.4,196.9L638.3,188.8L637.3,187.9L637.9,186.2L635.1,186.1L635.8,184.3L634.3,182.0L635.4,179.7L633.5,179.1L632.9,176.8L634.3,175.3L631.9,172.8L635.1,167.2L633.8,163.9L648.0,162.3L649.8,161.1L660.6,162.6L674.0,169.9L685.4,178.9L689.0,179.5L698.1,190.4L702.8,193.5L706.1,197.9L711.4,199.5Z","cx":667.0,"cy":207.2},"DF":{"n":"Distrito Federal","d":"M513.5,415.4L515.6,415.4L515.5,416.4L517.5,417.2L516.3,424.9L517.7,426.4L498.8,426.5L498.7,422.2L500.2,420.4L499.5,419.2L500.4,415.4Z","cx":508.1,"cy":421.1},"ES":{"n":"Espírito Santo","d":"M649.4,463.3L655.2,465.0L666.0,472.1L664.4,479.6L665.4,492.8L663.2,498.4L659.4,500.6L656.8,504.4L655.7,509.8L654.9,511.2L653.8,511.2L654.2,512.0L651.3,518.1L649.3,518.5L649.4,520.0L647.3,522.3L646.9,521.6L644.8,522.7L640.9,531.5L638.3,529.8L636.4,530.4L629.1,529.1L625.8,527.5L626.3,522.9L623.0,520.6L624.4,518.3L623.5,517.8L624.6,514.1L623.6,512.0L625.4,509.6L632.7,509.2L634.1,504.4L636.5,503.2L636.8,498.9L639.4,496.8L639.2,495.2L641.1,494.9L641.9,491.6L641.2,488.3L638.8,486.5L639.7,484.9L635.4,482.5L635.6,481.4L638.2,482.3L641.7,481.7L641.2,479.2L639.1,478.0L639.7,474.6L636.6,474.2L637.0,471.6L639.0,468.8L642.2,467.6L644.5,468.6L642.4,464.8L643.8,464.5L645.8,465.9Z","cx":646.4,"cy":497.0},"GO":{"n":"Goiás","d":"M462.4,353.7L461.0,356.1L461.7,356.7L459.6,359.1L459.8,362.2L467.2,364.8L477.7,370.9L478.3,366.8L482.5,361.2L483.3,363.5L485.3,364.6L487.8,361.6L490.1,365.2L492.6,366.7L492.9,371.8L494.4,368.0L495.7,371.3L501.4,368.5L501.0,371.6L503.0,370.1L504.9,371.7L507.7,371.7L510.5,374.8L511.6,372.8L510.7,369.6L511.3,367.5L512.8,367.9L512.7,369.1L514.4,369.2L515.4,371.2L516.3,370.1L518.2,370.7L519.3,369.3L524.1,368.1L528.5,364.8L534.2,364.9L535.0,361.9L536.0,362.7L536.0,365.3L540.8,363.8L536.8,367.4L537.6,372.4L542.3,371.0L538.3,374.0L538.5,376.7L539.9,377.3L538.0,379.2L538.7,380.7L537.6,381.4L538.5,382.3L537.9,384.3L539.0,385.7L537.9,387.4L541.9,389.3L544.9,392.6L544.3,393.7L542.7,393.9L543.5,396.2L542.9,401.3L541.3,404.2L537.5,404.0L536.8,401.7L533.3,399.5L532.1,401.2L533.3,406.5L530.6,407.2L527.0,405.6L525.1,406.6L525.8,407.7L524.8,410.1L526.8,412.0L524.6,416.6L526.5,417.8L527.3,423.2L521.9,424.7L520.9,424.0L517.5,426.2L516.3,423.1L517.6,420.4L517.5,417.2L515.5,416.4L515.6,415.4L500.4,415.4L499.5,419.2L500.2,420.3L498.7,422.3L498.8,426.5L517.8,426.6L516.8,428.1L517.3,430.4L514.7,435.5L518.8,438.8L519.8,443.7L521.2,445.1L516.8,448.8L515.1,452.4L513.7,451.9L513.2,454.5L514.8,456.2L517.2,455.9L518.5,457.6L516.4,462.1L518.2,466.6L513.3,470.0L512.6,469.5L511.5,472.1L505.1,475.4L504.6,474.3L499.2,472.1L498.2,473.1L493.4,471.9L488.4,473.0L486.1,471.6L483.3,473.8L480.9,473.7L480.0,475.9L477.2,478.4L474.5,475.3L472.4,477.5L469.6,478.3L465.2,477.4L463.9,478.9L459.5,479.3L455.6,484.2L454.9,487.6L452.3,488.2L449.6,491.2L448.4,493.8L449.1,495.4L445.4,493.5L444.3,491.6L437.9,488.8L433.3,488.2L427.8,484.8L425.0,484.5L423.1,482.4L420.1,482.0L417.9,479.3L408.8,478.2L407.9,476.3L411.9,472.4L405.3,471.7L404.4,467.1L405.9,465.2L402.4,459.2L402.4,455.9L403.0,451.4L406.1,446.8L407.0,442.6L411.4,440.3L412.7,438.2L412.3,437.2L414.5,436.1L414.9,434.7L413.3,433.4L413.4,431.5L416.0,430.7L416.4,428.2L420.3,426.8L421.7,423.3L426.4,423.2L427.6,421.6L429.0,421.9L431.3,418.2L430.9,416.2L431.9,416.5L432.5,415.1L433.4,409.0L435.6,406.8L439.5,404.9L441.3,406.1L444.4,403.8L446.8,396.0L446.5,391.3L447.6,387.7L449.3,387.2L448.5,380.1L449.8,379.3L450.6,376.0L453.7,371.7L453.6,366.7L455.2,365.0L456.2,359.6L459.1,355.6Z","cx":472.7,"cy":426.3},"MA":{"n":"Maranhão","d":"M546.1,126.3L544.8,130.1L546.0,129.6L545.8,131.1L547.1,128.7L546.2,131.1L546.9,132.3L546.2,131.1L547.4,130.9L548.2,128.1L549.3,128.3L548.0,130.2L549.0,130.8L548.3,132.4L549.3,132.3L547.9,132.8L548.9,132.6L548.4,133.8L550.3,132.7L551.2,130.6L550.7,132.3L551.7,130.9L551.3,132.2L552.2,131.8L551.4,132.9L552.7,131.3L552.4,133.7L554.5,131.2L553.0,134.1L553.7,135.8L553.0,136.0L553.9,136.3L553.8,134.4L554.4,133.7L554.6,135.2L555.3,132.7L556.1,132.7L555.6,131.7L556.6,132.3L556.8,133.9L554.9,135.1L555.2,135.8L555.8,134.8L554.7,136.9L555.9,134.9L556.7,135.3L554.6,139.6L555.5,139.0L555.6,140.2L556.5,137.4L557.7,137.9L559.5,134.7L560.4,136.4L560.5,132.6L560.6,135.7L561.1,133.9L561.0,135.8L563.5,135.0L563.6,135.8L566.0,133.8L565.8,135.2L564.7,135.1L565.3,135.3L564.4,137.7L565.9,136.9L566.4,138.6L566.6,137.1L567.5,137.7L568.3,136.5L567.6,137.9L568.6,136.7L569.4,137.9L569.1,138.8L566.7,138.9L566.6,140.4L566.9,139.7L568.3,140.2L565.5,142.0L568.3,141.5L569.1,140.3L568.4,141.9L569.2,139.8L570.4,140.4L569.5,142.6L571.6,142.2L570.1,143.6L571.7,143.1L572.4,144.3L572.2,148.3L574.2,149.7L575.0,152.2L573.9,153.7L575.5,155.4L581.4,153.4L581.4,154.4L579.6,154.9L582.3,154.8L582.2,156.9L585.1,152.7L586.8,152.9L587.1,151.2L589.3,149.8L591.7,152.9L593.9,151.9L597.7,152.9L606.1,156.3L607.2,158.4L606.9,156.6L611.4,159.7L616.3,158.8L619.7,159.2L620.2,160.6L620.4,159.8L624.1,159.8L623.3,163.0L624.6,164.6L621.9,169.2L618.1,170.9L618.8,171.5L616.7,174.2L610.9,174.6L607.6,178.9L606.6,183.6L601.5,190.1L602.0,193.0L604.2,195.1L602.2,199.0L602.2,201.2L604.1,204.1L605.2,209.1L604.6,212.4L599.4,218.1L599.8,226.5L603.9,230.2L604.6,232.2L602.8,238.8L600.9,240.7L596.5,240.8L593.1,242.3L587.4,239.4L581.2,240.6L580.5,241.9L579.6,241.6L579.8,242.6L576.8,245.4L575.9,247.8L570.9,250.0L568.5,253.3L566.0,252.7L563.9,254.8L555.9,257.0L553.6,258.8L547.6,277.6L544.3,281.0L543.2,284.0L545.1,292.3L547.3,295.0L546.1,296.7L545.4,307.6L544.1,310.6L543.0,310.7L542.5,309.0L539.8,309.7L535.9,308.8L534.2,306.4L533.2,301.5L530.5,300.1L532.6,296.6L532.2,295.1L530.1,293.3L528.3,293.6L525.1,286.7L522.3,286.7L523.8,283.0L525.3,282.4L525.3,277.2L527.4,273.4L533.2,270.9L533.5,265.1L530.2,263.4L522.8,266.5L513.9,254.2L512.2,254.2L514.3,252.7L513.9,251.2L511.1,251.5L509.1,249.2L511.1,248.3L513.4,244.9L516.3,230.8L513.9,215.9L509.2,213.0L507.3,213.0L506.5,210.7L500.8,210.7L497.2,208.8L494.1,209.3L492.5,212.2L491.1,211.6L489.6,212.4L508.3,197.2L510.5,197.6L511.8,196.6L514.4,191.7L516.4,190.3L517.5,186.4L521.9,182.7L522.9,176.7L524.7,175.0L524.7,173.0L527.3,171.6L529.1,168.5L528.5,167.9L529.9,167.3L529.9,163.1L531.9,162.3L530.2,159.3L533.3,157.7L533.5,156.2L534.9,156.0L535.2,152.8L534.0,152.8L534.7,150.2L535.7,150.5L537.7,148.6L539.0,142.1L536.8,140.7L540.1,139.0L539.8,134.8L541.2,132.0L540.2,130.0L542.0,128.1L542.3,128.9L543.4,126.3L544.1,130.2Z","cx":557.1,"cy":206.7},"MG":{"n":"Minas Gerais","d":"M577.8,390.2L586.1,392.2L584.3,395.9L584.6,398.9L590.0,400.5L591.0,401.7L592.8,399.9L597.9,398.4L602.5,399.6L606.6,403.1L612.2,405.9L612.1,406.7L615.5,407.9L617.3,407.2L618.9,409.2L624.6,407.5L633.1,415.4L633.7,420.3L637.3,420.9L640.8,418.4L642.4,419.3L643.6,418.4L644.6,419.7L645.9,418.8L648.6,421.5L650.5,420.5L652.2,421.9L655.0,421.5L656.2,423.6L657.8,423.4L659.4,425.5L661.1,425.4L662.3,427.7L661.1,431.1L659.7,431.7L658.2,434.6L657.6,433.9L656.4,437.0L654.1,436.9L652.8,441.2L654.5,441.6L654.0,443.5L650.2,443.0L648.4,446.7L648.9,451.1L647.4,453.6L655.1,460.1L656.1,462.5L654.4,463.9L655.2,465.0L649.3,463.3L645.8,465.9L643.8,464.5L642.4,464.8L644.5,468.6L642.2,467.6L639.0,468.8L637.0,471.6L636.6,474.2L639.7,474.6L639.1,478.0L641.2,479.2L641.7,481.7L638.2,482.3L635.6,481.4L635.4,482.5L639.7,484.9L638.7,485.9L641.5,489.2L641.2,494.6L640.6,495.5L639.2,495.2L639.4,496.8L636.8,498.9L636.5,503.2L634.1,504.4L632.7,509.2L625.4,509.6L623.6,512.0L624.6,514.1L623.5,517.8L624.4,518.3L621.1,524.1L617.7,524.9L619.1,526.2L616.6,529.0L617.0,530.4L615.0,534.6L615.8,535.3L613.5,537.8L615.5,539.7L603.6,544.6L599.8,547.3L598.6,547.6L598.7,546.0L596.5,545.6L590.3,547.2L586.4,546.7L577.3,550.8L573.0,550.6L569.0,553.0L560.7,555.1L554.7,558.5L553.3,557.2L552.0,558.5L551.1,558.5L551.3,557.5L549.6,558.4L549.7,557.0L548.6,557.0L549.0,558.5L546.6,559.7L548.6,560.8L547.3,562.5L545.2,563.0L544.8,561.8L540.4,563.9L540.3,562.6L536.4,563.5L535.6,562.8L536.6,560.6L533.8,559.4L535.4,558.7L535.2,556.2L530.5,554.0L529.0,551.6L530.0,549.0L531.4,548.2L529.0,547.0L531.2,545.5L529.7,542.2L531.0,538.9L533.0,537.7L533.2,534.8L531.1,534.3L530.1,532.7L529.4,533.5L528.2,532.6L523.4,533.9L520.9,525.1L519.0,523.1L521.8,518.3L520.7,515.8L518.0,514.4L518.7,508.8L515.1,506.4L514.6,504.7L511.3,506.4L510.0,505.0L507.1,505.2L506.2,507.9L504.7,506.1L503.9,507.8L502.1,508.3L499.6,506.0L499.6,508.2L488.2,508.7L486.8,514.3L485.4,513.3L485.0,508.7L483.5,508.5L482.5,510.8L480.4,511.5L478.9,507.5L480.0,504.8L476.2,505.0L474.1,503.6L467.5,504.3L458.9,502.8L456.3,501.0L446.0,507.1L445.1,500.0L446.3,497.2L447.5,497.0L446.7,495.1L449.4,495.2L448.4,493.8L449.6,491.2L452.3,488.2L454.9,487.6L455.6,484.2L459.5,479.3L463.9,478.9L465.2,477.4L469.6,478.3L472.4,477.5L474.5,475.3L477.2,478.4L480.0,475.9L480.9,473.7L483.3,473.8L486.1,471.6L488.4,473.0L493.4,471.9L498.2,473.1L499.2,472.1L504.6,474.3L505.1,475.4L511.5,472.1L512.6,469.5L513.3,470.0L518.2,466.6L516.4,462.1L518.5,457.6L517.2,455.9L514.0,455.9L513.2,453.2L513.7,451.9L515.1,452.4L516.8,448.8L521.2,445.1L519.8,443.7L518.8,438.8L514.7,435.5L517.3,430.4L516.8,428.1L517.8,425.8L519.4,425.7L520.9,424.0L521.9,424.7L527.4,422.9L526.5,417.8L524.6,416.6L526.8,412.0L524.8,410.1L525.8,407.7L525.2,406.4L527.0,405.6L530.6,407.2L533.1,406.7L532.1,401.2L533.8,399.5L536.8,401.7L537.5,404.0L543.0,403.5L543.5,406.2L540.7,409.3L541.9,410.7L544.0,408.2L548.5,407.7L551.5,404.4L553.6,404.5L558.5,400.3L560.9,400.4L565.5,397.1L565.7,395.4L570.9,392.2Z","cx":568.8,"cy":474.6},"MS":{"n":"Mato Grosso do Sul","d":"M347.0,448.9L350.2,451.0L355.9,452.2L358.2,455.1L362.7,456.3L365.9,458.5L371.1,457.9L376.5,454.8L378.5,455.2L381.3,458.7L386.2,457.8L387.1,455.2L393.5,450.0L393.5,458.7L390.6,459.5L388.8,463.9L397.8,466.2L398.7,465.1L405.8,466.1L404.4,467.1L405.9,472.3L408.5,471.4L411.9,472.4L407.9,476.3L408.9,478.3L417.9,479.3L420.1,482.0L423.1,482.4L425.0,484.5L427.8,484.8L433.3,488.2L437.9,488.8L444.3,491.6L447.3,494.6L447.5,497.0L446.3,497.2L445.1,500.0L446.0,507.1L444.9,510.1L439.4,512.5L434.5,518.3L433.9,524.3L429.0,528.2L429.3,532.2L427.2,535.5L424.8,536.3L425.1,539.7L417.1,549.8L407.2,555.3L403.4,560.0L395.4,564.5L393.0,571.8L388.2,574.6L385.8,584.5L382.2,586.8L379.3,583.6L374.8,581.7L367.2,585.3L366.3,584.7L364.0,585.7L360.3,584.6L360.0,579.8L358.0,578.0L357.5,575.1L358.6,573.0L357.6,571.8L358.2,569.4L356.8,568.5L355.5,562.5L356.5,558.6L351.8,551.0L344.9,551.0L341.9,548.8L341.4,546.9L339.2,547.4L336.7,550.7L335.3,549.8L332.7,551.5L329.7,549.9L322.3,550.1L318.4,549.0L317.7,547.3L314.0,548.5L310.1,546.4L311.9,543.0L310.8,542.4L312.5,539.2L310.8,535.9L313.0,532.2L311.7,531.1L313.1,529.8L312.8,526.3L313.7,524.3L311.6,523.4L312.9,522.0L310.9,521.2L312.8,520.3L311.7,518.7L310.5,519.5L310.3,514.3L308.6,512.9L308.3,510.5L307.1,510.7L307.8,509.3L306.9,508.9L311.0,505.9L312.1,506.3L312.9,504.8L307.6,500.6L314.4,486.1L316.1,485.7L315.6,483.4L314.7,483.4L318.8,470.2L320.8,470.1L318.4,468.1L314.2,456.6L315.8,456.3L316.3,459.8L320.8,463.5L322.3,462.0L328.7,460.0L329.9,457.0L332.0,456.1L332.9,453.2L334.8,451.6L336.5,452.2L339.3,451.2L340.4,452.1Z","cx":371.4,"cy":512.0},"MT":{"n":"Mato Grosso","d":"M318.1,279.6L318.1,280.6L321.3,281.1L322.1,283.0L325.9,284.1L328.8,287.4L328.4,289.1L333.1,290.4L334.4,293.6L336.0,292.8L461.1,302.3L457.8,308.1L457.3,312.6L453.7,318.6L453.6,326.8L451.1,334.1L451.1,336.2L452.7,337.3L451.4,340.2L453.0,343.1L452.1,349.5L452.9,349.9L453.4,354.0L451.7,357.7L452.9,358.5L453.4,361.8L454.1,361.4L455.7,363.1L453.6,366.7L453.7,371.7L450.6,376.0L449.8,379.3L448.5,380.1L449.3,387.2L447.6,387.7L446.5,391.3L446.8,396.0L444.4,403.8L441.3,406.1L439.5,404.9L435.6,406.8L433.4,409.0L432.5,415.1L431.9,416.5L430.9,416.2L431.3,418.2L429.0,421.9L427.6,421.6L426.4,423.2L421.7,423.3L420.3,426.8L416.4,428.2L416.0,430.7L413.4,431.5L413.3,433.4L414.9,434.7L414.3,436.5L412.3,437.2L412.7,438.2L411.4,440.3L407.0,442.6L406.1,446.8L403.0,451.4L402.4,459.2L403.9,460.8L405.8,466.1L398.7,465.1L397.8,466.2L388.8,463.9L390.6,459.5L393.5,458.7L393.5,450.0L387.1,455.2L386.2,457.8L381.3,458.7L378.5,455.2L376.5,454.8L371.1,457.9L365.9,458.5L362.7,456.3L358.2,455.1L355.9,452.2L350.2,451.0L346.8,448.8L340.4,452.1L339.3,451.2L336.5,452.2L334.8,451.6L332.9,453.2L332.0,456.1L329.9,457.0L328.7,460.0L322.3,462.0L320.8,463.5L316.3,459.8L315.5,456.0L315.0,456.7L312.5,454.4L309.3,455.3L302.5,449.1L301.0,444.1L301.1,439.5L303.7,435.2L304.0,430.7L301.8,431.9L268.0,430.8L266.7,414.9L260.4,407.6L266.6,407.4L266.1,397.8L265.1,397.6L261.8,389.2L264.0,385.2L261.8,382.6L262.3,381.4L257.5,379.1L259.1,376.9L263.8,374.5L265.9,367.0L269.8,363.1L270.0,357.8L272.6,355.2L274.2,355.0L275.8,352.3L273.5,350.3L271.7,343.7L269.3,342.2L269.1,337.3L272.8,333.7L273.0,332.2L271.7,327.8L267.5,327.7L265.5,326.6L264.6,327.6L262.4,325.2L241.3,325.2L242.1,321.3L242.8,321.4L243.0,313.8L240.3,308.6L242.1,302.9L240.8,299.8L242.7,298.0L239.7,290.8L241.8,290.3L241.2,287.3L242.9,283.8L240.7,281.4L302.1,281.3L303.9,279.8L301.7,279.5L304.6,268.0L302.7,262.3L306.3,257.9L306.1,254.6L307.5,252.4L310.7,256.1L313.5,264.9L317.1,269.7L316.3,273.8Z","cx":350.7,"cy":364.4},"PA":{"n":"Pará","d":"M369.3,53.8L373.0,61.4L372.0,64.2L373.2,66.0L373.4,69.9L381.8,70.6L384.1,72.9L385.0,72.6L386.1,75.7L387.6,75.0L390.7,77.6L394.7,77.3L394.6,78.7L396.7,78.5L396.8,81.2L398.9,80.6L399.5,82.3L398.3,82.8L399.2,86.9L405.2,91.8L403.8,98.0L408.5,108.3L410.0,108.4L413.3,111.5L413.0,114.6L414.2,117.1L416.5,117.2L416.2,122.5L417.8,122.0L418.8,123.0L418.3,126.5L424.3,128.4L424.6,130.0L425.6,130.1L426.9,127.9L427.5,128.8L430.3,128.6L432.4,126.7L433.1,120.7L441.8,107.8L444.4,107.2L447.3,104.0L452.3,101.9L454.6,99.3L457.0,93.4L462.4,91.3L463.6,91.4L464.6,94.0L464.2,98.7L470.5,99.0L471.7,98.1L477.1,105.1L486.2,110.0L496.2,110.6L496.7,112.7L495.1,115.4L504.2,118.7L504.3,119.5L506.2,116.5L507.3,117.2L507.3,119.0L508.0,116.5L508.8,118.2L508.8,116.7L510.0,116.1L511.5,119.5L512.4,117.1L513.5,117.9L515.5,117.3L515.8,118.6L517.4,117.3L518.0,118.4L519.5,118.2L518.9,119.6L520.6,118.8L520.4,121.0L521.9,118.7L522.5,121.6L522.9,120.0L524.5,119.7L524.9,123.0L526.4,120.2L527.1,123.5L528.2,121.8L528.6,123.9L529.1,122.0L530.0,122.7L530.7,121.2L531.2,122.4L530.0,125.0L531.7,125.0L532.4,123.5L532.6,125.0L533.1,123.1L534.8,122.6L533.4,124.9L534.0,126.5L535.0,125.8L534.7,126.7L535.5,125.2L537.1,127.1L536.9,125.7L537.6,126.4L537.9,123.8L539.1,123.2L538.2,125.4L538.9,125.0L539.0,126.6L537.8,128.9L539.7,125.3L539.7,128.5L539.8,127.1L540.2,128.1L540.1,126.9L541.6,125.8L540.1,130.8L541.2,132.0L539.8,134.8L540.1,139.0L536.8,140.7L539.0,142.1L537.7,148.6L535.7,150.5L534.7,150.2L534.0,152.8L535.2,152.8L534.9,156.0L533.5,156.2L533.3,157.7L530.2,159.3L531.9,162.3L529.9,163.1L529.9,167.3L528.5,167.9L529.1,168.5L527.3,171.6L524.7,173.0L524.7,175.0L522.9,176.7L521.9,182.7L517.5,186.4L516.4,190.3L514.4,191.7L511.8,196.6L510.5,197.6L508.3,197.2L489.6,212.4L492.7,213.9L496.8,213.4L498.4,215.9L501.6,217.5L500.9,219.6L498.6,220.5L499.8,224.4L497.8,225.5L498.4,227.8L495.9,229.0L496.8,232.9L494.5,232.5L492.3,234.5L491.3,238.7L484.5,241.1L480.8,243.9L481.2,250.1L477.4,256.4L478.5,259.0L482.0,261.6L480.8,268.9L479.3,273.0L477.6,274.5L473.3,282.2L470.4,283.6L464.7,291.2L461.1,302.3L336.0,292.8L334.2,293.5L333.1,290.4L328.4,289.1L328.8,287.4L325.6,283.9L322.1,283.0L321.3,281.1L318.1,280.6L316.3,273.8L317.1,269.7L313.5,264.9L312.2,258.9L309.0,253.4L306.9,251.7L306.7,249.0L301.2,242.2L301.2,238.8L305.2,234.5L341.2,154.6L340.0,153.9L341.5,150.8L344.7,149.4L347.1,146.2L344.6,146.6L341.0,149.0L338.8,148.2L335.8,149.7L334.1,148.8L334.8,145.9L332.5,145.8L328.9,143.7L328.4,141.6L326.4,139.9L322.0,139.9L321.8,138.9L319.3,138.5L317.9,136.8L316.4,137.3L315.8,135.5L311.0,133.5L309.8,127.6L307.0,130.0L301.8,126.0L301.7,123.1L296.5,119.0L296.1,114.3L293.3,112.3L292.8,80.9L294.3,82.0L295.8,81.4L296.7,79.5L300.6,80.1L301.3,78.0L300.3,76.2L302.7,76.0L303.9,73.5L307.1,74.2L307.7,75.5L310.1,75.4L310.4,72.3L314.6,70.8L318.9,71.6L321.2,67.3L323.6,65.5L325.1,66.7L327.9,64.9L329.3,67.1L331.2,66.8L333.5,68.4L335.0,66.9L337.7,67.3L340.2,66.3L349.3,68.7L350.9,67.7L350.9,64.6L347.9,61.7L348.2,60.9L346.3,60.1L347.3,58.0L348.6,58.6L349.4,54.9L354.5,57.4L360.9,57.1L362.2,55.1Z","cx":405.9,"cy":184.9},"PB":{"n":"Paraíba","d":"M713.2,226.0L714.3,226.4L714.7,228.5L710.4,232.3L710.0,235.7L708.3,236.4L708.3,239.6L712.2,239.3L713.2,241.9L717.6,239.6L718.5,241.2L720.9,240.1L722.9,242.2L722.2,244.2L723.2,245.1L727.3,241.6L726.3,239.6L727.0,237.4L728.7,238.0L726.8,234.5L727.4,232.6L728.8,232.7L729.5,231.3L731.4,231.3L732.3,234.2L735.6,233.5L737.6,235.2L743.8,234.4L753.2,236.6L757.1,235.1L757.7,240.9L760.5,248.5L759.9,256.4L757.3,256.2L755.0,253.4L751.7,252.9L748.3,254.9L747.3,254.3L746.2,258.5L737.2,261.7L732.9,260.7L732.2,262.0L728.9,261.8L728.5,263.8L726.4,263.4L725.2,264.4L724.9,267.7L717.9,271.5L714.6,268.8L714.0,264.6L710.8,265.0L713.0,261.8L714.8,261.0L714.4,257.2L718.0,255.1L717.2,253.2L713.2,250.9L708.0,252.8L707.4,254.9L704.0,256.4L702.8,258.6L701.1,258.5L698.9,261.0L697.5,260.4L696.8,262.0L695.1,261.0L692.7,262.0L691.4,259.0L686.8,260.5L684.4,257.6L687.9,251.3L685.0,249.2L685.3,246.4L683.5,244.4L686.4,241.1L685.2,239.4L688.3,233.6L686.6,233.2L689.4,232.0L688.9,233.4L692.7,235.5L696.0,235.9L703.0,231.3L703.3,229.2L708.8,228.3Z","cx":721.1,"cy":247.9},"PE":{"n":"Pernambuco","d":"M655.7,252.6L665.4,252.3L668.2,255.0L670.0,254.9L669.7,256.9L676.3,259.9L677.1,262.6L678.5,261.7L679.6,262.3L680.1,260.6L684.4,257.9L686.9,260.6L691.4,259.0L692.7,262.0L695.1,261.0L696.8,262.0L697.5,260.4L698.9,261.0L701.1,258.5L702.8,258.6L704.0,256.4L707.4,254.9L708.0,252.8L713.2,250.9L717.2,253.2L718.0,255.1L714.4,257.2L714.8,261.0L713.0,261.8L710.8,265.0L714.0,264.6L714.6,268.8L717.9,271.5L724.9,267.7L725.2,264.4L726.4,263.4L728.5,263.8L728.9,261.8L732.2,262.0L732.9,260.7L737.2,261.7L746.2,258.5L746.8,254.6L748.3,254.9L751.7,252.9L755.2,253.4L757.3,256.2L759.8,256.5L760.0,263.8L757.7,272.5L755.4,274.7L756.1,275.6L756.8,274.7L756.4,276.8L753.6,283.7L747.4,281.7L742.0,283.8L741.1,282.4L739.1,282.5L734.6,284.6L734.8,286.0L731.9,287.5L732.8,288.9L728.6,289.7L725.7,292.2L723.7,290.9L720.2,290.8L718.6,293.1L715.6,290.2L714.5,291.0L713.9,289.7L713.2,290.2L711.6,287.3L708.6,286.0L708.2,284.8L704.2,285.3L703.0,282.6L698.7,288.4L696.5,288.9L693.7,292.0L692.1,288.2L692.6,285.9L691.7,285.2L690.2,286.2L688.5,285.1L689.0,282.4L687.2,282.1L685.9,285.2L682.7,281.2L679.8,281.5L678.1,280.1L674.5,279.6L673.3,276.7L671.4,276.1L665.5,278.7L665.8,281.2L661.6,282.0L661.9,284.1L660.3,286.4L657.0,287.6L654.5,286.7L652.6,293.0L651.3,292.5L647.4,295.1L644.4,294.5L646.5,288.6L643.9,287.4L641.6,282.1L639.7,282.3L637.7,280.5L637.9,279.5L633.1,279.6L635.9,278.4L640.1,273.5L641.5,274.4L642.2,272.6L643.3,273.1L644.3,270.5L648.1,268.2L649.0,262.2L646.5,260.7L647.4,258.6L645.8,254.6L648.9,253.3L649.3,251.8L651.9,252.8L654.4,251.5Z","cx":698.3,"cy":272.0},"PI":{"n":"Piauí","d":"M625.5,161.5L628.6,163.5L633.8,163.9L635.1,165.5L635.1,167.2L631.9,172.8L634.3,175.3L632.9,176.8L633.5,179.1L635.4,179.7L634.3,182.0L635.8,184.3L635.1,186.1L637.9,186.2L637.3,187.9L638.3,188.8L635.4,196.9L636.7,198.8L635.2,200.6L636.1,201.0L635.2,202.8L637.5,206.4L641.5,209.1L642.0,217.7L641.3,218.9L642.5,224.8L641.9,226.3L644.3,231.8L644.1,235.7L645.3,238.5L652.3,241.5L651.2,242.7L651.6,245.5L650.0,247.8L648.9,253.3L645.6,255.0L647.4,258.6L646.5,260.7L649.0,262.2L648.1,268.2L644.3,270.5L643.6,272.7L642.2,272.6L641.5,274.4L640.1,273.5L635.9,278.4L632.7,279.6L629.5,284.6L626.0,285.7L623.8,290.3L614.6,291.8L611.2,295.3L606.7,296.1L605.8,297.8L602.3,295.8L601.9,293.6L599.0,292.9L595.9,293.9L591.9,290.7L584.8,296.4L586.0,300.7L588.6,302.2L587.5,303.7L588.4,305.5L587.8,307.0L586.4,307.1L583.5,314.0L581.4,313.6L579.3,318.1L576.7,317.9L575.4,316.4L572.1,318.5L570.7,318.0L568.9,319.1L568.9,320.6L563.8,324.0L561.0,322.2L557.7,321.9L554.1,318.1L553.8,315.6L554.8,314.3L551.1,307.8L548.4,308.6L547.1,310.8L544.1,310.6L543.9,309.8L545.6,307.0L546.1,296.7L547.3,295.0L545.1,292.3L543.2,284.0L544.3,281.0L547.6,277.6L548.3,273.7L551.2,268.6L553.1,259.8L555.9,257.0L563.9,254.8L566.0,252.7L568.5,253.3L570.9,250.0L575.9,247.8L580.8,240.8L587.4,239.4L593.1,242.3L596.5,240.8L600.9,240.7L602.8,238.8L604.6,232.2L603.9,230.2L599.8,226.5L599.4,218.1L604.6,212.4L605.2,209.1L604.1,204.1L602.2,201.2L602.2,199.0L604.2,195.1L602.0,193.0L601.5,190.1L606.6,183.6L607.6,178.9L610.9,174.6L616.7,174.2L618.8,171.5L618.1,170.9L620.7,170.3L624.1,165.9L623.6,160.9L624.3,160.2Z","cx":601.9,"cy":253.2},"RJ":{"n":"Rio de Janeiro","d":"M578.1,567.4L580.0,568.9L576.2,569.0L575.1,570.0L574.5,568.9ZM624.1,521.2L626.3,522.9L626.1,527.9L634.7,530.2L638.3,529.8L640.9,531.5L638.6,535.9L639.9,537.7L640.6,544.8L636.1,548.1L626.7,551.4L621.3,556.3L620.9,559.6L621.9,560.8L623.3,560.5L620.2,563.3L620.4,565.4L613.6,564.2L600.3,565.1L598.6,564.2L600.8,560.3L599.6,559.0L595.7,561.5L598.2,563.7L597.6,565.3L593.4,564.9L595.5,565.7L582.1,567.5L582.4,566.3L584.1,566.8L583.6,565.8L590.5,566.4L584.7,563.5L581.0,565.1L581.0,564.2L579.3,566.1L577.3,566.6L577.1,565.4L574.9,565.9L576.1,564.6L574.9,563.9L573.4,564.7L573.5,565.9L568.5,567.1L568.0,570.1L569.4,569.2L569.8,569.9L568.4,570.5L570.0,570.1L569.1,571.4L571.0,570.0L570.5,570.8L572.1,571.4L570.5,572.6L567.3,572.6L564.9,570.4L566.5,565.1L572.3,562.4L572.8,563.1L576.6,562.1L578.7,559.0L577.5,557.5L574.4,556.9L572.0,558.3L569.6,557.6L566.3,553.3L569.0,553.0L573.5,550.5L577.3,550.8L586.4,546.7L590.3,547.2L596.5,545.6L598.7,546.0L598.6,547.6L599.8,547.3L603.6,544.6L615.5,539.7L613.5,537.8L615.8,535.3L615.0,534.6L617.0,530.4L616.6,529.0L619.1,526.2L617.7,524.9L621.1,524.1L622.1,521.3Z","cx":607.9,"cy":549.4},"RN":{"n":"Rio Grande do Norte","d":"M757.1,235.2L753.2,236.6L743.8,234.4L737.6,235.2L735.6,233.5L732.3,234.2L731.4,231.3L729.5,231.3L728.8,232.7L727.4,232.6L726.8,234.5L728.7,238.0L727.0,237.4L726.3,239.6L727.3,241.6L723.2,245.1L722.2,244.2L722.9,242.2L720.9,240.1L718.5,241.2L717.6,239.6L713.2,241.9L712.2,239.3L708.3,239.6L708.3,236.4L710.0,235.7L710.7,231.9L714.5,228.8L714.3,226.4L712.8,226.0L708.8,228.3L703.3,229.2L703.0,231.3L696.0,235.9L692.7,235.5L688.9,233.4L689.4,232.0L687.4,232.6L687.0,231.8L689.6,227.1L692.4,227.2L695.1,224.4L697.4,220.0L696.7,218.9L700.2,215.5L705.3,204.0L712.8,202.1L714.5,204.1L718.4,203.8L723.7,207.3L734.4,207.3L737.5,206.3L747.1,208.6L751.5,215.1L754.7,229.1Z","cx":723.9,"cy":222.2},"RO":{"n":"Rondônia","d":"M215.7,265.0L219.1,267.3L219.2,268.9L222.4,273.1L223.5,272.2L225.5,273.3L225.9,277.5L227.1,278.2L227.3,277.0L228.9,277.2L230.1,281.5L234.4,282.9L235.7,280.1L236.9,280.4L238.1,279.2L242.9,283.8L241.2,287.3L241.8,290.3L239.7,290.8L242.7,298.0L240.8,299.8L242.1,302.9L240.3,308.6L243.0,313.8L242.8,321.4L242.1,321.3L241.3,325.2L262.5,325.2L264.6,327.6L265.5,326.6L267.5,327.7L271.8,327.9L272.9,333.4L269.1,337.3L269.3,342.2L271.7,343.7L273.5,350.3L275.8,352.3L274.2,355.0L272.6,355.2L270.0,357.8L269.8,363.1L265.9,367.0L263.8,374.5L259.1,376.9L257.6,379.3L254.3,377.8L253.5,376.3L251.9,376.4L251.7,375.2L248.2,376.2L246.2,375.0L242.9,376.5L240.8,375.2L235.6,376.4L234.6,374.1L230.4,370.7L229.3,367.7L228.9,368.5L228.4,367.7L227.3,368.6L224.5,368.0L223.8,366.7L220.7,366.3L219.9,364.7L217.4,365.6L215.3,362.6L213.0,362.2L212.0,359.2L210.1,357.7L207.4,359.1L204.7,356.8L197.9,354.0L196.0,354.4L194.6,356.1L191.1,355.0L190.6,355.7L189.3,354.5L188.2,355.5L188.1,354.6L185.7,354.3L183.8,352.4L183.8,349.9L180.2,349.2L179.9,347.2L179.2,348.6L178.5,347.2L177.6,347.9L177.5,345.7L173.8,345.4L172.6,339.6L170.8,340.6L169.3,339.6L170.2,336.1L168.3,335.3L167.8,332.5L168.7,331.9L167.6,331.5L168.2,329.4L167.3,328.4L169.5,325.1L169.0,322.9L167.2,321.4L167.7,319.3L166.3,317.8L166.0,315.1L168.7,309.8L167.9,304.3L168.8,302.3L167.3,299.7L165.7,298.8L163.5,302.3L161.4,301.1L160.6,301.6L161.1,300.4L159.9,301.1L159.4,300.1L158.9,301.3L157.2,300.5L155.3,301.6L152.0,301.1L146.7,303.4L143.6,303.6L139.3,301.7L139.9,300.5L145.2,298.1L147.3,295.4L147.0,293.6L155.5,293.7L159.0,297.1L162.8,293.7L165.9,294.8L165.7,291.8L166.9,292.2L169.6,290.6L170.8,294.0L172.4,294.1L175.5,290.7L176.0,286.3L177.5,285.3L181.9,285.8L187.5,284.0L187.7,285.4L191.0,284.5L191.0,280.3L193.2,279.7L194.0,277.1L195.3,276.8L194.2,275.2L194.8,272.1L196.3,271.2L198.0,272.0L201.1,264.8Z","cx":216.2,"cy":323.6},"RR":{"n":"Roraima","d":"M292.8,80.9L292.8,100.2L270.6,100.2L265.6,109.7L263.6,115.6L265.4,119.9L262.1,120.9L261.1,122.9L258.4,123.3L256.8,122.7L256.6,120.7L253.5,116.5L247.8,115.4L247.6,116.6L243.0,118.7L240.6,124.2L241.4,126.7L240.0,133.3L241.5,134.1L242.8,137.0L239.6,134.1L234.6,133.3L232.2,128.3L222.7,120.6L223.1,119.1L224.7,120.0L226.8,118.5L226.6,115.7L228.9,112.1L227.7,111.5L227.8,108.9L224.3,103.6L223.9,97.9L222.2,95.3L222.2,91.6L223.7,89.7L223.4,83.7L222.3,83.7L220.1,76.7L216.9,73.6L218.5,71.2L218.9,66.7L216.3,65.1L212.1,64.9L210.4,62.0L206.2,61.5L205.3,56.7L198.6,57.7L192.7,55.5L193.9,50.1L189.2,43.1L188.8,37.2L190.2,34.2L188.1,31.4L184.3,29.7L178.0,21.9L177.8,20.3L180.2,20.4L182.9,23.4L190.6,22.9L194.5,28.1L196.7,26.4L199.9,27.3L200.0,25.1L203.5,28.6L204.7,28.1L204.8,25.9L209.2,26.4L208.8,28.7L211.2,29.6L211.6,31.6L213.9,33.3L216.3,30.7L218.1,32.0L218.4,29.3L217.3,27.6L217.9,24.8L221.8,25.1L221.8,23.3L223.6,21.9L229.7,24.0L232.9,21.8L233.9,23.4L236.9,20.4L241.1,20.4L242.0,17.3L246.4,16.3L245.7,14.7L249.1,15.8L252.1,15.1L253.9,11.1L256.8,10.3L259.9,6.9L257.3,1.0L262.9,1.8L267.3,0.0L268.8,0.5L269.5,2.6L271.4,3.7L271.6,6.0L270.8,11.4L268.2,15.3L275.3,16.1L277.7,18.0L276.7,21.8L278.8,22.8L278.2,24.0L280.8,26.6L279.3,27.7L279.2,29.5L277.6,30.2L277.8,31.4L274.0,33.9L275.2,35.3L274.4,36.9L275.2,38.2L273.2,41.2L271.6,47.8L271.6,51.7L273.4,58.2L276.8,59.9L276.2,68.3L277.9,68.0L277.4,70.3L280.3,71.0L285.9,77.7L292.4,79.1Z","cx":244.2,"cy":63.7},"RS":{"n":"Rio Grande do Sul","d":"M471.0,692.0L465.1,700.9L459.0,715.5L450.4,727.7L441.2,736.8L428.9,744.6L425.1,749.1L426.4,744.2L424.5,741.3L429.5,742.8L430.8,741.6L429.2,741.4L433.1,740.9L436.5,736.8L437.6,737.9L437.7,735.0L438.8,736.0L440.9,735.0L442.7,732.2L442.8,726.7L443.9,727.4L446.4,726.3L446.7,723.4L450.8,721.8L451.8,720.4L451.5,712.5L453.3,713.3L453.3,712.0L453.9,713.4L452.7,714.3L454.3,715.1L455.0,710.9L453.9,709.3L452.6,709.4L452.4,711.4L447.5,712.1L447.4,714.1L444.9,713.1L445.4,710.9L442.7,710.7L441.2,709.2L441.6,708.3L440.4,707.8L441.6,706.3L440.4,706.7L440.3,705.4L440.3,711.5L441.9,711.4L442.5,713.2L444.2,712.7L443.1,715.4L443.4,714.2L442.2,713.6L440.2,716.6L440.5,721.7L439.6,721.0L440.3,720.9L439.9,718.4L439.0,718.1L438.2,720.6L438.9,722.9L436.3,724.0L437.5,727.2L434.0,728.2L434.1,730.8L427.9,731.9L426.7,733.7L426.0,739.3L422.2,740.5L421.8,742.9L424.4,744.6L422.4,744.6L421.8,746.5L422.7,746.2L422.4,747.1L424.7,745.9L422.7,745.9L424.1,744.6L425.4,746.4L423.6,747.7L425.0,746.7L425.0,749.1L423.6,749.2L420.7,752.7L414.4,767.8L411.2,771.5L399.5,780.5L396.8,778.4L397.3,776.0L398.3,776.9L398.8,775.4L398.1,770.7L398.9,768.2L401.0,766.5L402.1,767.6L404.1,764.8L404.8,761.3L405.8,762.1L407.4,760.3L407.5,761.8L409.9,763.6L412.1,762.7L415.2,756.0L413.1,751.8L414.5,748.3L411.6,749.5L412.5,749.7L410.7,752.2L412.6,753.1L408.2,755.1L405.6,758.6L399.7,757.2L394.7,753.1L392.7,747.0L388.4,743.8L385.9,744.0L379.0,738.5L376.4,734.6L371.6,734.3L368.3,730.8L367.0,732.1L363.8,730.7L361.6,726.2L357.2,722.1L355.6,722.7L355.5,724.5L354.4,724.3L351.3,727.0L348.8,727.1L348.5,721.2L333.4,707.5L328.2,707.2L325.4,711.2L319.5,711.2L318.7,709.6L317.1,709.3L320.6,707.6L323.0,705.3L323.9,702.1L327.2,700.7L333.5,694.7L337.5,687.8L340.9,686.9L343.3,681.4L345.3,680.9L349.0,677.4L348.8,675.6L351.2,675.0L351.4,672.7L354.9,674.0L355.4,672.3L353.4,670.3L356.6,667.8L357.6,668.8L358.8,667.0L359.8,667.4L361.3,666.0L360.9,665.1L364.6,662.6L365.8,663.4L366.3,662.4L367.7,662.6L366.8,661.0L369.6,660.9L372.0,656.1L372.8,657.2L374.6,656.9L374.8,655.5L375.5,656.4L376.5,654.5L377.5,655.6L379.8,653.5L381.1,654.8L381.2,653.5L382.3,654.4L384.5,650.5L386.3,651.4L390.2,648.0L392.9,649.3L394.3,648.7L394.7,649.9L396.3,648.9L397.6,649.5L397.5,648.1L399.1,648.3L400.0,647.2L401.5,648.1L401.2,649.8L404.2,648.2L405.8,648.6L406.7,647.0L406.4,648.4L407.3,648.2L407.7,649.9L408.0,648.7L408.7,649.5L410.0,648.8L413.2,651.1L413.7,650.2L417.2,650.8L418.1,649.8L419.3,651.5L420.8,651.8L420.8,650.6L421.7,650.6L421.2,651.4L422.5,652.1L423.4,650.9L424.7,652.4L427.6,653.1L426.5,653.4L428.8,655.8L429.2,655.0L430.6,656.0L430.5,655.3L433.8,655.2L435.0,657.1L436.5,656.6L437.6,658.5L438.6,657.9L441.3,660.9L444.3,662.1L445.7,664.6L447.4,664.8L448.5,668.1L450.1,668.2L453.3,673.3L458.5,673.9L458.7,674.7L460.6,674.0L462.4,675.4L463.0,674.0L463.5,675.1L466.0,674.2L466.5,675.1L468.3,674.3L468.5,675.4L470.0,674.6L471.4,677.9L469.5,677.7L467.8,680.3L466.7,680.0L466.0,683.9L467.0,685.0L465.3,686.9L466.6,686.6L466.2,687.8L462.0,690.4L464.7,692.5L463.2,690.6L466.3,689.4Z","cx":401.1,"cy":699.6},"SC":{"n":"Santa Catarina","d":"M492.0,624.9L492.7,625.0L493.0,628.7L494.7,629.8L490.9,639.2L491.2,640.7L492.9,641.1L491.8,643.5L492.2,645.4L493.2,645.6L492.6,647.9L495.2,648.3L494.8,649.7L494.0,649.1L492.4,650.0L492.7,651.8L494.1,652.1L493.5,654.1L492.4,654.1L496.2,653.1L497.3,654.4L494.5,659.7L494.9,661.1L492.6,662.7L492.6,666.0L489.5,676.2L479.2,683.1L471.0,692.0L466.3,689.4L463.2,690.6L464.7,692.5L462.0,690.4L466.2,687.8L466.6,686.6L465.3,686.9L467.0,685.0L466.0,683.9L466.7,680.0L467.8,680.3L469.5,677.7L471.4,677.9L470.0,674.6L468.5,675.4L468.3,674.3L466.5,675.1L466.0,674.2L463.5,675.1L463.0,674.0L462.4,675.4L460.6,674.0L458.7,674.7L458.5,673.9L453.3,673.3L450.1,668.2L448.5,668.1L447.4,664.8L445.7,664.6L444.3,662.1L441.3,660.9L438.6,657.9L437.6,658.5L436.5,656.6L435.0,657.1L433.8,655.2L430.5,655.3L430.6,656.0L429.2,655.0L428.8,655.8L426.5,653.4L427.6,653.1L424.7,652.4L423.4,650.9L422.5,652.1L421.2,651.4L421.7,650.6L420.8,650.6L420.8,651.8L419.3,651.5L418.1,649.8L417.2,650.8L413.7,650.2L413.2,651.1L410.0,648.8L408.7,649.5L408.0,648.7L407.7,649.9L407.3,648.2L406.4,648.4L406.7,647.0L405.8,648.6L404.2,648.2L401.2,649.8L401.5,648.1L400.0,647.2L399.1,648.3L397.5,648.1L397.6,649.5L391.0,648.8L392.2,647.5L391.7,646.2L392.5,646.7L392.0,646.0L394.2,644.3L392.5,638.3L394.7,630.5L397.6,631.5L401.7,630.4L405.5,633.2L412.3,632.3L414.9,633.7L423.0,634.3L429.1,637.4L436.3,637.1L438.0,639.8L438.4,638.7L441.6,637.8L440.2,633.8L441.3,631.9L444.5,630.0L447.1,631.1L447.3,630.1L447.9,631.2L448.5,630.3L451.5,630.3L453.2,626.7L454.7,626.5L454.3,625.5L459.2,628.1L459.0,627.1L460.6,626.0L461.9,627.0L462.1,625.9L463.1,626.7L465.9,625.7L466.0,626.6L466.6,625.6L474.1,630.2L481.4,625.5Z","cx":456.3,"cy":650.4},"SE":{"n":"Sergipe","d":"M729.5,315.4L720.5,320.3L711.3,334.3L707.6,336.4L705.1,335.8L704.6,336.8L701.9,335.8L700.9,334.0L698.7,333.3L698.0,331.1L698.8,329.3L697.1,328.9L696.3,325.7L693.9,323.8L693.6,321.9L694.4,319.7L697.4,319.3L698.6,320.6L701.9,319.3L701.0,314.0L703.5,312.1L701.5,305.4L698.4,303.8L699.0,301.8L697.7,300.9L697.5,299.3L698.5,298.4L697.5,296.9L698.2,295.7L700.4,296.2L702.5,298.2L703.9,298.1L706.4,300.1L709.6,300.7L713.1,303.4L717.8,304.9L719.3,308.1L723.1,310.7L725.0,310.6L726.2,313.8L728.3,313.6Z","cx":709.2,"cy":317.3},"TO":{"n":"Tocantins","d":"M497.3,208.9L500.8,210.7L506.5,210.7L507.3,213.0L512.9,214.8L514.3,216.7L516.3,230.8L513.4,244.9L511.1,248.3L509.1,249.2L511.1,251.5L513.1,250.7L514.2,251.8L512.2,254.2L513.9,254.2L522.8,266.5L531.1,263.4L533.8,265.7L533.2,270.9L527.4,273.4L525.3,277.2L525.3,282.4L523.8,283.0L522.3,286.7L525.1,286.7L528.3,293.6L530.1,293.3L532.2,295.1L532.6,296.6L530.5,300.1L533.2,301.5L534.2,306.4L535.9,308.8L539.8,309.7L542.5,309.0L543.0,310.7L547.1,310.8L548.9,308.8L548.9,310.7L548.0,312.4L546.4,312.8L546.3,314.2L539.0,318.4L539.3,319.8L538.2,320.6L537.6,323.6L535.3,325.3L533.9,329.3L531.1,331.2L533.8,335.8L541.4,337.9L537.0,338.0L535.8,342.8L539.7,343.4L535.3,346.2L536.2,352.2L538.1,353.9L538.1,355.3L540.1,355.1L537.6,357.1L537.1,364.4L540.8,363.8L536.0,365.3L536.0,362.7L535.0,361.9L534.2,364.9L528.5,364.8L524.1,368.1L519.3,369.3L518.2,370.7L516.3,370.1L515.4,371.2L514.4,369.2L512.7,369.1L512.8,367.9L511.3,367.5L510.7,369.6L511.6,372.8L510.5,374.8L507.7,371.7L504.9,371.7L503.0,370.1L501.0,371.6L501.4,368.5L495.7,371.3L494.4,368.0L492.9,371.8L492.6,366.7L490.1,365.2L487.6,361.5L485.3,364.6L483.3,363.5L482.5,361.2L480.2,363.1L478.0,367.5L477.7,370.9L467.2,364.8L459.8,362.2L459.6,359.1L461.7,356.7L461.2,355.2L462.7,353.4L458.3,356.4L455.5,362.7L453.4,361.8L452.9,358.5L451.7,357.7L453.4,354.0L452.9,349.9L452.1,349.5L453.0,343.1L451.4,340.2L452.7,337.3L451.5,337.0L451.0,334.6L453.6,326.8L453.7,318.6L457.3,312.6L457.8,308.1L463.4,297.3L464.7,291.2L470.4,283.6L473.3,282.2L479.5,272.7L482.0,261.6L478.5,259.0L477.4,256.4L481.2,250.1L480.8,243.9L484.5,241.1L491.0,239.0L491.7,235.6L494.3,232.6L496.8,232.9L495.9,229.0L498.4,227.8L497.8,225.5L499.8,224.0L498.6,220.5L500.9,219.6L501.7,217.8L498.4,215.9L496.8,213.4L492.7,213.9L489.6,212.5L491.1,211.6L492.5,212.2L494.1,209.3Z","cx":497.8,"cy":308.4},"PR":{"n":"Paraná","d":"M502.4,611.6L500.1,614.7L498.1,615.2L498.4,616.8L495.9,618.3L492.8,625.0L481.4,625.4L474.1,630.2L466.6,625.6L466.0,626.6L465.9,625.7L463.1,626.7L462.1,625.9L461.9,627.0L460.6,626.0L459.0,627.1L459.2,628.1L454.4,625.5L454.7,626.5L453.2,626.7L451.5,630.3L448.5,630.3L447.9,631.2L447.3,630.1L447.1,631.1L444.5,630.0L441.3,631.9L440.2,633.8L441.6,637.8L438.4,638.7L438.0,639.8L436.2,637.1L429.1,637.4L423.0,634.3L414.9,633.7L412.3,632.3L405.5,633.2L401.7,630.4L396.5,631.3L394.8,630.5L392.8,627.8L393.0,626.3L391.0,624.9L391.2,621.3L389.9,617.9L388.7,618.4L386.3,616.6L385.9,617.8L385.7,615.4L383.8,616.2L384.4,617.1L382.2,616.6L380.3,617.4L379.4,619.4L376.3,617.3L375.8,614.5L379.5,608.6L379.2,604.4L382.8,592.7L381.2,588.1L385.8,584.5L388.2,574.6L392.8,572.2L395.4,564.5L407.7,556.9L412.9,558.0L415.3,556.8L416.9,558.1L421.8,557.8L422.3,559.0L423.6,558.3L424.5,555.8L429.2,558.1L431.7,557.9L432.1,558.8L440.9,558.8L443.1,560.5L448.2,561.4L449.8,564.4L451.1,564.7L452.6,563.4L460.8,564.5L465.9,563.5L467.1,566.5L471.7,568.7L472.8,573.4L473.8,574.0L472.6,575.7L472.9,578.2L474.2,579.5L473.0,582.5L478.3,588.2L477.9,589.7L479.3,591.6L480.9,592.3L478.7,596.6L478.9,598.9L483.6,599.2L484.7,598.1L485.6,599.2L492.9,598.9L494.5,600.2L493.3,602.1L492.9,606.5L494.3,607.3L496.3,605.0L498.0,606.5L499.4,605.0L501.2,608.3L500.6,609.6L502.0,610.5L503.7,609.9Z","cx":434.1,"cy":598.2},"SP":{"n":"São Paulo","d":"M456.3,501.0L458.7,502.8L463.5,502.9L465.1,504.0L474.1,503.6L476.2,505.1L479.8,504.7L478.8,507.5L480.1,511.1L481.5,511.7L483.5,508.5L484.8,508.7L485.4,513.2L486.8,514.3L488.2,508.7L496.4,507.7L499.3,508.3L499.6,506.0L502.2,508.4L503.8,507.9L504.7,506.2L506.3,508.0L507.1,505.2L509.9,505.0L511.3,506.4L514.6,504.7L515.1,506.5L518.7,508.8L518.0,514.4L520.7,515.9L521.8,518.3L519.0,523.2L520.8,524.9L523.4,533.9L528.2,532.6L529.4,533.5L530.1,532.7L531.1,534.3L533.2,534.8L533.0,537.7L531.0,539.0L529.6,542.2L531.2,545.6L529.0,547.0L531.4,548.2L530.0,549.0L529.0,551.6L530.2,553.8L535.2,556.2L535.4,558.7L533.8,559.4L536.6,560.7L536.1,563.5L540.3,562.6L540.4,563.9L544.8,561.8L545.2,563.0L547.1,562.6L548.6,560.6L546.6,559.7L549.0,558.5L548.6,557.0L549.6,557.0L549.5,558.5L551.3,557.5L551.1,558.5L552.0,558.5L553.3,557.2L554.7,558.5L559.7,555.5L566.2,553.5L567.6,554.1L569.4,557.6L572.0,558.3L574.4,556.9L577.8,557.7L578.7,559.0L576.6,562.1L572.8,563.1L572.3,562.4L566.5,565.1L565.9,568.6L564.6,570.0L567.8,572.9L565.5,573.2L564.2,572.1L561.3,573.9L562.2,574.7L560.9,575.9L559.2,575.3L558.4,577.1L554.5,577.9L554.2,582.0L544.5,580.8L540.7,582.2L539.5,585.3L537.6,586.3L535.7,584.8L535.3,586.1L527.1,589.6L523.8,591.9L523.5,593.7L508.2,604.1L506.0,606.5L506.0,608.8L502.4,611.6L503.7,609.9L502.0,610.5L500.6,609.6L501.2,608.3L499.4,605.0L498.0,606.5L496.3,605.0L494.3,607.3L492.9,606.5L493.3,602.1L494.5,600.2L492.9,598.9L485.6,599.2L484.7,598.1L483.6,599.2L478.9,598.9L478.7,596.6L480.9,592.3L479.3,591.6L477.9,589.7L478.3,588.2L473.0,582.5L474.2,579.5L472.9,578.2L472.6,575.7L473.8,574.0L472.8,573.4L471.7,568.7L467.1,566.5L465.7,563.4L460.8,564.5L452.6,563.4L451.1,564.7L449.8,564.4L448.2,561.4L443.1,560.5L440.9,558.8L432.1,558.8L431.7,557.9L429.2,558.1L424.5,555.8L423.6,558.3L422.3,559.0L421.8,557.8L416.9,558.1L415.3,556.8L413.0,558.0L408.7,556.8L405.5,558.6L405.2,557.9L407.2,555.3L417.1,549.8L419.3,547.6L420.8,544.3L425.6,538.9L424.8,536.3L427.2,535.5L429.2,532.4L429.0,528.2L433.9,524.3L434.5,518.3L439.2,512.7L443.7,511.2L446.7,506.1ZM556.1,579.9L558.0,581.0L558.0,582.2L556.8,582.8L558.1,583.5L557.6,584.8L556.8,583.7L553.5,583.7Z","cx":490.1,"cy":550.8}}};
+
+/* ===== UI helpers ===== */
+let MODALS=[];
+function openModal({title,body,footer,lg,onClose}){
+  const ov=document.createElement('div');ov.className='ov';
+  ov.innerHTML=`<div class="md${lg?' lg':''}" role="dialog" aria-modal="true" aria-label="${esc(title)}"><div class="md-h"><h2>${esc(title)}</h2><button class="x" aria-label="Fechar" data-close>&times;</button></div><div class="md-b">${body}</div>${footer?`<div class="md-f">${footer}</div>`:''}</div>`;
+  document.body.appendChild(ov);
+  const close=()=>{ov.remove();MODALS=MODALS.filter(m=>m!==ov);onClose&&onClose()};
+  ov.close=close;
+  ov.addEventListener('mousedown',e=>{if(e.target===ov&&!ov.dataset.sticky)close()});
+  ov.addEventListener('click',e=>{if(e.target.closest('[data-close]'))close()});
+  MODALS.push(ov);
+  const f=$('input:not([type=hidden]),select,textarea',ov);if(f&&!matchMedia('(max-width:700px)').matches)f.focus();
+  return ov;
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&MODALS.length&&!document.body.classList.contains('tv'))MODALS[MODALS.length-1].close()});
+function askConfirm(msg,ok='Confirmar',danger){
+  return new Promise(res=>{
+    const m=openModal({title:'Confirmação',body:`<p style="margin:0">${msg}</p>`,footer:`<button class="btn" data-close>Cancelar</button><button class="btn ${danger?'dng':'pri'}" data-ok>${esc(ok)}</button>`,onClose:()=>res(false)});
+    $('[data-ok]',m).onclick=()=>{m.close=()=>m.remove();MODALS=MODALS.filter(x=>x!==m);m.remove();res(true)};
+  });
+}
+function fld(id,label,val,o={}){
+  const t=o.type||'text',req=o.req?' *':'';
+  let inp;
+  const a=`id="${id}" name="${id}"${o.req?' required':''}${o.ph?` placeholder="${esc(o.ph)}"`:''}${o.attrs?' '+o.attrs:''}${o.list?` list="${o.list}"`:''}`;
+  if(t==='select')inp=`<select ${a}>${o.opts}</select>`;
+  else if(t==='textarea')inp=`<textarea ${a}>${esc(val)}</textarea>`;
+  else if(t==='check')return `<div class="f ${o.cls||''}"><label class="chk"><input type="checkbox" ${a}${val?' checked':''}> ${esc(label)}</label></div>`;
+  else inp=`<input type="${t}" ${a} value="${esc(val)}">`;
+  return `<div class="f ${o.cls||''}" data-f="${id}"><label for="${id}">${esc(label)}${req}</label>${inp}<span class="err" hidden></span></div>`;
+}
+function setErr(root,id,msg){const f=$(`[data-f="${id}"]`,root);if(!f)return;f.classList.toggle('bad',!!msg);const e=$('.err',f);e.hidden=!msg;e.textContent=msg||''}
+function clearErrs(root){$$('[data-f]',root).forEach(f=>{f.classList.remove('bad');$('.err',f).hidden=true})}
+const val=(root,id)=>{const e=$('#'+id,root);return e?(e.type==='checkbox'?e.checked:e.value.trim()):''};
+const optList=(arr,sel,ph)=>(ph!=null?`<option value="">${esc(ph)}</option>`:'')+arr.map(a=>{const [v,l]=Array.isArray(a)?a:[a,a];return `<option value="${esc(v)}"${String(v)===String(sel)?' selected':''}>${esc(l)}</option>`}).join('');
+const badge=(t,c)=>`<span class="bd ${c||''}">${esc(t)}</span>`;
+const empty=(m,cta)=>`<div class="empty">${m}${cta?`<div style="margin-top:12px">${cta}</div>`:''}</div>`;
+function table(cols,rows,o={}){
+  if(!rows.length)return empty(o.empty||'Nenhum registro encontrado.');
+  return `<div class="tw"><table><thead><tr>${cols.map(c=>`<th class="${c.r?'r':''}">${esc(c.h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr${r._go?` class="cl" tabindex="0" data-go="${esc(r._go)}"`:''}>${cols.map(c=>`<td class="${c.r?'r num':''}">${c.f(r)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+const uniq=a=>[...new Set(a.filter(Boolean))].sort((x,y)=>x.localeCompare(y,'pt-BR'));
+const respList=()=>uniq([...DB.peds.map(p=>p.resp),...DB.ints.map(i=>i.resp),...DB.ctrs.map(c=>c.resp),...DB.movs.map(m=>m.resp)]);
+const dlResp=()=>`<datalist id="dl-resp">${respList().map(r=>`<option value="${esc(r)}">`).join('')}</datalist>`;
+
+/* ===== Gráficos ===== */
+function bars(rows,o={}){
+  if(!rows.length)return empty(o.empty||'Sem dados para exibir.');
+  const mx=Math.max(...rows.map(r=>r.v),1);
+  return `<div style="--lw:${o.lw||'32%'}">${rows.map(r=>`<div class="br" title="${esc(r.l)}: ${esc(r.t||nf(r.v))}"><span class="l">${esc(r.l)}</span><span class="t"><i style="width:${Math.max(1.5,r.v/mx*100)}%;${r.c?`background:${r.c}`:''}"></i></span><span class="v num">${esc(r.t||nf(r.v))}</span></div>`).join('')}</div>`;
+}
+function niceMax(v){if(v<=5)return 5;const p=Math.pow(10,Math.floor(Math.log10(v)));const f=v/p;return (f<=1?1:f<=2?2:f<=5?5:10)*p}
+function lineChart(labels,series,o={}){
+  const W=o.w||720,H=o.h||300,fs=o.fs||13,m={l:fs*3.4,r:fs*1.2,t:fs*1.2,b:fs*2.2};
+  const all=series.flatMap(s=>s.vals),mx=niceMax(Math.max(...all,0));
+  if(!all.some(v=>v>0))return empty('Ainda não há movimentações no período.');
+  const iw=W-m.l-m.r,ih=H-m.t-m.b,n=labels.length;
+  const X=i=>m.l+(n===1?iw/2:i*iw/(n-1)),Y=v=>m.t+ih-(v/mx)*ih;
+  let g='';
+  for(let k=0;k<=4;k++){const v=mx*k/4,y=Y(v);g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}" stroke="#e3e8ee" stroke-width="1"/><text x="${m.l-8}" y="${y}" text-anchor="end" dominant-baseline="central" font-size="${fs}" fill="#5d6b7c">${nf(Math.round(v))}</text>`}
+  const step=n>8?((o.tv&&W>=900)?1:2):1;
+  labels.forEach((l,i)=>{if(i===n-1||(i%step===0&&n-1-i>=step))g+=`<text x="${X(i)}" y="${H-m.b+fs*1.5}" text-anchor="${i===n-1&&n>1?'end':'middle'}" font-size="${fs}" fill="#5d6b7c">${esc(l)}</text>`});
+  series.forEach(s=>{
+    const pts=s.vals.map((v,i)=>`${X(i)},${Y(v)}`).join(' ');
+    g+=`<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="${o.tv?4:2.5}" stroke-linejoin="round" stroke-linecap="round"/>`;
+    s.vals.forEach((v,i)=>{g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="${o.tv?6:4}" fill="${s.color}" stroke="#fff" stroke-width="2"><title>${esc(s.name)} — ${esc(labels[i])}: ${nf(v)}</title></circle>`});
+    const li=s.vals.length-1;if(s.vals[li]>0)g+=`<text x="${X(li)}" y="${Y(s.vals[li])-fs*.9}" text-anchor="end" font-size="${fs}" font-weight="700" fill="${s.color}">${nf(s.vals[li])}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label||'Gráfico de linhas')}" style="width:100%;height:${o.fill?'100%':'auto'};display:block">${g}</svg><div class="lg-row">${series.map(s=>`<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join('')}</div>`;
+}
+function columnChart(labels,vals,o={}){
+  const W=o.w||720,H=o.h||260,fs=o.fs||13,m={l:fs*3.4,r:8,t:fs*1.4,b:fs*2.2};
+  if(!vals.some(v=>v>0))return empty('Ainda não há dados no período.');
+  const mx=niceMax(Math.max(...vals)),iw=W-m.l-m.r,ih=H-m.t-m.b,bw=iw/vals.length;
+  let g='';
+  for(let k=0;k<=4;k++){const v=mx*k/4,y=m.t+ih-(v/mx)*ih;g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}" stroke="#e3e8ee"/><text x="${m.l-8}" y="${y}" text-anchor="end" dominant-baseline="central" font-size="${fs}" fill="#5d6b7c">${nf(Math.round(v))}</text>`}
+  vals.forEach((v,i)=>{const h=v/mx*ih,x=m.l+i*bw+bw*.2;g+=`<path d="M${x},${m.t+ih}v${-Math.max(h,0)+3}q0,-3 3,-3h${bw*.6-6}q3,0 3,3v${Math.max(h,0)-3}z" fill="${o.color||'#0b4f9e'}"><title>${esc(labels[i])}: ${nf(v)}</title></path>`;
+    if(v>0)g+=`<text x="${x+bw*.3}" y="${m.t+ih-h-5}" text-anchor="middle" font-size="${fs}" font-weight="700" fill="#1c2b3d">${nf(v)}</text>`;
+    if(vals.length<=8||i%2===0||i===vals.length-1)g+=`<text x="${x+bw*.3}" y="${H-m.b+fs*1.5}" text-anchor="middle" font-size="${fs}" fill="#5d6b7c">${esc(labels[i])}</text>`});
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label||'Gráfico de colunas')}" style="width:100%;height:auto;display:block">${g}</svg>`;
+}
+/* ===== Mapa ===== */
+const MAP_METRICS=[['integradores','Integradores'],['estoque','Produtos em estoque'],['pedidos','Pedidos'],['inst','Produtos instalados'],['contratos','Contratos fechados']];
+const RAMP=['#d3e2f4','#a5c3e8','#6c98d2','#2f69b5','#0b4f9e'];
+function mapSVG(metric,sel,labels){
+  const st={};Object.keys(UFS).forEach(u=>st[u]=ufStats(u));
+  const mx=Math.max(...Object.values(st).map(s=>s[metric]),0);
+  const bin=v=>v<=0||mx<=0?-1:Math.min(4,Math.ceil(v/mx*5)-1);
+  let p='',t='';
+  Object.entries(GEO.uf).forEach(([u,g])=>{
+    const s=st[u],b=bin(s[metric]);
+    p+=`<path class="uf${sel===u?' sel':''}" data-uf="${u}" d="${g.d}" style="fill:${b<0?'#eef1f5':RAMP[b]}" tabindex="0" role="button" aria-label="${UFS[u]}: ${nf(s[metric])} ${MAP_METRICS.find(m=>m[0]===metric)[1].toLowerCase()}"><title>${UFS[u]} — ${nf(s[metric])}</title></path>`;
+    if(labels)t+=`<text class="ufl${b>=3?' lt':''}" x="${g.cx}" y="${g.cy}">${u}</text>`;
+  });
+  const legend=`<div class="leg"><span>0</span>${RAMP.map(c=>`<i style="background:${c}"></i>`).join('')}<span>${nf(mx)}</span><span style="margin-left:8px">${esc(MAP_METRICS.find(m=>m[0]===metric)[1])}</span></div>`;
+  return `<div class="mapw"><svg viewBox="0 0 ${GEO.w} ${GEO.h}" role="group" aria-label="Mapa do Brasil por estado">${p}${t}</svg>${legend}</div>`;
+}
+/* ===== Pódio ===== */
+function podium(rows,crit){
+  if(!rows.length)return '';
+  const o=[1,0,2].filter(i=>rows[i]);
+  return `<div class="pod">${o.map(i=>{const r=rows[i];return `<div class="p${i+1}"><span class="rk">${i+1}º LUGAR</span><div class="nm">${esc(iName(r.int.id))}</div><div class="vl num">${fmtCrit(crit,r.v)}</div><small>${esc(r.int.cidade||'')}${r.int.cidade&&r.int.uf?' / ':''}${esc(r.int.uf||'')}</small></div>`}).join('')}</div>`;
+}
+function varCell(r,crit){
+  if(r.pv==null)return '<span class="hint">—</span>';
+  const d=r.v-r.pv;if(d===0)return '<span class="hint">= 0</span>';
+  const pct=r.pv>0?` (${d>0?'+':''}${Math.round(d/r.pv*100)}%)`:'';
+  return `<span style="color:${d>0?'var(--ok)':'var(--bad)'};font-weight:600">${d>0?'▲':'▼'} ${fmtCrit(crit,Math.abs(d))}${pct}</span>`;
+}
+
+/* ===== Casca, roteador, tabelas reutilizáveis, dashboard ===== */
+const NAV=[['','Painel'],['integradores','Integradores'],['produtos','Produtos'],['pedidos','Pedidos'],['estoque','Estoque'],['entregas','Entregas'],['contratos','Contratos'],['mapa','Mapa'],['ranking','Ranking'],['graficos','Gráficos'],['relatorios','Relatórios']];
+const FILT={};const V={};const ACT={};
+const logoHTML=()=>DB.cfg.logo?`<img src="${DB.cfg.logo}" alt="TRON Controles Elétricos">`:`<span class="wm"><b>TRON</b><small>Controles Elétricos</small></span>`;
+const pageHead=(t,sub,acts)=>`<div class="ph"><div><h1>${esc(t)}</h1>${sub?`<div class="sub">${sub}</div>`:''}</div><div class="acts">${acts||''}</div></div>`;
+const route=()=>{const h=location.hash.replace(/^#\/?/,'');const [a,b]=h.split('/');return {a:a||'',b:b||''}};
+const closeModals=()=>MODALS.slice().forEach(m=>m.close());
+
+function initShell(){
+  $('#app').innerHTML=`<header class="top"><div class="top-in"><a class="brand" href="#/" id="brand">${logoHTML()}</a>
+  <nav class="nav" id="nav" aria-label="Principal">${NAV.map(([k,l])=>`<a href="#/${k}" data-nav="${k}">${l}</a>`).join('')}</nav>
+  <div class="tools"><div class="gs"><input id="gs" type="search" placeholder="Buscar integrador, produto, pedido, contrato..." autocomplete="off" aria-label="Busca global"><div class="gs-res" id="gsr" hidden></div></div>
+  <div class="menu"><button class="btn pri" data-menu>+ Novo</button><div class="menu-pop" hidden>
+   <button data-act="new-int">Novo integrador</button><button data-act="new-prod">Novo produto</button><button data-act="new-ped">Novo pedido</button><button data-act="new-emov">Atualizar estoque</button><button data-act="new-ent">Registrar entrega</button><button data-act="new-inst">Registrar instalação</button><button data-act="new-ctr">Novo contrato</button></div></div>
+  <div class="menu"><button class="btn" data-menu>Dados</button><div class="menu-pop" hidden>
+   <button data-act="backup">Exportar backup (JSON)</button><button data-act="restore">Restaurar backup…</button><button data-act="logo">Enviar logo da TRON…</button><button data-act="tvcfg">Configurar modo TV</button><button data-act="cats">Categorias de produtos</button><button data-act="log">Registro de alterações</button></div></div>
+  <button class="btn" data-act="tv" title="Abrir o painel em tela cheia para a televisão">Modo TV</button><button class="btn" data-act="logout" title="Encerrar sessão">Sair</button></div></div></header>
+  <div id="banner"></div><main id="main"></main><input type="file" id="fileRestore" accept=".json,application/json" hidden><input type="file" id="fileLogo" accept="image/*" hidden>`;
+  const gs=$('#gs'),gr=$('#gsr');
+  gs.addEventListener('input',()=>{const q=norm(gs.value);if(q.length<2){gr.hidden=true;return}
+    const out=[];const add=(t,items)=>{if(items.length)out.push(`<h4>${t}</h4>`+items.join(''))};
+    add('Integradores',DB.ints.filter(i=>norm([i.nome,i.fantasia,i.cnpj,i.cidade,i.contato].join(' ')).includes(q)).slice(0,6).map(i=>`<a href="#/integradores/${i.id}"><b>${esc(iName(i.id))}</b><small>${esc(i.cidade||'')} ${esc(i.uf||'')}${i.arq?' · arquivado':''}</small></a>`));
+    add('Produtos',DB.prods.filter(p=>norm([p.nome,p.sku,p.modelo].join(' ')).includes(q)).slice(0,6).map(p=>`<a href="#/produtos" data-act="edit-prod" data-id="${p.id}"><b>${esc(p.nome)}</b><small>${esc(p.sku||'')} ${esc(p.modelo||'')}</small></a>`));
+    add('Pedidos',DB.peds.filter(p=>norm(p.num).includes(q)).slice(0,6).map(p=>`<a href="#/pedidos/${p.id}"><b>${esc(p.num)}</b><small>${esc(iName(p.intId))} · ${fmtD(p.data)}</small></a>`));
+    add('Contratos',DB.ctrs.filter(c=>norm(c.num).includes(q)).slice(0,6).map(c=>`<a href="#/contratos" data-act="edit-ctr" data-id="${c.id}"><b>${esc(c.num)}</b><small>${esc(iName(c.intId))} · ${fmtD(c.data)}</small></a>`));
+    gr.innerHTML=out.join('')||'<div class="empty">Nada encontrado.</div>';gr.hidden=false});
+  gr.addEventListener('click',()=>{gr.hidden=true;gs.value=''});
+  document.addEventListener('click',e=>{if(!e.target.closest('.gs'))gr.hidden=true});
+  $('#fileRestore').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)restoreFile(f)};
+  $('#fileLogo').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)setLogo(f)};
+}
+document.addEventListener('click',e=>{
+  const mb=e.target.closest('[data-menu]');
+  if(mb){const pop=mb.nextElementSibling;const was=!pop.hidden;$$('.menu-pop').forEach(p=>p.hidden=true);pop.hidden=was;return}
+  if(!e.target.closest('.menu-pop'))$$('.menu-pop').forEach(p=>p.hidden=true);else $$('.menu-pop').forEach(p=>p.hidden=true);
+  const a=e.target.closest('[data-act]');
+  if(a&&ACT[a.dataset.act]){ACT[a.dataset.act](a,e);return}
+  const g=e.target.closest('[data-go]');
+  if(g&&!e.target.closest('button,a,input,select,label')){closeModals();location.hash=g.dataset.go}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches&&e.target.matches('tr.cl')){closeModals();location.hash=e.target.dataset.go}
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.uf')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
+
+let _lastRoute='';
+function render(){
+  const r=route();
+  if(r.a==='tv'){enterTV();return}
+  if(document.body.classList.contains('tv')){exitTV(true)}
+  const el=$('#main');if(!el)return;
+  const key=r.a+'/'+r.b;const y=key===_lastRoute?window.scrollY:0;_lastRoute=key;
+  $$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.nav===r.a));
+  const fn=V[r.a]||V[''];
+  try{fn(el,r.b)}catch(err){console.error(err);el.innerHTML=`<div class="panel"><b>Erro ao montar esta tela.</b><p class="hint">${esc(err.message)}</p></div>`}
+  window.scrollTo(0,y);banner();
+}
+function banner(){
+  const b=$('#banner');if(!b)return;let h='';
+  const hasData=DB.ints.length+DB.prods.length+DB.peds.length>0;
+  const lb=DB.meta.lastBackup;const old=lb?(Date.now()-new Date(lb))/864e5>30:true;
+  if(memOnly)h=`<div class="alert" style="margin:0;border-radius:0"><span>O navegador não está gravando os dados (armazenamento bloqueado). Exporte um backup agora para não perder o trabalho.</span><button class="btn sm" data-act="backup">Exportar backup</button></div>`;
+  else if(hasData&&old)h=`<div class="alert" style="margin:0;border-radius:0"><span>${lb?`Último backup em ${fmtD(lb)}.`:'Nenhum backup foi exportado ainda.'} Exporte uma cópia de segurança periodicamente.</span><button class="btn sm" data-act="backup">Exportar backup</button></div>`;
+  b.innerHTML=h;
+}
+function commit(txt){if(txt)logA(txt);save();render()}
+function bindFilters(el,fill,ns){
+  $$('[data-k]',el).forEach(i=>{const k=ns+'.'+i.dataset.k;if(FILT[k]!=null)i.value=FILT[k];
+    const h=()=>{FILT[k]=i.value;fill()};i.addEventListener('input',h);i.addEventListener('change',h)});
+  fill();
+}
+const fv=(ns,k)=>FILT[ns+'.'+k]||'';
+function periodFilters(ns){
+  return `<select data-k="per" aria-label="Período">${optList(PERIODS,FILT[ns+'.per']||'all')}</select><input type="date" data-k="from" aria-label="De" title="De"><input type="date" data-k="to" aria-label="Até" title="Até">`;
+}
+const rangeOf=ns=>{const p=fv(ns,'per')||'all';return periodRange(p,fv(ns,'from'),fv(ns,'to'))};
+
+/* ===== Tabelas reutilizáveis ===== */
+const cityUF=i=>i?[i.cidade,i.uf].filter(Boolean).join(' / ')||'—':'—';
+function pedTable(list,o={}){
+  const C=calc().peds;
+  return table([{h:'Pedido',f:r=>`<b>${esc(r.num)}</b>`},{h:'Data',f:r=>fmtD(r.data)},{h:'Integrador',f:r=>esc(iName(r.intId))},{h:'Cidade / UF',f:r=>esc(cityUF(I(r.intId)))},
+    {h:'Solicitado',r:1,f:r=>nf(C[r.id].T.qtd)},{h:'Entregue',r:1,f:r=>nf(C[r.id].T.ent)},{h:'Pendente',r:1,f:r=>nf(C[r.id].T.pend)},{h:'Instalado',r:1,f:r=>nf(C[r.id].T.inst)},{h:'Situação',f:r=>badge(C[r.id].st,stClass(C[r.id].st))}],
+    list.map(p=>({...p,_go:'#/pedidos/'+p.id})),{empty:o.empty||'Nenhum pedido encontrado.'});
+}
+function ctrTable(list,o={}){
+  return table([{h:'Contrato',f:r=>`<b>${esc(r.num)}</b>`},{h:'Data',f:r=>fmtD(r.data)},{h:'Integrador',f:r=>esc(iName(r.intId))},{h:'Modalidade',f:r=>esc(r.modal||'—')},{h:'Valor',r:1,f:r=>r.valor?money(r.valor):'—'},{h:'Status',f:r=>badge(r.status,r.status==='Cancelado'?'bad':r.status==='Encerrado'?'':'ok')},{h:'',f:r=>o.noact?'':`<button class="btn sm" data-act="edit-ctr" data-id="${r.id}">Editar</button>`}],list,{empty:o.empty||'Nenhum contrato registrado.'});
+}
+function intTable(list){
+  return table([{h:'Integrador',f:r=>`<b>${esc(iName(r.id))}</b>${r.arq?' '+badge('Arquivado','bad'):''}`},{h:'Cidade / UF',f:r=>esc(cityUF(r))},{h:'Contato',f:r=>esc(r.contato||'—')},{h:'Status',f:r=>badge(r.status,r.status==='Ativo'?'ok':r.status==='Inativo'?'bad':'warn')},
+    {h:'Pedidos',r:1,f:r=>nf(intStats(r.id).pedidos)},{h:'Estoque',r:1,f:r=>nf(intStats(r.id).estoque)},{h:'Instalados',r:1,f:r=>nf(intStats(r.id).inst)},{h:'Contratos',r:1,f:r=>nf(intStats(r.id).contratos)}],
+    list.map(i=>({...i,_go:'#/integradores/'+i.id})),{empty:'Nenhum integrador encontrado.'});
+}
+function estTable(rows,o={}){
+  return table([{h:'Integrador',f:r=>esc(iName(r.intId))},{h:'UF',f:r=>esc((I(r.intId)||{}).uf||'—')},{h:'Produto',f:r=>esc(pName(r.prodId))},{h:'Saldo',r:1,f:r=>`<b>${nf(r.saldo)}</b>`},{h:'Mínimo',r:1,f:r=>r.min?nf(r.min):'—'},{h:'Atualizado',f:r=>r.upd?fmtD(r.upd):'—'},{h:'Situação',f:r=>r.baixo?badge('Abaixo do mínimo','warn'):badge('Normal','ok')},
+    {h:'',f:r=>o.noact?'':`<button class="btn sm" data-act="est-row" data-i="${r.intId}" data-p="${r.prodId}">Detalhes</button>`}],rows,{empty:o.empty||'Nenhum saldo de estoque registrado.'});
+}
+function movTable(list){
+  return table([{h:'Data',f:r=>fmtD(r.data)},{h:'Tipo',f:r=>r.tipo==='entrega'?'Entrega':'Instalação'},{h:'Pedido',f:r=>`<b>${esc((PD(r.pedId)||{}).num||'—')}</b>`},{h:'Integrador',f:r=>esc(iName((PD(r.pedId)||{}).intId))},{h:'Produto',f:r=>esc(pName(((PD(r.pedId)||{itens:[]}).itens.find(i=>i.id===r.itemId)||{}).prodId))},{h:'Qtd.',r:1,f:r=>nf(r.qtd)},{h:'Responsável',f:r=>esc(r.resp||'—')},{h:'Situação',f:r=>r.tipo==='instalacao'?badge(r.status==='andamento'?'Em andamento':'Concluída',r.status==='andamento'?'warn':'ok'):''}],list.map(m=>({...m,_go:'#/pedidos/'+m.pedId})),{empty:'Nenhuma movimentação registrada.'});
+}
+const movsAtivas=tipo=>DB.movs.filter(m=>(!tipo||m.tipo===tipo)&&PD(m.pedId)&&PC(m.pedId)&&PC(m.pedId).ativo).sort((a,b)=>b.data.localeCompare(a.data));
+
+/* ===== KPIs ===== */
+const kpi=(k,l,v,cls,tv)=>tv?`<div class="kpi ${cls||''}"><b class="num">${nf(v)}</b><span>${l}</span></div>`:`<button class="kpi ${cls||''}" data-act="kpi" data-k="${k}"><b class="num">${nf(v)}</b><span>${l}</span></button>`;
+function kpiGroups(tv){
+  const t=totals();
+  return `<div class="kgroups">
+  <div class="kg"><h3>Integradores e contratos <span>clientes · contratos</span></h3><div class="kr" style="--n:3">${kpi('ints','Integradores cadastrados',t.ints,'',tv)}${kpi('ativos','Integradores ativos',t.intsAtivos,'',tv)}${kpi('contratos','Contratos fechados',t.contratos,'ok',tv)}</div></div>
+  <div class="kg"><h3>Pedidos <span>pedidos</span></h3><div class="kr" style="--n:3">${kpi('pedAbertos','Pedidos em aberto',t.pedAbertos,'',tv)}${kpi('pedPend','Pendentes de entrega ou instalação',t.pedPend,t.pedPend?'warn':'',tv)}${kpi('pedTotal','Pedidos ativos no total',t.pedTotal,'',tv)}</div></div>
+  <div class="kg"><h3>Equipamentos nos integradores <span>unidades</span></h3><div class="kr" style="--n:4">${kpi('estoque','Em estoque',t.estoque,'',tv)}${kpi('solic','Solicitados',t.solic,'',tv)}${kpi('ent','Entregues',t.ent,'',tv)}${kpi('inst','Instalados',t.inst,'ok',tv)}</div></div></div>`;
+}
+ACT.kpi=a=>{
+  const k=a.dataset.k,C=calc().peds;let title,body;
+  const ints=activeInts(),peds=DB.peds.filter(p=>C[p.id].ativo);
+  switch(k){
+    case 'ints':title='Integradores cadastrados';body=intTable(ints);break;
+    case 'ativos':title='Integradores ativos';body=intTable(ints.filter(i=>i.status==='Ativo'));break;
+    case 'contratos':title='Contratos fechados';body=ctrTable(DB.ctrs.filter(c=>ctrAtivo(c)&&I(c.intId)&&!I(c.intId).arq),{noact:1});break;
+    case 'pedAbertos':title='Pedidos em aberto';body=pedTable(peds.filter(p=>C[p.id].aberto));break;
+    case 'pedPend':title='Pedidos pendentes de entrega ou instalação';body=pedTable(peds.filter(p=>C[p.id].pendente));break;
+    case 'pedTotal':title='Pedidos ativos';body=pedTable(peds);break;
+    case 'estoque':title='Equipamentos em estoque nos integradores';body=estTable(estRows().filter(r=>r.saldo!==0),{noact:1});break;
+    case 'solic':title='Equipamentos solicitados (pedidos ativos)';body=pedTable(peds);break;
+    case 'ent':title='Equipamentos entregues';body=movTable(movsAtivas('entrega'));break;
+    case 'inst':title='Equipamentos instalados';body=movTable(movsAtivas('instalacao'));break;
+    default:return;
+  }
+  openModal({title,body,lg:1,footer:'<button class="btn" data-close>Fechar</button>'});
+};
+
+/* ===== Painel ===== */
+V['']=el=>{
+  const t=totals();const vazio=!DB.ints.length&&!DB.prods.length&&!DB.peds.length;
+  let h=pageHead('Painel comercial',`Dados atualizados em ${fmtDT(DB.meta.updatedAt)}`,`<button class="btn" data-act="tv">Abrir modo TV</button>`);
+  if(vazio){
+    h+=`<div class="panel" style="margin-bottom:16px"><h2>Primeiros passos</h2><p style="margin:0 0 12px;max-width:70ch">Nenhum dado foi cadastrado ainda. Os indicadores abaixo mostram zero até os registros serem lançados. Uma ordem prática de cadastro:</p>
+    <div class="acts"><button class="btn pri" data-act="new-prod">1. Cadastrar produtos</button><button class="btn pri" data-act="new-int">2. Cadastrar integrador</button><button class="btn pri" data-act="new-ped">3. Registrar pedido</button><button class="btn" data-act="new-ctr">Registrar contrato</button></div></div>`;
+  }
+  h+=kpiGroups();
+  if(t.baixo)h+=`<div class="alert" style="margin-top:16px"><span><b>${t.baixo}</b> ${t.baixo>1?'combinações de integrador e produto estão':'combinação de integrador e produto está'} abaixo do estoque mínimo.</span><a class="btn sm" href="#/estoque" data-low="1">Ver estoque</a></div>`;
+  const ms=monthly(12);
+  const topP=prodRank('solic').slice(0,6),rc=ranking('contratos',null,null),useC=rc.length>0,topI=useC?rc:ranking('pedidos',null,null);
+  const ctrUF=Object.keys(UFS).map(u=>({l:u,v:ufStats(u).contratos})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,8);
+  h+=`<div class="grid g2" style="margin-top:16px;align-items:start"><div class="panel"><h2>Pedidos, entregas e instalações por mês <span class="u">unidades · 12 meses</span></h2>${lineChart(ms.map(m=>m.label),[{name:'Solicitados',vals:ms.map(m=>m.solic),color:'#0b4f9e'},{name:'Entregues',vals:ms.map(m=>m.ent),color:'#d9822b'},{name:'Instalados',vals:ms.map(m=>m.inst),color:'#2a9d8f'}],{label:'Evolução mensal'})}</div>
+  <div class="panel dash-map"><h2>Mapa comercial <span class="u"><a href="#/mapa">abrir mapa</a></span></h2>${mapSVG('integradores',null,true)}</div></div>
+  <div class="grid g3" style="margin-top:16px"><div class="panel"><h2>Principais integradores <span class="u">${useC?'contratos':'pedidos'}</span></h2>${bars(topI.slice(0,6).map(r=>({l:iName(r.int.id),v:r.v})),{empty:'Sem registros ainda.'})}</div>
+  <div class="panel"><h2>Contratos por estado <span class="u">contratos</span></h2>${bars(ctrUF,{lw:'18%',empty:'Sem contratos registrados.'})}</div>
+  <div class="panel"><h2>Produtos mais solicitados <span class="u">unidades</span></h2>${bars(topP.map(r=>({l:r.nome,v:r.v})),{empty:'Sem pedidos registrados.'})}</div></div>`;
+  el.innerHTML=h;
+  $$('[data-uf]',el).forEach(p=>p.onclick=()=>{FILT['mapa.uf']=p.dataset.uf;location.hash='#/mapa'});
+};
+/* ranking de produtos: solic | ent | inst (período opcional) */
+function prodRank(kind,rg){
+  const C=calc().peds,m={};
+  if(kind==='solic'){DB.peds.forEach(p=>{if(!C[p.id].ativo||!inR(p.data,rg))return;p.itens.forEach(i=>m[i.prodId]=(m[i.prodId]||0)+i.qtd)})}
+  else DB.movs.forEach(mv=>{const p=PD(mv.pedId);if(!p||!C[p.id]||!C[p.id].ativo||mv.tipo!==(kind==='ent'?'entrega':'instalacao')||!inR(mv.data,rg))return;const it=p.itens.find(i=>i.id===mv.itemId);if(it)m[it.prodId]=(m[it.prodId]||0)+mv.qtd});
+  return Object.entries(m).map(([id,v])=>({id,nome:pName(id),v})).filter(r=>r.v>0).sort((a,b)=>b.v-a.v);
+}
+
+/* ===== Integradores ===== */
+V.integradores=(el,id)=>{if(id&&I(id))return fichaInt(el,id);listInts(el)};
+function listInts(el){
+  const resps=uniq(DB.ints.map(i=>i.resp));
+  el.innerHTML=pageHead('Integradores e clientes',`${activeInts().length} cadastrados`,`<button class="btn pri" data-act="new-int">Novo integrador</button>`)+
+  `<div class="fb"><input class="grow" data-k="q" type="search" placeholder="Pesquisar nome, CNPJ, cidade ou contato..." aria-label="Pesquisar"><select data-k="uf" aria-label="Estado">${optList(Object.entries(UFS).map(([k,v])=>[k,k+' — '+v]),'','Todos os estados')}</select><select data-k="st" aria-label="Status">${optList(INT_STATUS,'','Todos os status')}</select><select data-k="resp" aria-label="Responsável">${optList(resps,'','Todos os responsáveis')}</select><select data-k="arq" aria-label="Arquivados"><option value="">Sem arquivados</option><option value="1">Incluir arquivados</option></select></div><div class="panel" id="lst"></div>`;
+  const ns='ints';
+  bindFilters(el,()=>{
+    const q=norm(fv(ns,'q'));
+    const l=DB.ints.filter(i=>(fv(ns,'arq')||!i.arq)&&(!q||norm([i.nome,i.fantasia,i.cnpj,i.cidade,i.contato,i.email].join(' ')).includes(q))&&(!fv(ns,'uf')||i.uf===fv(ns,'uf'))&&(!fv(ns,'st')||i.status===fv(ns,'st'))&&(!fv(ns,'resp')||i.resp===fv(ns,'resp'))).sort((a,b)=>iName(a.id).localeCompare(iName(b.id),'pt-BR'));
+    $('#lst',el).innerHTML=DB.ints.length?intTable(l):empty('Nenhum integrador cadastrado ainda.','<button class="btn pri" data-act="new-int">Cadastrar o primeiro integrador</button>');
+  },ns);
+}
+ACT['new-int']=()=>intForm();
+ACT['edit-int']=a=>intForm(a.dataset.id);
+function intForm(id){
+  const i=id?I(id):{nome:'',fantasia:'',cnpj:'',cidade:'',uf:'',contato:'',tel:'',email:'',resp:'',data:today(),status:'Ativo',obs:''};
+  const m=openModal({title:id?'Editar integrador':'Novo integrador',lg:1,body:`<form id="fi" novalidate><div class="fg">
+   ${fld('nome','Nome ou razão social',i.nome,{req:1,cls:'w2'})}${fld('fantasia','Nome fantasia',i.fantasia)}${fld('cnpj','CNPJ (opcional)',i.cnpj,{ph:'00.000.000/0000-00'})}
+   ${fld('cidade','Cidade',i.cidade,{req:1})}${fld('uf','Estado',i.uf,{type:'select',req:1,opts:`<option value="">Selecione</option>${UF_OPTS(i.uf)}`})}
+   ${fld('contato','Contato principal',i.contato)}${fld('tel','Telefone',i.tel)}${fld('email','E-mail',i.email,{type:'email'})}
+   ${fld('resp','Responsável comercial',i.resp,{list:'dl-resp'})}${fld('data','Data do cadastro',i.data,{type:'date'})}${fld('status','Status do relacionamento',i.status,{type:'select',opts:optList(INT_STATUS,i.status)})}
+   ${fld('obs','Observações comerciais e técnicas',i.obs,{type:'textarea',cls:'wf'})}</div>${dlResp()}</form>`,
+   footer:`${id&&!i.arq?'<button class="btn dng" data-act="arq-int" data-id="'+id+'" style="margin-right:auto">Arquivar</button>':''}${id&&i.arq?'<button class="btn" data-act="unarq-int" data-id="'+id+'" style="margin-right:auto">Reativar cadastro</button>':''}<button class="btn" data-close>Cancelar</button><button class="btn pri" data-ok>Salvar</button>`});
+  $('[data-ok]',m).onclick=()=>{
+    clearErrs(m);let ok=true;const v=k=>val(m,k);
+    if(!v('nome')){setErr(m,'nome','Informe o nome.');ok=false}
+    if(!v('cidade')){setErr(m,'cidade','Informe a cidade.');ok=false}
+    if(!v('uf')){setErr(m,'uf','Selecione o estado.');ok=false}
+    if(v('email')&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email'))){setErr(m,'email','E-mail inválido.');ok=false}
+    const doc=normDoc(v('cnpj'));
+    if(doc&&DB.ints.some(x=>x.id!==id&&normDoc(x.cnpj)===doc)){setErr(m,'cnpj','Já existe um integrador com este CNPJ.');ok=false}
+    const nk=norm(v('nome'))+'|'+v('uf')+'|'+norm(v('cidade'));
+    if(!doc&&DB.ints.some(x=>x.id!==id&&norm(x.nome)+'|'+x.uf+'|'+norm(x.cidade)===nk)){setErr(m,'nome','Já existe integrador com este nome na mesma cidade.');ok=false}
+    if(!ok)return;
+    const o={nome:v('nome'),fantasia:v('fantasia'),cnpj:v('cnpj')?fmtDoc(v('cnpj')):'',cidade:v('cidade'),uf:v('uf'),contato:v('contato'),tel:v('tel'),email:v('email'),resp:v('resp'),data:v('data')||today(),status:v('status'),obs:v('obs')};
+    if(id){Object.assign(I(id),o,{upd:nowISO()});commit('Integrador editado: '+o.nome)}
+    else{const n={id:uid(),arq:false,...o};DB.ints.push(n);commit('Integrador cadastrado: '+o.nome);toast('Integrador cadastrado.')}
+    m.close();
+  };
+}
+ACT['arq-int']=async a=>{const i=I(a.dataset.id);if(await askConfirm(`Arquivar <b>${esc(iName(i.id))}</b>? O cadastro e o histórico são mantidos, mas o integrador sai dos indicadores e das listas padrão.`,'Arquivar',1)){i.arq=true;closeModals();commit('Integrador arquivado: '+i.nome)}};
+ACT['unarq-int']=a=>{const i=I(a.dataset.id);i.arq=false;closeModals();commit('Integrador reativado: '+i.nome)};
+
+function fichaInt(el,id){
+  const i=I(id),s=intStats(id),tab=FILT['ficha.tab']||'resumo';
+  const peds=DB.peds.filter(p=>p.intId===id).sort((a,b)=>b.data.localeCompare(a.data));
+  const tabs=[['resumo','Resumo'],['estoque','Produtos e estoque'],['pedidos','Pedidos'],['contratos','Contratos'],['entregas','Entregas e instalações'],['mov','Histórico de movimentações'],['obs','Observações']];
+  let h=`<div class="hint" style="margin-bottom:6px"><a href="#/integradores">← Integradores</a></div>`+pageHead(iName(id)+(i.arq?' (arquivado)':''),`${esc(cityUF(i))} · ${badge(i.status,i.status==='Ativo'?'ok':i.status==='Inativo'?'bad':'warn')}`,
+   `<button class="btn" data-act="edit-int" data-id="${id}">Editar</button><button class="btn" data-act="new-ped" data-int="${id}">Novo pedido</button><button class="btn" data-act="new-ctr" data-int="${id}">Novo contrato</button><button class="btn" data-act="rel-int" data-id="${id}">Relatório PDF</button>`);
+  h+=`<div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" class="${tab===k?'on':''}" data-act="ficha-tab" data-t="${k}">${l}</button>`).join('')}</div><div id="tab"></div>`;
+  el.innerHTML=h;
+  const T=$('#tab',el),C=calc().peds;
+  if(tab==='resumo'){
+    T.innerHTML=`<div class="grid g2"><div class="panel"><h2>Cadastro</h2><dl class="dl"><dt>Razão social</dt><dd>${esc(i.nome)}</dd><dt>Nome fantasia</dt><dd>${esc(i.fantasia||'—')}</dd><dt>CNPJ</dt><dd>${esc(i.cnpj||'—')}</dd><dt>Cidade / UF</dt><dd>${esc(cityUF(i))}</dd><dt>Contato</dt><dd>${esc(i.contato||'—')}</dd><dt>Telefone</dt><dd>${esc(i.tel||'—')}</dd><dt>E-mail</dt><dd>${esc(i.email||'—')}</dd><dt>Responsável</dt><dd>${esc(i.resp||'—')}</dd><dt>Cadastro</dt><dd>${fmtD(i.data)}</dd></dl></div>
+    <div class="panel"><h2>Situação comercial</h2><div class="kr" style="--n:3;gap:8px">${[['Pedidos',s.pedidos],['Contratos',s.contratos],['Em estoque',s.estoque],['Solicitados',s.solic],['Entregues',s.ent],['Instalados',s.inst],['Pendente de entrega',s.pend],['Aguardando instalação',s.aInst]].map(([l,v])=>`<div class="kpi" style="cursor:default"><b class="num">${nf(v)}</b><span>${l}</span></div>`).join('')}</div>${s.valor?`<p class="hint" style="margin:10px 0 0">Valor comercial em contratos: <b>${money(s.valor)}</b></p>`:''}</div></div>`;
+  }else if(tab==='estoque'){
+    T.innerHTML=`<div class="panel"><div class="fb"><button class="btn pri" data-act="new-emov" data-int="${id}">Atualizar estoque</button></div>${estTable(estRows().filter(r=>r.intId===id),{empty:'Nenhum produto em estoque registrado para este integrador.'})}</div>`;
+  }else if(tab==='pedidos'){
+    T.innerHTML=`<div class="panel">${pedTable(peds)}</div>`;
+  }else if(tab==='contratos'){
+    T.innerHTML=`<div class="panel">${ctrTable(DB.ctrs.filter(c=>c.intId===id).sort((a,b)=>b.data.localeCompare(a.data)))}</div>`;
+  }else if(tab==='entregas'){
+    const rows=[];peds.filter(p=>C[p.id].ativo).forEach(p=>C[p.id].itens.forEach(it=>rows.push({p,it})));
+    T.innerHTML=`<div class="panel">${table([{h:'Pedido',f:r=>`<b>${esc(r.p.num)}</b>`},{h:'Produto',f:r=>esc(pName(r.it.prodId))},{h:'Solicitado',r:1,f:r=>nf(r.it.qtd)},{h:'Entregue',r:1,f:r=>nf(r.it.ent)},{h:'Pendente',r:1,f:r=>nf(r.it.pend)},{h:'Instalado',r:1,f:r=>r.it.req?nf(r.it.inst):'n/a'},{h:'Aguardando instalação',r:1,f:r=>r.it.req?nf(r.it.aInst):'—'}],rows.map(r=>({...r,_go:'#/pedidos/'+r.p.id})),{empty:'Nenhum pedido com itens para este integrador.'})}</div>`;
+  }else if(tab==='mov'){
+    const ev=[];
+    DB.movs.forEach(m=>{const p=PD(m.pedId);if(p&&p.intId===id){const it=p.itens.find(x=>x.id===m.itemId);ev.push({d:m.data,t:m.tipo==='entrega'?'Entrega':'Instalação',tx:`${esc(p.num)} · ${esc(pName(it&&it.prodId))}`,q:m.qtd})}});
+    DB.emovs.forEach(e=>{if(e.intId===id)ev.push({d:e.data||e.ts.slice(0,10),t:'Estoque: '+(MOV_TIPOS[e.tipo]||e.tipo),tx:`${esc(pName(e.prodId))}${e.obs?' · '+esc(e.obs):''}`,q:e.qtd})});
+    ev.sort((a,b)=>b.d.localeCompare(a.d));
+    T.innerHTML=`<div class="panel">${table([{h:'Data',f:r=>fmtD(r.d)},{h:'Movimentação',f:r=>esc(r.t)},{h:'Detalhe',f:r=>r.tx},{h:'Qtd.',r:1,f:r=>nf(r.q)}],ev,{empty:'Nenhuma movimentação registrada.'})}</div>`;
+  }else{
+    T.innerHTML=`<div class="panel"><h2>Observações comerciais e técnicas</h2><p style="white-space:pre-wrap;margin:0">${esc(i.obs||'Nenhuma observação registrada.')}</p></div>`;
+  }
+}
+ACT['ficha-tab']=a=>{FILT['ficha.tab']=a.dataset.t;render()};
+
+/* ===== Produtos ===== */
+V.produtos=el=>{
+  el.innerHTML=pageHead('Catálogo de produtos',`${DB.prods.length} cadastrados`,`<button class="btn" data-act="cats">Categorias</button><button class="btn pri" data-act="new-prod">Novo produto</button>`)+
+  `<div class="fb"><input class="grow" data-k="q" type="search" placeholder="Pesquisar por nome, código, modelo ou categoria..." aria-label="Pesquisar"><select data-k="cat" aria-label="Categoria">${optList(DB.cats,'','Todas as categorias')}</select><select data-k="st" aria-label="Status"><option value="">Todos</option><option value="a">Somente ativos</option><option value="i">Somente inativos</option></select></div><div class="panel" id="lst"></div>`;
+  const ns='prods';
+  bindFilters(el,()=>{
+    const q=norm(fv(ns,'q'));
+    const l=DB.prods.filter(p=>(!q||norm([p.nome,p.sku,p.modelo,p.cat].join(' ')).includes(q))&&(!fv(ns,'cat')||p.cat===fv(ns,'cat'))&&(!fv(ns,'st')||(fv(ns,'st')==='a')===(p.ativo!==false))).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+    $('#lst',el).innerHTML=DB.prods.length?table([{h:'',f:r=>r.img?`<img src="${r.img}" alt="" style="width:36px;height:36px;object-fit:contain;border:1px solid var(--line);border-radius:4px;background:#fff">`:''},{h:'Produto',f:r=>`<b>${esc(r.nome)}</b>`},{h:'Código',f:r=>esc(r.sku||'—')},{h:'Modelo',f:r=>esc(r.modelo||'—')},{h:'Categoria',f:r=>esc(r.cat||'—')},{h:'Un.',f:r=>esc(r.un||'un')},{h:'Preço ref.',r:1,f:r=>r.preco?money(r.preco):'—'},{h:'Status',f:r=>badge(r.ativo!==false?'Ativo':'Inativo',r.ativo!==false?'ok':'')},{h:'',f:r=>`<button class="btn sm" data-act="edit-prod" data-id="${r.id}">Editar</button> <button class="btn sm" data-act="tog-prod" data-id="${r.id}">${r.ativo!==false?'Desativar':'Ativar'}</button>`}],l,{empty:'Nenhum produto encontrado.'}):empty('O catálogo está vazio.','<button class="btn pri" data-act="new-prod">Cadastrar o primeiro produto</button>');
+  },ns);
+};
+ACT['new-prod']=()=>prodForm();
+ACT['edit-prod']=a=>{prodForm(a.dataset.id)};
+ACT['tog-prod']=a=>{const p=P(a.dataset.id);p.ativo=p.ativo===false;commit((p.ativo?'Produto ativado: ':'Produto desativado: ')+p.nome)};
+function prodForm(id,after){
+  const p=id?P(id):{nome:'',sku:'',modelo:'',cat:DB.cats[0]||'',desc:'',un:'un',ativo:true,inst:true,obs:'',preco:'',img:null};
+  let img=p.img;
+  const m=openModal({title:id?'Editar produto':'Novo produto',lg:1,body:`<form novalidate><div class="fg">
+   ${fld('nome','Nome do produto',p.nome,{req:1,cls:'w2'})}${fld('sku','Código ou SKU',p.sku)}${fld('modelo','Modelo',p.modelo)}
+   ${fld('cat','Categoria',p.cat,{type:'select',opts:optList(DB.cats,p.cat,'Sem categoria')})}${fld('un','Unidade de medida',p.un||'un',{list:'dl-un'})}${fld('preco','Preço de referência (opcional)',p.preco||'',{ph:'0,00',attrs:'inputmode="decimal"'})}
+   ${fld('desc','Descrição resumida',p.desc,{cls:'wf'})}${fld('obs','Observações',p.obs,{type:'textarea',cls:'wf'})}
+   <div class="f"><label>Imagem (opcional)</label><input type="file" id="pimg" accept="image/*"><span class="hint" id="pimgs">${img?'Imagem anexada.':'Nenhuma imagem.'}</span></div>
+   <div class="f">${fld('ativo','Produto ativo',p.ativo!==false,{type:'check'})}${fld('inst','Exige instalação (conta em "instalados")',p.inst!==false,{type:'check'})}</div></div>
+   <datalist id="dl-un"><option value="un"><option value="kit"><option value="m"><option value="caixa"></datalist></form>`,
+   footer:'<button class="btn" data-close>Cancelar</button><button class="btn pri" data-ok>Salvar</button>'});
+  $('#pimg',m).onchange=e=>{const f=e.target.files[0];if(!f)return;imgToData(f,160,d=>{img=d;$('#pimgs',m).textContent='Imagem anexada.'})};
+  $('[data-ok]',m).onclick=()=>{
+    clearErrs(m);const v=k=>val(m,k);let ok=true;
+    if(!v('nome')){setErr(m,'nome','Informe o nome do produto.');ok=false}
+    if(v('sku')&&DB.prods.some(x=>x.id!==id&&norm(x.sku)===norm(v('sku')))){setErr(m,'sku','Este código já está em uso por outro produto.');ok=false}
+    if(v('preco')&&num(v('preco'))<0){setErr(m,'preco','Valor inválido.');ok=false}
+    if(!ok)return;
+    const o={nome:v('nome'),sku:v('sku'),modelo:v('modelo'),cat:v('cat'),un:v('un')||'un',preco:v('preco')?num(v('preco')):'',desc:v('desc'),obs:v('obs'),ativo:v('ativo'),inst:v('inst'),img};
+    let pid=id;
+    if(id){Object.assign(P(id),o);commit('Produto editado: '+o.nome)}else{pid=uid();DB.prods.push({id:pid,...o});commit('Produto cadastrado: '+o.nome);toast('Produto cadastrado.')}
+    m.close();after&&after(pid);
+  };
+}
+function imgToData(file,max,cb){
+  const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/png'))};im.onerror=()=>toast('Imagem inválida.',1);im.src=r.result};r.readAsDataURL(file);
+}
+ACT.cats=()=>{
+  const m=openModal({title:'Categorias de produtos',body:'<div id="cl"></div><div class="fb" style="margin-top:12px"><input class="grow" id="nc" placeholder="Nova categoria"><button class="btn pri" id="ac">Adicionar</button></div>',footer:'<button class="btn" data-close>Fechar</button>'});
+  const draw=()=>{$('#cl',m).innerHTML=DB.cats.map((c,i)=>`<div class="fb" style="margin:4px 0"><input class="grow" value="${esc(c)}" data-i="${i}" aria-label="Categoria"><span class="hint">${DB.prods.filter(p=>p.cat===c).length} produtos</span><button class="btn sm dng" data-del="${i}">Remover</button></div>`).join('')||'<div class="empty">Nenhuma categoria.</div>';
+    $$('input[data-i]',m).forEach(inp=>inp.onchange=()=>{const i=+inp.dataset.i,old=DB.cats[i],n=inp.value.trim();if(!n||DB.cats.some((c,k)=>k!==i&&norm(c)===norm(n))){toast('Nome vazio ou repetido.',1);inp.value=old;return}DB.cats[i]=n;DB.prods.forEach(p=>{if(p.cat===old)p.cat=n});commit('Categoria renomeada: '+old+' → '+n);draw()});
+    $$('[data-del]',m).forEach(b=>b.onclick=()=>{const i=+b.dataset.del;if(DB.prods.some(p=>p.cat===DB.cats[i])){toast('Há produtos nesta categoria. Reclassifique-os antes de remover.',1);return}const n=DB.cats.splice(i,1);commit('Categoria removida: '+n);draw()})};
+  $('#ac',m).onclick=()=>{const n=$('#nc',m).value.trim();if(!n)return;if(DB.cats.some(c=>norm(c)===norm(n))){toast('Categoria já existe.',1);return}DB.cats.push(n);$('#nc',m).value='';commit('Categoria criada: '+n);draw()};
+  draw();
+};
+
+/* ===== Pedidos: lista, ficha, assistente "Novo pedido" ===== */
+const PED_ST=['Rascunho','Pedido aberto','Parcialmente entregue','Entregue','Em instalação','Parcialmente instalado','Instalação concluída','Cancelado'];
+function histP(p,txt){(p.hist=p.hist||[]).unshift({ts:nowISO(),txt})}
+const nextNum=()=>{const y=new Date().getFullYear();let n=DB.peds.filter(p=>String(p.num).startsWith('P-'+y)).length+1;let s;do{s=`P-${y}-${String(n).padStart(4,'0')}`;n++}while(DB.peds.some(p=>p.num===s));return s};
+
+V.pedidos=(el,id)=>{
+  if(id==='novo')return wizard(el);
+  if(id&&PD(id))return fichaPed(el,id);
+  const C=calc().peds,ns='peds';
+  el.innerHTML=pageHead('Pedidos',`${DB.peds.length} registrados · ${DB.peds.filter(p=>C[p.id].aberto).length} em aberto`,`<button class="btn pri" data-act="new-ped">Novo pedido</button>`)+
+  `<div class="fb"><input class="grow" data-k="q" type="search" placeholder="Pesquisar pedido, integrador, produto, código ou cidade..." aria-label="Pesquisar"><select data-k="uf" aria-label="Estado">${optList(Object.entries(UFS).map(([k,v])=>[k,k+' — '+v]),'','Todos os estados')}</select><select data-k="st" aria-label="Situação">${optList(PED_ST,'','Todas as situações')}</select><select data-k="resp" aria-label="Responsável">${optList(respList(),'','Todos os responsáveis')}</select><select data-k="prod" aria-label="Produto">${optList(DB.prods.map(p=>[p.id,p.nome]),'','Todos os produtos')}</select>
+   <input type="date" data-k="from" title="De" aria-label="De"><input type="date" data-k="to" title="Até" aria-label="Até"></div><div class="panel" id="lst"></div>`;
+  bindFilters(el,()=>{
+    const q=norm(fv(ns,'q')),f=fv(ns,'from'),t=fv(ns,'to');
+    const l=DB.peds.filter(p=>{const i=I(p.intId)||{};
+      if(q&&!norm([p.num,iName(p.intId),i.cidade,i.uf,p.itens.map(it=>pName(it.prodId)+' '+((P(it.prodId)||{}).sku||'')+' '+((P(it.prodId)||{}).modelo||'')).join(' ')].join(' ')).includes(q))return false;
+      if(fv(ns,'uf')&&i.uf!==fv(ns,'uf'))return false;if(fv(ns,'st')&&C[p.id].st!==fv(ns,'st'))return false;if(fv(ns,'resp')&&p.resp!==fv(ns,'resp'))return false;
+      if(fv(ns,'prod')&&!p.itens.some(it=>it.prodId===fv(ns,'prod')))return false;if(f&&p.data<f)return false;if(t&&p.data>t)return false;return true}).sort((a,b)=>b.data.localeCompare(a.data)||b.num.localeCompare(a.num));
+    $('#lst',el).innerHTML=DB.peds.length?pedTable(l):empty('Nenhum pedido registrado.','<button class="btn pri" data-act="new-ped">Registrar o primeiro pedido</button>');
+  },ns);
+};
+let NP=null;
+const blankNP=(intId,resp)=>({id:null,intId:intId||'',data:today(),num:'',resp:resp||'',rasc:false,obs:'',itens:[],step:1,q:''});
+ACT['new-ped']=a=>{NP=blankNP(a&&a.dataset&&a.dataset.int);closeModals();if(location.hash==='#/pedidos/novo')render();else location.hash='#/pedidos/novo'};
+ACT['edit-ped']=a=>{const p=PD(a.dataset.id),C=PC(p.id);NP={id:p.id,intId:p.intId,data:p.data,num:p.num,resp:p.resp||'',rasc:!!p.rascunho,obs:p.obs||'',step:1,q:'',itens:C.itens.map(i=>({id:i.id,prodId:i.prodId,qtd:i.qtd,ent:i.ent,inst:i.inst,obs:i.obs||'',novo:false}))};location.hash='#/pedidos/novo';render()};
+function wizard(el){
+  if(!NP)NP=blankNP();
+  const names=['Identificação','Produtos','Quantidades','Revisão e salvamento'];
+  el.innerHTML=pageHead(NP.id?'Editar pedido '+NP.num:'Novo pedido','Quatro etapas rápidas',`<a class="btn" href="#/pedidos" data-act="np-cancel">Cancelar</a>`)+
+   `<div class="steps">${names.map((n,i)=>`<button class="${NP.step===i+1?'on':NP.step>i+1?'done':''}" data-act="np-step" data-s="${i+1}">${NP.step>i+1?'✓ ':''}${i+1}. ${n}</button>`).join('')}</div><div class="panel" id="stp"></div>`;
+  const S=$('#stp',el);
+  if(NP.step===1){
+    const i=I(NP.intId);
+    S.innerHTML=`<div class="fg">${fld('np-int','Integrador ou cliente',NP.intId,{type:'select',req:1,opts:optList(activeInts().sort((a,b)=>iName(a.id).localeCompare(iName(b.id),'pt-BR')).map(i=>[i.id,iName(i.id)]),NP.intId,'Selecione o integrador')})}
+    ${fld('np-data','Data do pedido',NP.data,{type:'date',req:1})}${fld('np-num','Número do pedido',NP.num,{ph:'Automático se vazio'})}${fld('np-resp','Responsável comercial',NP.resp,{list:'dl-resp'})}
+    ${fld('np-sit','Situação do pedido',NP.rasc?'r':'a',{type:'select',opts:'<option value="a"'+(NP.rasc?'':' selected')+'>Pedido ativo (a situação segue as entregas)</option><option value="r"'+(NP.rasc?' selected':'')+'>Rascunho</option>'})}
+    <div class="f"><label>Cidade / Estado</label><div id="np-loc" style="padding:9px 0">${i?esc(cityUF(i)):'—'}</div></div>${fld('np-obs','Observações',NP.obs,{type:'textarea',cls:'wf'})}</div>${dlResp()}
+    <div class="acts" style="margin-top:14px;justify-content:space-between"><button class="btn" data-act="new-int-np">Novo integrador</button><button class="btn pri" data-act="np-next">Continuar: produtos</button></div>`;
+    $('#np-int',S).onchange=e=>{const x=I(e.target.value);$('#np-loc',S).textContent=x?cityUF(x):'—';if(x&&!$('#np-resp',S).value&&x.resp)$('#np-resp',S).value=x.resp};
+  }else if(NP.step===2){
+    S.innerHTML=`<div class="f"><label for="np-q">Adicionar produtos ao pedido</label><input id="np-q" type="search" placeholder="Pesquisar produto por nome, código ou modelo..." autocomplete="off" value="${esc(NP.q)}"></div><div id="np-res"></div>
+    <h3 style="margin:16px 0 6px;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--mut)">Itens do pedido (${NP.itens.length})</h3><div id="np-added"></div>
+    <div class="acts" style="margin-top:14px;justify-content:space-between"><button class="btn" data-act="np-step" data-s="1">Voltar</button><button class="btn pri" data-act="np-next">Continuar: quantidades</button></div>`;
+    const drawRes=()=>{const q=norm($('#np-q',S).value);NP.q=$('#np-q',S).value;
+      const l=DB.prods.filter(p=>p.ativo!==false&&!NP.itens.some(i=>i.prodId===p.id)&&(!q||norm([p.nome,p.sku,p.modelo,p.cat].join(' ')).includes(q))).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR')).slice(0,40);
+      $('#np-res',S).innerHTML=l.length?`<div class="res-list">${l.map(p=>`<div><span><b>${esc(p.nome)}</b><br><small>${esc([p.sku,p.modelo].filter(Boolean).join(' · ')||'sem código')} · ${esc(p.cat||'sem categoria')}</small></span><button class="btn sm pri" data-act="np-add" data-id="${p.id}">Adicionar</button></div>`).join('')}</div>`:(DB.prods.some(p=>p.ativo!==false)?`<div class="hint" style="margin-top:6px">Nenhum produto ativo corresponde à pesquisa ou todos já foram adicionados.</div>`:empty('Nenhum produto ativo no catálogo.','<button class="btn pri" data-act="new-prod-np">Cadastrar produto</button>'))};
+    const drawAdd=()=>{$('#np-added',S).innerHTML=NP.itens.length?`<div class="res-list">${NP.itens.map(i=>`<div><span><b>${esc(pName(i.prodId))}</b> <small>${esc((P(i.prodId)||{}).sku||'')}</small></span><button class="btn sm" data-act="np-rm" data-id="${i.id}">Remover</button></div>`).join('')}</div>`:'<div class="hint">Nenhum produto adicionado ainda.</div>'};
+    $('#np-q',S).oninput=drawRes;drawRes();drawAdd();NP._redraw=()=>{drawRes();drawAdd();$('h3',S).textContent=`Itens do pedido (${NP.itens.length})`};
+    if(!matchMedia('(max-width:700px)').matches)$('#np-q',S).focus();
+  }else if(NP.step===3){
+    S.innerHTML=NP.itens.length?`<div>${NP.itens.map(i=>{const pr=P(i.prodId)||{},req=pr.inst!==false;return `<div class="item-row" data-it="${i.id}"><div><b>${esc(pName(i.prodId))}</b><br><small class="hint">${esc([pr.sku,pr.modelo].filter(Boolean).join(' · '))}</small></div>
+      <div class="f"><label>Solicitada *</label><input type="number" min="1" step="1" data-f="qtd" value="${i.qtd||''}" inputmode="numeric"></div>
+      <div class="f"><label>Entregue</label>${i.novo?`<input type="number" min="0" step="1" data-f="ent" value="${i.ent||''}" inputmode="numeric">`:`<div style="padding:9px 0">${nf(i.ent)}</div>`}</div>
+      <div class="f"><label>Instalada</label>${!req?'<div style="padding:9px 0" class="hint">n/a</div>':i.novo?`<input type="number" min="0" step="1" data-f="inst" value="${i.inst||''}" inputmode="numeric">`:`<div style="padding:9px 0">${nf(i.inst)}</div>`}</div>
+      <div class="f"><label>Pendente</label><div style="padding:9px 0;font-weight:700" data-pend>${nf(Math.max(0,(+i.qtd||0)-(+i.ent||0)))}</div></div>
+      <div class="f"><label>Observação do item</label><input type="text" data-f="obs" value="${esc(i.obs)}"></div><button class="btn sm dng" data-act="np-rm" data-id="${i.id}">Remover</button></div>`}).join('')}</div><p class="hint">Entregues e instaladas só podem ser digitadas para itens novos; depois disso, use "Registrar entrega" e "Registrar instalação" no pedido.</p>`:'<div class="empty">Nenhum item. Volte à etapa anterior para adicionar produtos.</div>';
+    S.insertAdjacentHTML('beforeend',`<div class="acts" style="margin-top:14px;justify-content:space-between"><button class="btn" data-act="np-step" data-s="2">Voltar</button><button class="btn pri" data-act="np-next">Continuar: revisão</button></div>`);
+    $$('.item-row',S).forEach(r=>{const it=NP.itens.find(x=>x.id===r.dataset.it);$$('[data-f]',r).forEach(inp=>inp.oninput=()=>{it[inp.dataset.f]=inp.dataset.f==='obs'?inp.value:(inp.value===''?'':Math.floor(+inp.value));$('[data-pend]',r).textContent=nf(Math.max(0,(+it.qtd||0)-(+it.ent||0)))})});
+  }else{
+    const errs=npErrors(),i=I(NP.intId);
+    S.innerHTML=`${errs.length?`<div class="alert"><span><b>Corrija antes de salvar:</b> ${errs.map(esc).join(' · ')}</span></div>`:''}
+     <dl class="dl"><dt>Integrador</dt><dd>${esc(iName(NP.intId))} — ${esc(cityUF(i))}</dd><dt>Data</dt><dd>${fmtD(NP.data)}</dd><dt>Número</dt><dd>${esc(NP.num||'(gerado ao salvar: '+nextNum()+')')}</dd><dt>Responsável</dt><dd>${esc(NP.resp||'—')}</dd><dt>Situação</dt><dd>${NP.rasc?'Rascunho':'Pedido ativo'}</dd><dt>Observações</dt><dd>${esc(NP.obs||'—')}</dd></dl>
+     <div style="margin-top:12px">${table([{h:'Produto',f:r=>esc(pName(r.prodId))},{h:'Solicitada',r:1,f:r=>nf(r.qtd)},{h:'Entregue',r:1,f:r=>nf(r.ent)},{h:'Pendente',r:1,f:r=>nf(Math.max(0,(+r.qtd||0)-(+r.ent||0)))},{h:'Instalada',r:1,f:r=>nf(r.inst)},{h:'Observação',f:r=>esc(r.obs||'')}],NP.itens,{empty:'Sem itens.'})}</div>
+     <div class="acts" style="margin-top:14px"><button class="btn" data-act="np-step" data-s="3">Voltar</button><span style="flex:1"></span><a class="btn" href="#/pedidos" data-act="np-cancel">Cancelar</a>${NP.id?'':'<button class="btn" data-act="np-save" data-again="1">Salvar e adicionar outro</button>'}<button class="btn pri" data-act="np-save">Salvar pedido</button></div>`;
+  }
+}
+function npReadStep1(){const g=id=>{const e=$('#'+id);return e?e.value.trim():''};if(!$('#np-int'))return;NP.intId=g('np-int');NP.data=g('np-data');NP.num=g('np-num');NP.resp=g('np-resp');NP.rasc=g('np-sit')==='r';NP.obs=g('np-obs')}
+function npErrors(){
+  const e=[];
+  if(!NP.intId||!I(NP.intId))e.push('selecione o integrador');
+  if(!NP.data)e.push('informe a data');
+  if(NP.num&&DB.peds.some(p=>p.id!==NP.id&&norm(p.num)===norm(NP.num)))e.push('número de pedido já existe');
+  if(!NP.itens.length&&!NP.rasc)e.push('adicione ao menos um produto');
+  NP.itens.forEach(i=>{const n=pName(i.prodId);
+    if(!(+i.qtd>0)||!Number.isInteger(+i.qtd))e.push(`${n}: quantidade solicitada deve ser um inteiro maior que zero`);
+    else if(i.novo){if((+i.ent||0)>+i.qtd)e.push(`${n}: entregue não pode superar a solicitada`);if((+i.inst||0)>(+i.ent||0))e.push(`${n}: instalada não pode superar a entregue`)}
+    else if(+i.qtd<i.ent)e.push(`${n}: solicitada não pode ficar abaixo do já entregue (${i.ent})`)});
+  return e;
+}
+ACT['np-step']=a=>{npReadStep1();const s=+a.dataset.s;if(s>NP.step&&NP.step===1){const e=npErrors().filter(x=>/integrador|data|número/.test(x));if(e.length){toast(e[0].charAt(0).toUpperCase()+e[0].slice(1)+'.',1);return}}NP.step=s;render()};
+ACT['np-next']=()=>{npReadStep1();if(NP.step===1){const e=npErrors().filter(x=>/integrador|data|número/.test(x));if(e.length){toast(e[0].charAt(0).toUpperCase()+e[0].slice(1)+'.',1);return}}
+  if(NP.step===2&&!NP.itens.length&&!NP.rasc){toast('Adicione ao menos um produto.',1);return}
+  if(NP.step===3){const e=npErrors().filter(x=>/quantidade|entregue|instalada|solicitada/.test(x));if(e.length){toast(e[0],1);return}}
+  NP.step++;render()};
+ACT['np-cancel']=()=>{NP=null};
+ACT['np-add']=a=>{NP.itens.push({id:uid(),prodId:a.dataset.id,qtd:1,ent:0,inst:0,obs:'',novo:true});NP._redraw()};
+ACT['np-rm']=async a=>{const it=NP.itens.find(i=>i.id===a.dataset.id);if(!it)return;
+  if(!it.novo&&(it.ent>0||it.inst>0)&&!await askConfirm(`O item <b>${esc(pName(it.prodId))}</b> já tem entregas ou instalações registradas. Remover o item apaga essas movimentações. Continuar?`,'Remover item',1))return;
+  NP.itens=NP.itens.filter(i=>i!==it);NP.step===2?NP._redraw():render()};
+ACT['new-int-np']=()=>{npReadStep1();intForm()};
+ACT['new-prod-np']=()=>prodForm(null,()=>render());
+ACT['np-save']=a=>{
+  npReadStep1();const e=npErrors();if(e.length){NP.step=4;render();toast('Corrija os pontos indicados.',1);return}
+  const again=!!(a.dataset&&a.dataset.again);let p;
+  if(NP.id){
+    p=PD(NP.id);const keep=new Set(NP.itens.map(i=>i.id));
+    p.itens.filter(i=>!keep.has(i.id)).forEach(i=>{DB.movs=DB.movs.filter(m=>m.itemId!==i.id);histP(p,'Item removido: '+pName(i.prodId))});
+    p.itens=NP.itens.map(i=>{const old=p.itens.find(x=>x.id===i.id);if(old&&+i.qtd!==old.qtd)histP(p,`Quantidade de ${pName(i.prodId)}: ${old.qtd} → ${i.qtd}`);return {id:i.id,prodId:i.prodId,qtd:+i.qtd,obs:i.obs}});
+    Object.assign(p,{intId:NP.intId,data:NP.data,num:NP.num||p.num,resp:NP.resp,obs:NP.obs,rascunho:NP.rasc});histP(p,'Pedido editado');
+  }else{
+    p={id:uid(),num:NP.num||nextNum(),intId:NP.intId,data:NP.data,resp:NP.resp,obs:NP.obs,rascunho:NP.rasc,cancelado:false,itens:NP.itens.map(i=>({id:i.id,prodId:i.prodId,qtd:+i.qtd,obs:i.obs})),hist:[]};histP(p,'Pedido criado');DB.peds.push(p);
+  }
+  NP.itens.filter(i=>i.novo).forEach(i=>{
+    if(+i.ent>0)DB.movs.push({id:uid(),pedId:p.id,itemId:i.id,tipo:'entrega',qtd:+i.ent,data:NP.data,resp:NP.resp,obs:'Lançada na criação do pedido',status:''});
+    if(+i.inst>0)DB.movs.push({id:uid(),pedId:p.id,itemId:i.id,tipo:'instalacao',qtd:+i.inst,data:NP.data,resp:NP.resp,obs:'Lançada na criação do pedido',status:'concluida'});
+  });
+  const saved=p,prevInt=NP.intId,prevResp=NP.resp;
+  logA(`Pedido ${p.num} salvo (${iName(p.intId)})`);save();
+  if(again){NP=blankNP(prevInt,prevResp);toast(`Pedido ${saved.num} salvo. Pronto para o próximo.`);render();window.scrollTo(0,0);return}
+  NP=null;location.hash='#/pedidos/'+saved.id;toast(`Pedido ${saved.num} salvo.`);
+};
+
+/* ===== Ficha do pedido ===== */
+function fichaPed(el,id){
+  const p=PD(id),c=PC(id),i=I(p.intId);
+  el.innerHTML=`<div class="hint" style="margin-bottom:6px"><a href="#/pedidos">← Pedidos</a></div>`+pageHead('Pedido '+p.num,`${badge(c.st,stClass(c.st))} · ${fmtD(p.data)} · <a href="#/integradores/${p.intId}">${esc(iName(p.intId))}</a> (${esc(cityUF(i))})${p.resp?' · '+esc(p.resp):''}`,
+    (c.ativo?`<button class="btn pri" data-act="new-ent" data-ped="${id}">Registrar entrega</button><button class="btn pri" data-act="new-inst" data-ped="${id}">Registrar instalação</button>`:'')+`<button class="btn" data-act="edit-ped" data-id="${id}">Editar</button>${p.cancelado?`<button class="btn" data-act="reativa-ped" data-id="${id}">Reativar</button>`:`<button class="btn dng" data-act="cancel-ped" data-id="${id}">Cancelar pedido</button>`}`)+
+  `<div class="grid g4" style="margin-bottom:16px">${[['Solicitados',c.T.qtd],['Entregues',c.T.ent],['Pendentes de entrega',c.T.pend],['Instalados',c.T.inst]].map(([l,v])=>`<div class="panel"><div class="hint">${l}</div><div class="num" style="font-size:28px;font-weight:700;color:var(--navy)">${nf(v)}</div></div>`).join('')}</div>
+  <div class="panel" style="margin-bottom:16px"><h2>Itens</h2>${table([{h:'Produto',f:r=>`<b>${esc(pName(r.prodId))}</b><br><small class="hint">${esc((P(r.prodId)||{}).sku||'')}</small>`},{h:'Solicitada',r:1,f:r=>nf(r.qtd)},{h:'Entregue',r:1,f:r=>nf(r.ent)},{h:'Pendente',r:1,f:r=>r.pend?`<b style="color:var(--warn)">${nf(r.pend)}</b>`:'0'},{h:'Instalada',r:1,f:r=>r.req?nf(r.inst):'n/a'},{h:'Aguardando instalação',r:1,f:r=>r.req?nf(r.aInst):'—'},{h:'Observação',f:r=>esc(r.obs||'')}],c.itens,{empty:'Pedido sem itens.'})}</div>
+  <div class="grid g2"><div class="panel"><h2>Entregas e instalações</h2>${table([{h:'Data',f:r=>fmtD(r.data)},{h:'Tipo',f:r=>r.tipo==='entrega'?'Entrega':'Instalação'},{h:'Produto',f:r=>esc(pName((p.itens.find(x=>x.id===r.itemId)||{}).prodId))},{h:'Qtd.',r:1,f:r=>nf(r.qtd)},{h:'Situação',f:r=>r.tipo==='instalacao'?badge(r.status==='andamento'?'Em andamento':'Concluída',r.status==='andamento'?'warn':'ok'):''},{h:'',f:r=>`<button class="btn sm dng" data-act="del-mov" data-id="${r.id}">Estornar</button>`}],DB.movs.filter(m=>m.pedId===id).sort((a,b)=>b.data.localeCompare(a.data)),{empty:'Nenhuma entrega ou instalação registrada.'})}</div>
+  <div class="panel"><h2>Histórico de alterações</h2>${(p.hist||[]).length?`<div style="max-height:320px;overflow:auto">${p.hist.map(h=>`<div style="padding:6px 0;border-bottom:1px solid var(--line)"><span class="hint">${fmtDT(h.ts)}</span><br>${esc(h.txt)}</div>`).join('')}</div>`:'<div class="empty">Sem histórico.</div>'}${p.obs?`<h2 style="margin-top:14px">Observações</h2><p style="white-space:pre-wrap;margin:0">${esc(p.obs)}</p>`:''}</div></div>`;
+}
+ACT['cancel-ped']=async a=>{const p=PD(a.dataset.id);if(await askConfirm(`Cancelar o pedido <b>${esc(p.num)}</b>? Ele permanece no histórico, mas sai dos indicadores de pedidos ativos.`,'Cancelar pedido',1)){p.cancelado=true;histP(p,'Pedido cancelado');commit('Pedido cancelado: '+p.num)}};
+ACT['reativa-ped']=a=>{const p=PD(a.dataset.id);p.cancelado=false;histP(p,'Pedido reativado');commit('Pedido reativado: '+p.num)};
+ACT['del-mov']=async a=>{const m=DB.movs.find(x=>x.id===a.dataset.id);if(!m)return;const p=PD(m.pedId);
+  if(await askConfirm(`Estornar ${m.tipo==='entrega'?'a entrega':'a instalação'} de <b>${nf(m.qtd)}</b> un. de ${fmtD(m.data)}? O lançamento vinculado no estoque, se houver, também é removido.`,'Estornar',1)){
+    DB.movs=DB.movs.filter(x=>x.id!==m.id);DB.emovs=DB.emovs.filter(e=>e.movId!==m.id);histP(p,`Estorno de ${m.tipo==='entrega'?'entrega':'instalação'} (${m.qtd} un., ${fmtD(m.data)})`);commit('Estorno em '+p.num)}};
+
+/* ===== Registrar entrega / instalação ===== */
+ACT['new-ent']=a=>movForm('entrega',a&&a.dataset&&a.dataset.ped,a&&a.dataset&&a.dataset.item);
+ACT['new-inst']=a=>movForm('instalacao',a&&a.dataset&&a.dataset.ped,a&&a.dataset&&a.dataset.item);
+function movForm(tipo,pedId,itemId){
+  const ent=tipo==='entrega',C=calc().peds;
+  const cand=DB.peds.filter(p=>C[p.id].ativo&&(pedId?p.id===pedId:C[p.id].itens.some(i=>ent?i.pend>0:i.aInst>0))).sort((a,b)=>b.data.localeCompare(a.data));
+  if(!cand.length){toast(ent?'Não há pedidos ativos com entrega pendente.':'Não há equipamentos entregues aguardando instalação.',1);if(!pedId)return}
+  const pid=pedId||(cand[0]&&cand[0].id)||'';
+  const m=openModal({title:ent?'Registrar entrega':'Registrar instalação',body:`<form novalidate><div class="fg">
+   ${fld('m-ped','Pedido',pid,{type:'select',req:1,cls:'w2',opts:optList(cand.map(p=>[p.id,`${p.num} — ${iName(p.intId)}`]),pid)})}
+   ${fld('m-item','Produto',itemId||'',{type:'select',req:1,cls:'w2',opts:''})}
+   ${fld('m-qtd','Quantidade',1,{type:'number',req:1,attrs:'min="1" step="1" inputmode="numeric"'})}${fld('m-data','Data',today(),{type:'date',req:1})}${fld('m-resp','Responsável','',{list:'dl-resp'})}
+   ${ent?'':fld('m-st','Situação da instalação','concluida',{type:'select',opts:'<option value="concluida">Concluída</option><option value="andamento">Em andamento</option>'})}
+   ${ent?`<div class="f wf"><label class="chk"><input type="checkbox" id="m-exc"> Permitir entrega acima do solicitado (exige justificativa nas observações)</label></div>`:''}
+   ${fld('m-obs','Observações',ent?'':'',{type:'textarea',cls:'wf'})}
+   <div class="f wf"><label class="chk"><input type="checkbox" id="m-est" checked> ${ent?'Lançar também como entrada no estoque do integrador':'Lançar também como baixa (instalação) no estoque do integrador'}</label><span class="hint">Desmarque se o estoque deste integrador é controlado manualmente, para não contar duas vezes.</span></div></div>${dlResp()}</form>`,
+   footer:'<button class="btn" data-close>Cancelar</button><button class="btn pri" data-ok>Registrar</button>'});
+  const fillItems=()=>{const p=PD($('#m-ped',m).value);if(!p)return;const c=PC(p.id);const sel=$('#m-item',m);
+    sel.innerHTML=c.itens.filter(i=>ent?true:i.req).map(i=>`<option value="${i.id}">${esc(pName(i.prodId))} — ${ent?`pendente ${i.pend}`:`aguardando instalação ${i.aInst}`}</option>`).join('');
+    if(itemId&&c.itens.some(i=>i.id===itemId))sel.value=itemId;else{const f=c.itens.find(i=>ent?i.pend>0:i.aInst>0);if(f)sel.value=f.id}
+    const it=c.itens.find(i=>i.id===sel.value);if(it)$('#m-qtd',m).value=Math.max(1,ent?it.pend:it.aInst)};
+  $('#m-ped',m).onchange=()=>{itemId=null;fillItems()};
+  $('#m-item',m).onchange=()=>{const it=PC($('#m-ped',m).value).itens.find(i=>i.id===$('#m-item',m).value);if(it)$('#m-qtd',m).value=Math.max(1,ent?it.pend:it.aInst)};
+  fillItems();
+  $('[data-ok]',m).onclick=()=>{
+    clearErrs(m);const v=k=>val(m,k);let ok=true;
+    const p=PD(v('m-ped')),c=p&&PC(p.id),it=c&&c.itens.find(i=>i.id===v('m-item')),q=Number(v('m-qtd'));
+    if(!p){setErr(m,'m-ped','Selecione o pedido.');ok=false}
+    if(!it){setErr(m,'m-item','Selecione o produto.');ok=false}
+    if(!(q>0)||!Number.isInteger(q)){setErr(m,'m-qtd','Informe um inteiro maior que zero.');ok=false}
+    if(!v('m-data')){setErr(m,'m-data','Informe a data.');ok=false}
+    if(ok&&ent&&q>it.pend){if(!v('m-exc'))setErr(m,'m-qtd',`Excede o pendente (${it.pend}). Marque a opção de entrega excedente.`),ok=false;else if(!v('m-obs')){setErr(m,'m-obs','Informe a justificativa da entrega excedente.');ok=false}}
+    if(ok&&!ent){if(!it.req){setErr(m,'m-item','Este produto não exige instalação.');ok=false}else if(q>it.aInst){setErr(m,'m-qtd',`Só há ${it.aInst} unidade(s) entregue(s) aguardando instalação.`);ok=false}}
+    if(!ok)return;
+    const mv={id:uid(),pedId:p.id,itemId:it.id,tipo,qtd:q,data:v('m-data'),resp:v('m-resp'),obs:v('m-obs'),status:ent?'':v('m-st')};
+    DB.movs.push(mv);
+    if(v('m-est')){const e={id:uid(),intId:p.intId,prodId:it.prodId,tipo:ent?'entrada':'instalacao',qtd:q,ts:nowISO(),data:v('m-data'),obs:`${ent?'Entrega':'Instalação'} do pedido ${p.num}`,movId:mv.id};DB.emovs.push(e)}
+    histP(p,`${ent?'Entrega':'Instalação'} registrada: ${q} un. de ${pName(it.prodId)} (${fmtD(mv.data)})`);
+    m.close();commit(`${ent?'Entrega':'Instalação'} registrada no pedido ${p.num}`);toast('Registrado.');
+  };
+}
+
+/* ===== Entregas e instalações ===== */
+V.entregas=el=>{
+  const C=calc().peds,tab=FILT['ent.tab']||'aguardando';
+  const ativos=DB.peds.filter(p=>C[p.id].ativo);
+  const itens=[];ativos.forEach(p=>C[p.id].itens.forEach(i=>itens.push({p,i})));
+  const L={aguardando:ativos.filter(p=>C[p.id].T.ent===0&&C[p.id].T.pend>0),parcial:ativos.filter(p=>C[p.id].T.ent>0&&C[p.id].T.pend>0),
+    instalar:itens.filter(r=>r.i.aInst>0),andamento:movsAtivas('instalacao').filter(m=>m.status==='andamento'),concluidas:movsAtivas('instalacao').filter(m=>m.status!=='andamento')};
+  const tabs=[['aguardando','Aguardando entrega'],['parcial','Parcialmente entregues'],['instalar','Entregues aguardando instalação'],['andamento','Instalações em andamento'],['concluidas','Instalações concluídas']];
+  let body;
+  if(tab==='aguardando'||tab==='parcial')body=pedTable(L[tab],{empty:'Nenhum pedido nesta situação.'});
+  else if(tab==='instalar')body=table([{h:'Pedido',f:r=>`<b>${esc(r.p.num)}</b>`},{h:'Integrador',f:r=>esc(iName(r.p.intId))},{h:'Produto',f:r=>esc(pName(r.i.prodId))},{h:'Entregue',r:1,f:r=>nf(r.i.ent)},{h:'Instalado',r:1,f:r=>nf(r.i.inst)},{h:'Aguardando',r:1,f:r=>`<b>${nf(r.i.aInst)}</b>`},{h:'',f:r=>`<button class="btn sm pri" data-act="new-inst" data-ped="${r.p.id}" data-item="${r.i.id}">Registrar instalação</button>`}],L.instalar,{empty:'Nenhum equipamento aguardando instalação.'});
+  else body=movTable(L[tab]);
+  el.innerHTML=pageHead('Entregas e instalações','Acompanhamento por pedido e por equipamento',`<button class="btn pri" data-act="new-ent">Registrar entrega</button><button class="btn pri" data-act="new-inst">Registrar instalação</button>`)+
+   `<div class="tabs">${tabs.map(([k,l])=>`<button class="${tab===k?'on':''}" data-act="ent-tab" data-t="${k}">${l} (${L[k].length})</button>`).join('')}</div><div class="panel">${body}</div>`;
+};
+ACT['ent-tab']=a=>{FILT['ent.tab']=a.dataset.t;render()};
+
+/* ===== Estoque ===== */
+V.estoque=el=>{
+  const ns='est';
+  el.innerHTML=pageHead('Estoque por integrador','Saldo calculado a partir das movimentações',`<button class="btn pri" data-act="new-emov">Atualizar estoque</button>`)+
+  `<div class="fb"><input class="grow" data-k="q" type="search" placeholder="Pesquisar integrador ou produto..." aria-label="Pesquisar"><select data-k="int" aria-label="Integrador">${optList(activeInts().map(i=>[i.id,iName(i.id)]),'','Todos os integradores')}</select><select data-k="prod" aria-label="Produto">${optList(DB.prods.map(p=>[p.id,p.nome]),'','Todos os produtos')}</select><select data-k="uf" aria-label="Estado">${optList(Object.entries(UFS).map(([k,v])=>[k,k]),'','Todos os estados')}</select><select data-k="low" aria-label="Situação"><option value="">Todas as situações</option><option value="1">Abaixo do mínimo</option></select></div><div class="panel" id="lst"></div>`;
+  bindFilters(el,()=>{
+    const q=norm(fv(ns,'q'));
+    const rows=estRows().filter(r=>(!q||norm(iName(r.intId)+' '+pName(r.prodId)).includes(q))&&(!fv(ns,'int')||r.intId===fv(ns,'int'))&&(!fv(ns,'prod')||r.prodId===fv(ns,'prod'))&&(!fv(ns,'uf')||I(r.intId).uf===fv(ns,'uf'))&&(!fv(ns,'low')||r.baixo)).sort((a,b)=>iName(a.intId).localeCompare(iName(b.intId),'pt-BR')||pName(a.prodId).localeCompare(pName(b.prodId),'pt-BR'));
+    $('#lst',el).innerHTML=(DB.est.length||DB.emovs.length)?estTable(rows,{empty:'Nenhum saldo corresponde aos filtros.'}):empty('Nenhum estoque registrado.','<button class="btn pri" data-act="new-emov">Lançar o primeiro saldo</button>');
+  },ns);
+};
+ACT['new-emov']=a=>emovForm(a&&a.dataset&&a.dataset.int,a&&a.dataset&&a.dataset.prod);
+function upsertEst(intId,prodId,min,obs){
+  let e=DB.est.find(x=>x.intId===intId&&x.prodId===prodId);
+  if(!e){e={intId,prodId,min:0,obs:''};DB.est.push(e)}
+  if(min!=null)e.min=min;if(obs!=null)e.obs=obs;
+}
+function emovForm(intId,prodId){
+  const prods=DB.prods.filter(p=>p.ativo!==false||p.id===prodId);
+  if(!activeInts().length||!prods.length){toast('Cadastre ao menos um integrador e um produto antes de lançar estoque.',1);return}
+  const m=openModal({title:'Atualizar estoque',body:`<form novalidate><div class="fg">
+   ${fld('e-int','Integrador',intId||'',{type:'select',req:1,opts:optList(activeInts().map(i=>[i.id,iName(i.id)]),intId||'','Selecione')})}
+   ${fld('e-prod','Produto',prodId||'',{type:'select',req:1,opts:optList(prods.map(p=>[p.id,p.nome]),prodId||'','Selecione')})}
+   ${fld('e-tipo','Tipo de movimentação','entrada',{type:'select',opts:optList(Object.entries(MOV_TIPOS),'entrada')})}
+   ${fld('e-qtd','Quantidade',1,{type:'number',req:1,attrs:'min="0" step="1" inputmode="numeric"'})}${fld('e-data','Data',today(),{type:'date'})}${fld('e-min','Estoque mínimo desejado (opcional)','',{type:'number',attrs:'min="0" step="1"'})}
+   ${fld('e-obs','Observações / justificativa','',{cls:'wf'})}<div class="f wf"><span class="hint" id="e-info"></span></div></div></form>`,
+   footer:'<button class="btn" data-close>Cancelar</button><button class="btn pri" data-ok>Salvar</button>'});
+  const info=()=>{const i=val(m,'e-int'),p=val(m,'e-prod'),t=val(m,'e-tipo');const ajuste=t==='ajuste';
+    $('[data-f="e-qtd"] label',m).textContent=(ajuste?'Saldo correto após o ajuste':'Quantidade')+' *';
+    $('#e-info',m).textContent=i&&p?`Saldo atual: ${nf(saldo(i,p))} un.${ajuste?' O sistema lança a diferença como ajuste identificado.':''}`:'';
+    if(i&&p){const e=DB.est.find(x=>x.intId===i&&x.prodId===p);$('#e-min',m).value=e&&e.min?e.min:''}};
+  ['e-int','e-prod','e-tipo'].forEach(k=>$('#'+k,m).onchange=info);info();
+  $('[data-ok]',m).onclick=()=>{
+    clearErrs(m);const v=k=>val(m,k);let ok=true;const q=Number(v('e-qtd')),t=v('e-tipo');
+    if(!v('e-int')){setErr(m,'e-int','Selecione o integrador.');ok=false}
+    if(!v('e-prod')){setErr(m,'e-prod','Selecione o produto.');ok=false}
+    if(v('e-qtd')===''||!(q>=0)||!Number.isInteger(q)||(t!=='ajuste'&&q===0)){setErr(m,'e-qtd','Informe um número inteiro válido.');ok=false}
+    if(ok&&['saida','instalacao'].includes(t)&&q>saldo(v('e-int'),v('e-prod'))){setErr(m,'e-qtd',`Saída maior que o saldo atual (${saldo(v('e-int'),v('e-prod'))}).`);ok=false}
+    if(ok&&t==='ajuste'&&!v('e-obs')){setErr(m,'e-obs','Ajustes exigem justificativa.');ok=false}
+    if(!ok)return;
+    const I_=v('e-int'),P_=v('e-prod');let qtd=q;
+    if(t==='ajuste'){qtd=q-saldo(I_,P_);if(qtd===0&&v('e-min')===''){toast('O saldo informado já é o saldo atual.',1);return}}
+    if(qtd!==0||t!=='ajuste')DB.emovs.push({id:uid(),intId:I_,prodId:P_,tipo:t,qtd,ts:nowISO(),data:v('e-data')||today(),obs:v('e-obs')});
+    if(v('e-min')!=='')upsertEst(I_,P_,Math.max(0,Math.floor(Number(v('e-min')))),null);else upsertEst(I_,P_,null,null);
+    m.close();commit(`Estoque: ${MOV_TIPOS[t]} de ${pName(P_)} em ${iName(I_)}`);toast('Estoque atualizado.');
+  };
+}
+ACT['est-row']=a=>{
+  const i=a.dataset.i,p=a.dataset.p;
+  const ms=DB.emovs.filter(e=>e.intId===i&&e.prodId===p).sort((x,y)=>(y.data||'').localeCompare(x.data||'')||y.ts.localeCompare(x.ts));
+  const e=DB.est.find(x=>x.intId===i&&x.prodId===p)||{min:0,obs:''};
+  const m=openModal({title:`${pName(p)} — ${iName(i)}`,lg:1,body:`<div class="kr" style="--n:3;gap:8px;margin-bottom:12px"><div class="kpi" style="cursor:default"><b class="num">${nf(saldo(i,p))}</b><span>Saldo atual</span></div><div class="kpi" style="cursor:default"><b class="num">${nf(e.min||0)}</b><span>Mínimo desejado</span></div></div>
+   ${table([{h:'Data',f:r=>fmtD(r.data||r.ts)},{h:'Tipo',f:r=>MOV_TIPOS[r.tipo]||r.tipo},{h:'Qtd.',r:1,f:r=>nf(r.qtd)},{h:'Observação',f:r=>esc(r.obs||'')},{h:'',f:r=>r.movId?'<span class="hint">vinculada ao pedido</span>':`<button class="btn sm dng" data-act="del-emov" data-id="${r.id}">Excluir</button>`}],ms,{empty:'Sem movimentações. O saldo foi definido apenas pelo mínimo.'})}`,
+   footer:`<button class="btn" data-act="new-emov" data-int="${i}" data-prod="${p}">Nova movimentação</button><button class="btn" data-close>Fechar</button>`});
+};
+ACT['del-emov']=async a=>{if(await askConfirm('Excluir esta movimentação de estoque? O saldo será recalculado.','Excluir',1)){DB.emovs=DB.emovs.filter(e=>e.id!==a.dataset.id);closeModals();commit('Movimentação de estoque excluída')}};
+
+/* ===== Contratos ===== */
+V.contratos=el=>{
+  const ns='ctr';
+  el.innerHTML=pageHead('Contratos',`${DB.ctrs.filter(ctrAtivo).length} contratos válidos`,`<button class="btn pri" data-act="new-ctr">Novo contrato</button>`)+
+  `<div class="fb"><input class="grow" data-k="q" type="search" placeholder="Pesquisar número ou integrador..." aria-label="Pesquisar"><select data-k="st" aria-label="Status">${optList(CTR_STATUS,'','Todos os status')}</select><select data-k="mod" aria-label="Modalidade">${optList(MODAL,'','Todas as modalidades')}</select><select data-k="uf" aria-label="Estado">${optList(Object.keys(UFS),'','Todos os estados')}</select><select data-k="resp" aria-label="Responsável">${optList(respList(),'','Todos os responsáveis')}</select><input type="date" data-k="from" aria-label="De" title="De"><input type="date" data-k="to" aria-label="Até" title="Até"></div><div class="panel" id="lst"></div>`;
+  bindFilters(el,()=>{
+    const q=norm(fv(ns,'q'));
+    const l=DB.ctrs.filter(c=>(!q||norm(c.num+' '+iName(c.intId)).includes(q))&&(!fv(ns,'st')||c.status===fv(ns,'st'))&&(!fv(ns,'mod')||c.modal===fv(ns,'mod'))&&(!fv(ns,'uf')||(I(c.intId)||{}).uf===fv(ns,'uf'))&&(!fv(ns,'resp')||c.resp===fv(ns,'resp'))&&(!fv(ns,'from')||c.data>=fv(ns,'from'))&&(!fv(ns,'to')||c.data<=fv(ns,'to'))).sort((a,b)=>b.data.localeCompare(a.data));
+    $('#lst',el).innerHTML=DB.ctrs.length?ctrTable(l):empty('Nenhum contrato registrado.','<button class="btn pri" data-act="new-ctr">Registrar o primeiro contrato</button>');
+  },ns);
+};
+ACT['new-ctr']=a=>ctrForm(null,a&&a.dataset&&a.dataset.int);
+ACT['edit-ctr']=a=>ctrForm(a.dataset.id);
+function ctrForm(id,intId){
+  if(!activeInts().length){toast('Cadastre um integrador antes de registrar contratos.',1);return}
+  const c=id?DB.ctrs.find(x=>x.id===id):{num:'',intId:intId||'',data:today(),resp:'',modal:'Venda',valor:'',status:'Fechado',obs:'',pedId:'',itens:[]};
+  const itens=(c.itens||[]).map(x=>({...x}));
+  const m=openModal({title:id?'Editar contrato':'Novo contrato',lg:1,body:`<form novalidate><div class="fg">
+   ${fld('c-num','Número ou identificador',c.num,{req:1})}${fld('c-int','Integrador',c.intId,{type:'select',req:1,opts:optList(activeInts().map(i=>[i.id,iName(i.id)]),c.intId,'Selecione')})}
+   ${fld('c-data','Data de fechamento',c.data,{type:'date',req:1})}${fld('c-resp','Responsável comercial',c.resp,{list:'dl-resp'})}
+   ${fld('c-modal','Modalidade comercial',c.modal,{type:'select',opts:optList(MODAL,c.modal)})}${fld('c-valor','Valor (opcional)',c.valor||'',{ph:'0,00',attrs:'inputmode="decimal"'})}
+   ${fld('c-st','Status',c.status,{type:'select',opts:optList(CTR_STATUS,c.status)})}${fld('c-ped','Pedido relacionado (opcional)',c.pedId||'',{type:'select',opts:''})}
+   <div class="f wf"><label>Produtos e quantidades do contrato (opcional)</label><div id="c-its"></div><div><button type="button" class="btn sm" id="c-add">Adicionar produto</button></div></div>
+   ${fld('c-obs','Observações',c.obs,{type:'textarea',cls:'wf'})}</div>${dlResp()}</form>`,
+   footer:`${id?'<button class="btn dng" data-act="cancel-ctr" data-id="'+id+'" style="margin-right:auto">Cancelar contrato</button>':''}<button class="btn" data-close>Fechar</button><button class="btn pri" data-ok>Salvar</button>`});
+  const fillPed=()=>{const i=$('#c-int',m).value;$('#c-ped',m).innerHTML=`<option value="">Nenhum</option>`+DB.peds.filter(p=>p.intId===i).map(p=>`<option value="${p.id}"${p.id===c.pedId?' selected':''}>${esc(p.num)} — ${fmtD(p.data)}</option>`).join('')};
+  $('#c-int',m).onchange=fillPed;fillPed();
+  const drawIts=()=>{$('#c-its',m).innerHTML=itens.map((x,k)=>`<div class="fb" style="margin:4px 0"><select data-ci="${k}" class="grow" aria-label="Produto">${optList(DB.prods.map(p=>[p.id,p.nome]),x.prodId,'Produto')}</select><input type="number" min="1" step="1" value="${x.qtd||''}" data-cq="${k}" style="width:90px" aria-label="Quantidade"><button type="button" class="btn sm dng" data-cr="${k}">×</button></div>`).join('');
+    $$('[data-ci]',m).forEach(s=>s.onchange=()=>itens[+s.dataset.ci].prodId=s.value);$$('[data-cq]',m).forEach(s=>s.oninput=()=>itens[+s.dataset.cq].qtd=Math.floor(+s.value));$$('[data-cr]',m).forEach(b=>b.onclick=()=>{itens.splice(+b.dataset.cr,1);drawIts()})};
+  $('#c-add',m).onclick=()=>{itens.push({prodId:'',qtd:1});drawIts()};drawIts();
+  $('[data-ok]',m).onclick=()=>{
+    clearErrs(m);const v=k=>val(m,k);let ok=true;
+    if(!v('c-num')){setErr(m,'c-num','Informe o número do contrato.');ok=false}
+    else if(DB.ctrs.some(x=>x.id!==id&&norm(x.num)===norm(v('c-num')))){setErr(m,'c-num','Já existe um contrato com este número.');ok=false}
+    if(!v('c-int')){setErr(m,'c-int','Selecione o integrador.');ok=false}
+    if(!v('c-data')){setErr(m,'c-data','Informe a data.');ok=false}
+    if(v('c-valor')&&num(v('c-valor'))<0){setErr(m,'c-valor','Valor inválido.');ok=false}
+    const its=itens.filter(x=>x.prodId||x.qtd);
+    if(its.some(x=>!x.prodId||!(x.qtd>0))){toast('Complete produto e quantidade em todas as linhas ou remova a linha.',1);ok=false}
+    if(!ok)return;
+    const o={num:v('c-num'),intId:v('c-int'),data:v('c-data'),resp:v('c-resp'),modal:v('c-modal'),valor:v('c-valor')?num(v('c-valor')):0,status:v('c-st'),pedId:v('c-ped'),obs:v('c-obs'),itens:its};
+    if(id){Object.assign(DB.ctrs.find(x=>x.id===id),o);commit('Contrato editado: '+o.num)}else{DB.ctrs.push({id:uid(),...o});commit('Contrato registrado: '+o.num);toast('Contrato registrado.')}
+    m.close();
+  };
+}
+ACT['cancel-ctr']=async a=>{const c=DB.ctrs.find(x=>x.id===a.dataset.id);if(await askConfirm(`Cancelar o contrato <b>${esc(c.num)}</b>? Ele permanece no histórico, mas deixa de contar como fechado.`,'Cancelar contrato',1)){c.status='Cancelado';closeModals();commit('Contrato cancelado: '+c.num)}};
+
+/* ===== Mapa ===== */
+function ufPanel(u,o={}){
+  if(!u)return `<div class="empty">Selecione um estado no mapa para ver os detalhes.</div>`;
+  const s=ufStats(u);
+  const rk=s.ints.map(i=>({i,s:intStats(i.id)})).sort((a,b)=>b.s.inst-a.s.inst||b.s.estoque-a.s.estoque||b.s.contratos-a.s.contratos||iName(a.i.id).localeCompare(iName(b.i.id),'pt-BR'));
+  const kp=[['Integradores',s.integradores],['Clientes ativos',s.ativos],['Em estoque',s.estoque],['Solicitados',s.solic],['Instalados',s.inst],['Contratos',s.contratos]];
+  return `<h2 style="font-size:${o.tv?30:20}px;margin-bottom:10px">${esc(UFS[u])} <span class="hint">${u}</span></h2><div class="kr" style="--n:3;gap:8px;margin-bottom:12px">${kp.map(([l,v])=>`<div class="kpi" style="cursor:default"><b class="num">${nf(v)}</b><span>${l}</span></div>`).join('')}</div>
+  <h3 class="pt">Integradores do estado <span class="u">por instalados · estoque · contratos</span></h3>
+  ${rk.length?table([{h:'#',f:(r)=>r._p},{h:'Integrador',f:r=>o.tv?`<b>${esc(iName(r.i.id))}</b>`:`<a href="#/integradores/${r.i.id}"><b>${esc(iName(r.i.id))}</b></a>`},{h:'Cidade',f:r=>esc(r.i.cidade||'—')},{h:'Inst.',r:1,f:r=>nf(r.s.inst)},{h:'Estoque',r:1,f:r=>nf(r.s.estoque)},{h:'Contr.',r:1,f:r=>nf(r.s.contratos)}],rk.slice(0,o.max||50).map((r,k)=>({...r,_p:k+1})),{}):'<div class="empty">Nenhum integrador cadastrado neste estado.</div>'}`;
+}
+V.mapa=el=>{
+  const metric=FILT['mapa.m']||'integradores',u=FILT['mapa.uf']||'';
+  el.innerHTML=pageHead('Mapa comercial do Brasil','Clique em um estado para ver os detalhes')+`<div class="fb"><label class="hint" for="mm">Exibir por</label><select id="mm">${optList(MAP_METRICS,metric)}</select><button class="btn" data-act="map-clear"${u?'':' hidden'}>Limpar seleção</button></div>
+  <div class="grid" style="grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)" id="mg"><div class="panel">${mapSVG(metric,u,true)}</div><div class="panel" id="up">${ufPanel(u)}</div></div>`;
+  $('#mm',el).onchange=e=>{FILT['mapa.m']=e.target.value;render()};
+  $$('[data-uf]',el).forEach(p=>p.onclick=()=>{FILT['mapa.uf']=p.dataset.uf;render()});
+  if(matchMedia('(max-width:1100px)').matches)$('#mg',el).style.gridTemplateColumns='1fr';
+};
+ACT['map-clear']=()=>{FILT['mapa.uf']='';render()};
+
+/* ===== Ranking ===== */
+V.ranking=el=>{
+  const ns='rk';
+  el.innerHTML=pageHead('Ranking de integradores','Pódio e classificação completa')+`<div class="fb"><select data-k="crit" aria-label="Critério">${optList(CRIT.map(c=>[c[0],c[1]]),FILT['rk.crit']||'contratos')}</select><select data-k="uf" aria-label="Âmbito"><option value="">Ranking nacional</option>${UF_OPTS(FILT['rk.uf']||'').replace(/<option value="(\w\w)"/g,'<option value="$1"')}</select>${periodFilters(ns)}</div><div id="lst"></div>`;
+  bindFilters(el,()=>{
+    const crit=fv(ns,'crit')||'contratos',uf=fv(ns,'uf'),rg=rangeOf(ns),rows=ranking(crit,uf||null,rg),cd=CRIT.find(c=>c[0]===crit);
+    $('#lst',el).innerHTML=rows.length?`<div class="grid" style="grid-template-columns:minmax(0,1fr) minmax(0,1.4fr)"><div class="panel"><h2>Pódio — ${esc(cd[1])}</h2>${podium(rows,crit)}<p class="hint" style="margin:0">${uf?'Estado: '+esc(UFS[uf]):'Todo o Brasil'} · ${rg?'período filtrado':'todo o período'}${crit==='estoque'?' · estoque é posição atual, sem variação':''}</p></div>
+    <div class="panel"><h2>Classificação <span class="u">${esc(cd[2])}</span></h2>${table([{h:'Posição',f:r=>`<b>${r._p}º</b>`},{h:'Integrador',f:r=>esc(iName(r.int.id))},{h:'Cidade / UF',f:r=>esc(cityUF(r.int))},{h:esc(cd[1]),r:1,f:r=>`<b>${fmtCrit(crit,r.v)}</b>`},{h:'Variação vs. período anterior',r:1,f:r=>varCell(r,crit)}],rows.map((r,k)=>({...r,_p:k+1,_go:'#/integradores/'+r.int.id})),{})}</div></div>`:`<div class="panel">${empty('Ainda não há registros para este critério e período. O ranking aparece assim que houver dados lançados.')}</div>`;
+  },ns);
+  const uf=el.querySelector('[data-k="uf"]');if(uf&&FILT['rk.uf'])uf.value=FILT['rk.uf'];
+};
+
+/* ===== Gráficos ===== */
+V.graficos=el=>{
+  const ns='gr';
+  el.innerHTML=pageHead('Gráficos e análises','Escolha o período para as análises por produto, estado e responsável')+`<div class="fb">${periodFilters(ns)}</div><div id="lst"></div>`;
+  bindFilters(el,()=>{
+    const rg=rangeOf(ns),C=calc().peds,ms=monthly(12),L=ms.map(m=>m.label);
+    const ctrs=DB.ctrs.filter(c=>ctrAtivo(c)&&I(c.intId)&&!I(c.intId).arq&&inR(c.data,rg));
+    const ctrUF={};ctrs.forEach(c=>{const u=I(c.intId).uf||'—';ctrUF[u]=(ctrUF[u]||0)+1});
+    const cat={};estRows().forEach(r=>{if(r.saldo>0){const c=(P(r.prodId)||{}).cat||'Sem categoria';cat[c]=(cat[c]||0)+r.saldo}});
+    const estProd={};estRows().forEach(r=>{if(r.saldo>0)estProd[r.prodId]=(estProd[r.prodId]||0)+r.saldo});
+    const volInt=activeInts().map(i=>({l:iName(i.id),v:intStats(i.id,rg).solic})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,10);
+    const rs={};const R=(n)=>rs[n||'Sem responsável']=rs[n||'Sem responsável']||{ped:0,ctr:0,val:0};
+    DB.peds.forEach(p=>{if(C[p.id].ativo&&inR(p.data,rg))R(p.resp).ped++});ctrs.forEach(c=>{const r=R(c.resp);r.ctr++;r.val+=c.valor||0});
+    const rsl=Object.entries(rs);
+    const B=(rows,o)=>bars(rows,o);
+    const panel=(t,u,b)=>`<div class="panel"><h2>${t} <span class="u">${u}</span></h2>${b}</div>`;
+    $('#lst',el).innerHTML=`<div class="grid g2">
+     ${panel('Contratos por estado','contratos',B(Object.entries(ctrUF).map(([l,v])=>({l,v})).sort((a,b)=>b.v-a.v),{lw:'14%',empty:'Sem contratos no período.'}))}
+     ${panel('Produtos por categoria','unidades em estoque',B(Object.entries(cat).map(([l,v])=>({l,v})).sort((a,b)=>b.v-a.v),{empty:'Sem estoque registrado.'}))}
+     ${panel('Produtos mais solicitados','unidades',B(prodRank('solic',rg).slice(0,10).map(r=>({l:r.nome,v:r.v})),{empty:'Sem pedidos no período.'}))}
+     ${panel('Produtos mais instalados','unidades',B(prodRank('inst',rg).slice(0,10).map(r=>({l:r.nome,v:r.v})),{empty:'Sem instalações no período.'}))}
+     ${panel('Quantidade de equipamentos em estoque','unidades por produto',B(Object.entries(estProd).map(([id,v])=>({l:pName(id),v})).sort((a,b)=>b.v-a.v).slice(0,10),{empty:'Sem estoque registrado.'}))}
+     ${panel('Integradores com maior volume','unidades solicitadas',B(volInt,{empty:'Sem pedidos no período.'}))}
+     ${panel('Evolução mensal de pedidos','pedidos · 12 meses',columnChart(L,ms.map(m=>m.ped),{label:'Pedidos por mês'}))}
+     ${panel('Evolução mensal de contratos','contratos · 12 meses',columnChart(L,ms.map(m=>m.ctr),{label:'Contratos por mês',color:'#2a9d8f'}))}
+     <div class="panel" style="grid-column:1/-1"><h2>Entregas e instalações por mês <span class="u">unidades · 12 meses</span></h2>${lineChart(L,[{name:'Entregues',vals:ms.map(m=>m.ent),color:'#d9822b'},{name:'Instaladas',vals:ms.map(m=>m.inst),color:'#2a9d8f'}],{h:280,label:'Entregas e instalações por mês'})}</div>
+     ${panel('Desempenho por responsável: pedidos','pedidos',B(rsl.map(([l,r])=>({l,v:r.ped})).sort((a,b)=>b.v-a.v),{empty:'Sem dados.'}))}
+     ${panel('Desempenho por responsável: contratos','contratos',B(rsl.map(([l,r])=>({l,v:r.ctr})).sort((a,b)=>b.v-a.v),{empty:'Sem dados.'}))}
+     ${rsl.some(([,r])=>r.val>0)?panel('Valor comercial por responsável','R$ (escala própria)',B(rsl.filter(([,r])=>r.val>0).map(([l,r])=>({l,v:r.val,t:money(r.val)})).sort((a,b)=>b.v-a.v),{})):''}</div>`;
+  },ns);
+};
+
+/* ===== Relatórios e exportação ===== */
+const REPORTS=[['integradores','Integradores'],['produtos','Produtos'],['pedidos','Pedidos'],['estoque','Estoque'],['entregas','Entregas e instalações'],['contratos','Contratos'],['estados','Ranking por estado'],['resumo','Resumo comercial por período']];
+function buildReport(type,f){
+  const rg=periodRange(f.per||'all',f.from,f.to),C=calc().peds;const okI=id=>{const i=I(id);return i&&(!f.uf||i.uf===f.uf)&&(!f.int||id===f.int)};
+  if(type==='integradores')return {title:'Integradores',head:['Integrador','Nome fantasia','CNPJ','Cidade','UF','Contato','Telefone','E-mail','Responsável','Status','Pedidos','Estoque','Instalados','Contratos'],
+    rows:DB.ints.filter(i=>!i.arq&&okI(i.id)&&(!f.resp||i.resp===f.resp)).map(i=>{const s=intStats(i.id,rg);return [i.nome,i.fantasia,i.cnpj,i.cidade,i.uf,i.contato,i.tel,i.email,i.resp,i.status,s.pedidos,s.estoque,s.inst,s.contratos]})};
+  if(type==='produtos'){const sol=Object.fromEntries(prodRank('solic',rg).map(r=>[r.id,r.v])),ins=Object.fromEntries(prodRank('inst',rg).map(r=>[r.id,r.v]));const est={};estRows().forEach(r=>est[r.prodId]=(est[r.prodId]||0)+r.saldo);
+    return {title:'Produtos',head:['Produto','Código','Modelo','Categoria','Unidade','Preço de referência','Status','Em estoque','Solicitados','Instalados'],rows:DB.prods.filter(p=>!f.prod||p.id===f.prod).map(p=>[p.nome,p.sku,p.modelo,p.cat,p.un,p.preco?money(p.preco):'',p.ativo!==false?'Ativo':'Inativo',est[p.id]||0,sol[p.id]||0,ins[p.id]||0])}}
+  if(type==='pedidos')return {title:'Pedidos',head:['Pedido','Data','Integrador','Cidade','UF','Responsável','Situação','Solicitado','Entregue','Pendente','Instalado'],
+    rows:DB.peds.filter(p=>okI(p.intId)&&inR(p.data,rg)&&(!f.resp||p.resp===f.resp)&&(!f.prod||p.itens.some(i=>i.prodId===f.prod))).sort((a,b)=>b.data.localeCompare(a.data)).map(p=>{const c=C[p.id],i=I(p.intId);return [p.num,fmtD(p.data),iName(p.intId),i.cidade,i.uf,p.resp,c.st,c.T.qtd,c.T.ent,c.T.pend,c.T.inst]})};
+  if(type==='estoque')return {title:'Estoque por integrador',head:['Integrador','UF','Produto','Saldo','Mínimo','Situação'],rows:estRows().filter(r=>okI(r.intId)&&(!f.prod||r.prodId===f.prod)).map(r=>[iName(r.intId),I(r.intId).uf,pName(r.prodId),r.saldo,r.min||'',r.baixo?'Abaixo do mínimo':'Normal'])};
+  if(type==='entregas')return {title:'Entregas e instalações',head:['Data','Tipo','Pedido','Integrador','UF','Produto','Quantidade','Responsável','Situação'],
+    rows:movsAtivas().filter(m=>{const p=PD(m.pedId);const it=p.itens.find(x=>x.id===m.itemId)||{};return okI(p.intId)&&inR(m.data,rg)&&(!f.resp||m.resp===f.resp)&&(!f.prod||it.prodId===f.prod)}).map(m=>{const p=PD(m.pedId),it=p.itens.find(x=>x.id===m.itemId)||{};return [fmtD(m.data),m.tipo==='entrega'?'Entrega':'Instalação',p.num,iName(p.intId),I(p.intId).uf,pName(it.prodId),m.qtd,m.resp,m.tipo==='instalacao'?(m.status==='andamento'?'Em andamento':'Concluída'):'']})};
+  if(type==='contratos')return {title:'Contratos',head:['Contrato','Data','Integrador','UF','Modalidade','Valor','Status','Responsável'],
+    rows:DB.ctrs.filter(c=>okI(c.intId)&&inR(c.data,rg)&&(!f.resp||c.resp===f.resp)).sort((a,b)=>b.data.localeCompare(a.data)).map(c=>[c.num,fmtD(c.data),iName(c.intId),(I(c.intId)||{}).uf,c.modal,c.valor?money(c.valor):'',c.status,c.resp])};
+  if(type==='estados')return {title:'Ranking por estado',head:['Estado','UF','Integradores','Ativos','Em estoque','Solicitados','Instalados','Contratos'],
+    rows:Object.keys(UFS).map(u=>ufStats(u)).filter(s=>s.integradores>0&&(!f.uf||s.uf===f.uf)).sort((a,b)=>b.contratos-a.contratos||b.inst-a.inst||b.integradores-a.integradores).map(s=>[UFS[s.uf],s.uf,s.integradores,s.ativos,s.estoque,s.solic,s.inst,s.contratos])};
+  if(type==='resumo'){const ped=DB.peds.filter(p=>C[p.id].ativo&&inR(p.data,rg)&&okI(p.intId));let sol=0;ped.forEach(p=>sol+=C[p.id].T.qtd);
+    let en=0,ins=0;DB.movs.forEach(m=>{const p=PD(m.pedId);if(!p||!C[p.id]||!C[p.id].ativo||!inR(m.data,rg)||!okI(p.intId))return;m.tipo==='entrega'?en+=m.qtd:ins+=m.qtd});
+    const ct=DB.ctrs.filter(c=>ctrAtivo(c)&&okI(c.intId)&&inR(c.data,rg));
+    return {title:'Resumo comercial',head:['Indicador','Valor'],rows:[['Pedidos registrados',ped.length],['Unidades solicitadas',sol],['Unidades entregues',en],['Unidades instaladas',ins],['Contratos fechados',ct.length],['Valor em contratos',money(ct.reduce((a,c)=>a+(c.valor||0),0))],['Integradores cadastrados',activeInts().filter(i=>okI(i.id)).length],['Equipamentos em estoque (posição atual)',estRows().filter(r=>okI(r.intId)).reduce((a,r)=>a+r.saldo,0)]]}}
+  return {title:'',head:[],rows:[]};
+}
+const csvEsc=v=>{const s=String(v==null?'':v);return /[;"\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+function toCSV(r){return '﻿'+[r.head,...r.rows].map(l=>l.map(csvEsc).join(';')).join('\r\n')}
+function download(name,text,type){const b=new Blob([text],{type:type||'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function printDoc(title,inner){
+  const m=openModal({title:'Relatório: '+title,lg:1,body:`<div class="rep"><div class="rep-h">${logoHTML()}<div><h1>${esc(title)}</h1><div class="hint">TRON Controles Elétricos · emitido em ${fmtDT(nowISO())}</div></div></div>${inner}</div>`,footer:'<button class="btn" data-close>Fechar</button><button class="btn pri" data-print>Imprimir / salvar PDF</button>'});
+  $('[data-print]',m).onclick=()=>{document.body.classList.add('printing');setTimeout(()=>{window.print();document.body.classList.remove('printing')},50)};
+}
+const repTable=r=>table(r.head.map((h,k)=>({h,r:r.rows.length&&typeof r.rows[0][k]==='number',f:x=>esc(x[k]==null?'':typeof x[k]==='number'?nf(x[k]):x[k])})),r.rows,{empty:'Sem registros para os filtros escolhidos.'});
+V.relatorios=el=>{
+  const ns='rp',type=FILT['rp.type']||'pedidos';
+  el.innerHTML=pageHead('Relatórios e exportações','Os filtros valem para a tela, o CSV (abre no Excel) e o PDF')+`<div class="fb"><select data-k="type" aria-label="Relatório">${optList(REPORTS,type)}</select>${periodFilters(ns)}<select data-k="uf" aria-label="Estado">${optList(Object.keys(UFS),'','Todos os estados')}</select><select data-k="int" aria-label="Integrador">${optList(activeInts().map(i=>[i.id,iName(i.id)]),'','Todos os integradores')}</select><select data-k="prod" aria-label="Produto">${optList(DB.prods.map(p=>[p.id,p.nome]),'','Todos os produtos')}</select><select data-k="resp" aria-label="Responsável">${optList(respList(),'','Todos os responsáveis')}</select></div>
+  <div class="fb"><button class="btn pri" id="rcsv">Baixar CSV (Excel)</button><button class="btn" id="rpdf">Gerar PDF</button><span class="hint" id="rcnt"></span></div><div class="panel" id="lst"></div>`;
+  let cur;
+  const cur_=()=>({per:fv(ns,'per'),from:fv(ns,'from'),to:fv(ns,'to'),uf:fv(ns,'uf'),int:fv(ns,'int'),prod:fv(ns,'prod'),resp:fv(ns,'resp')});
+  bindFilters(el,()=>{FILT['rp.type']=fv(ns,'type')||'pedidos';cur=buildReport(FILT['rp.type'],cur_());$('#lst',el).innerHTML=repTable(cur);$('#rcnt',el).textContent=`${cur.rows.length} registro(s)`},ns);
+  $('#rcsv',el).onclick=()=>{if(!cur.rows.length){toast('Não há registros para exportar.',1);return}download(`tron-${FILT['rp.type']}-${today()}.csv`,toCSV(cur),'text/csv;charset=utf-8')};
+  $('#rpdf',el).onclick=()=>printDoc(cur.title,repTable(cur));
+};
+ACT['rel-int']=a=>{
+  const id=a.dataset.id,i=I(id),s=intStats(id),C=calc().peds;
+  const ped=DB.peds.filter(p=>p.intId===id).map(p=>[p.num,fmtD(p.data),C[p.id].st,C[p.id].T.qtd,C[p.id].T.ent,C[p.id].T.pend,C[p.id].T.inst]);
+  const est=estRows().filter(r=>r.intId===id).map(r=>[pName(r.prodId),r.saldo,r.min||'',r.baixo?'Abaixo do mínimo':'Normal']);
+  const ins={};DB.movs.forEach(m=>{const p=PD(m.pedId);if(p&&p.intId===id&&m.tipo==='instalacao'&&C[p.id].ativo){const it=p.itens.find(x=>x.id===m.itemId);if(it)ins[it.prodId]=(ins[it.prodId]||0)+m.qtd}});
+  const ct=DB.ctrs.filter(c=>c.intId===id).map(c=>[c.num,fmtD(c.data),c.modal,c.valor?money(c.valor):'',c.status]);
+  const T=(h,rows,e)=>repTable({head:h,rows})||'';
+  printDoc(iName(id),`<h2>Cadastro</h2><dl class="dl"><dt>Razão social</dt><dd>${esc(i.nome)}</dd><dt>CNPJ</dt><dd>${esc(i.cnpj||'—')}</dd><dt>Cidade / UF</dt><dd>${esc(cityUF(i))}</dd><dt>Contato</dt><dd>${esc([i.contato,i.tel,i.email].filter(Boolean).join(' · ')||'—')}</dd><dt>Responsável</dt><dd>${esc(i.resp||'—')}</dd><dt>Status</dt><dd>${esc(i.status)}</dd></dl>
+   <h2>Resumo</h2><p>Pedidos: <b>${s.pedidos}</b> · Solicitados: <b>${nf(s.solic)}</b> · Entregues: <b>${nf(s.ent)}</b> · Instalados: <b>${nf(s.inst)}</b> · Em estoque: <b>${nf(s.estoque)}</b> · Contratos: <b>${s.contratos}</b></p>
+   <h2>Estoque atual</h2>${T(['Produto','Saldo','Mínimo','Situação'],est)}<h2>Pedidos</h2>${T(['Pedido','Data','Situação','Solicitado','Entregue','Pendente','Instalado'],ped)}
+   <h2>Produtos instalados</h2>${T(['Produto','Instalados'],Object.entries(ins).map(([p,v])=>[pName(p),v]))}<h2>Contratos</h2>${T(['Contrato','Data','Modalidade','Valor','Status'],ct)}`);
+};
+
+/* ===== Dados: backup, restauração, logo, TV, registro ===== */
+ACT.backup=()=>{DB.meta.lastBackup=nowISO();save();download(`tron-painel-backup-${today()}.json`,JSON.stringify(DB,null,1),'application/json');toast('Backup exportado. Guarde o arquivo em local seguro.');render()};
+ACT.restore=()=>$('#fileRestore').click();
+function restoreFile(f){
+  const r=new FileReader();r.onload=async()=>{
+    let d;try{d=JSON.parse(r.result)}catch(e){toast('Arquivo inválido: não é um JSON.',1);return}
+    if(!d||!Array.isArray(d.ints)||!Array.isArray(d.prods)||!Array.isArray(d.peds)){toast('Arquivo inválido: não parece um backup do Painel Comercial.',1);return}
+    if(await askConfirm(`Restaurar o backup com <b>${d.ints.length}</b> integradores, <b>${d.prods.length}</b> produtos e <b>${d.peds.length}</b> pedidos? Os dados atuais serão substituídos (uma cópia fica guardada no navegador).`,'Restaurar',1)){
+      try{localStorage.setItem(LS_KEY+'_anterior',JSON.stringify(DB))}catch(e){}
+      DB=Object.assign(emptyDB(),d);DB.meta=Object.assign(emptyDB().meta,d.meta);DB.cfg=Object.assign(emptyDB().cfg,d.cfg);logA('Backup restaurado');save();refreshBrand();render();toast('Backup restaurado.')}
+  };r.readAsText(f);
+}
+function refreshBrand(){const b=$('#brand');if(b)b.innerHTML=logoHTML()}
+ACT.logo=()=>$('#fileLogo').click();
+function setLogo(f){imgToData(f,420,d=>{DB.cfg.logo=d;save();refreshBrand();toast('Logo atualizada.')})}
+ACT.tvcfg=()=>{
+  const m=openModal({title:'Configurar modo TV',body:`<div class="fg">${fld('t-sec','Segundos por tela',DB.cfg.tvSec,{type:'number',attrs:'min="5" max="300"'})}${fld('t-auto','Alternar telas automaticamente',DB.cfg.tvAuto,{type:'check'})}${fld('t-crit','Critério do pódio na tela de integradores',DB.cfg.tvCrit||'contratos',{type:'select',opts:optList(CRIT.map(c=>[c[0],c[1]]),DB.cfg.tvCrit||'contratos')})}</div><p class="hint">Atalhos no modo TV: setas ← → trocam de tela, barra de espaço pausa ou retoma, Esc sai.</p>`,footer:'<button class="btn" data-close>Cancelar</button><button class="btn pri" data-ok>Salvar</button>'});
+  $('[data-ok]',m).onclick=()=>{const s=Math.round(Number(val(m,'t-sec')));if(!(s>=5&&s<=300)){setErr(m,'t-sec','Use entre 5 e 300 segundos.');return}DB.cfg.tvSec=s;DB.cfg.tvAuto=val(m,'t-auto');DB.cfg.tvCrit=val(m,'t-crit');save();m.close();toast('Configuração salva.')};
+};
+ACT.log=()=>openModal({title:'Registro de alterações',lg:1,body:DB.log.length?`<div style="max-height:60vh;overflow:auto">${DB.log.slice(0,300).map(l=>`<div style="padding:6px 0;border-bottom:1px solid var(--line)"><span class="hint">${fmtDT(l.ts)}</span> &nbsp; ${esc(l.txt)}</div>`).join('')}</div>`:'<div class="empty">Nenhuma alteração registrada.</div>',footer:'<button class="btn" data-close>Fechar</button>'});
+
+/* ===== Modo TV (1920 × 1080) ===== */
+const TV_SCREENS=['Visão geral','Estados','Integradores','Operação'];
+let TVI=0,TVUF='',TVPAUSE=false,TVT=null,TVR=null,TVFS=false,TVUFI=-1;
+function enterTV(){
+  if(document.body.classList.contains('tv')){tvRender();return}
+  document.body.classList.add('tv');TVI=0;TVPAUSE=false;
+  tvFit();tvRender();tvTimers();
+  document.title='Painel Comercial — TRON';
+}
+function exitTV(silent){
+  document.body.classList.remove('tv');clearInterval(TVT);clearInterval(TVR);TVT=TVR=null;
+  if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});
+  TVFS=false;if(!silent){location.hash='#/'}
+}
+function tvTimers(){
+  clearInterval(TVT);clearInterval(TVR);
+  TVT=setInterval(()=>{if(DB.cfg.tvAuto&&!TVPAUSE)tvGo((TVI+1)%TV_SCREENS.length)},Math.max(5,DB.cfg.tvSec)*1000);
+  TVR=setInterval(()=>{syncFromStorage();tvRender()},15000);
+}
+function tvGo(i){
+  TVI=(i+TV_SCREENS.length)%TV_SCREENS.length;
+  if(TVI===1){const us=Object.keys(UFS).map(u=>ufStats(u)).filter(s=>s.integradores>0).sort((a,b)=>b.integradores-a.integradores||b.contratos-a.contratos).map(s=>s.uf);
+    if(us.length){if(!us.includes(TVUF)||DB.cfg.tvAuto&&!TVPAUSE){TVUFI=(TVUFI+1)%us.length;TVUF=us[TVUFI]}}}
+  tvRender();
+}
+function tvFit(){const s=$('#stage');if(!s)return;const k=Math.min(innerWidth/1920,innerHeight/1080);s.style.transform=`scale(${k})`}
+addEventListener('resize',tvFit);
+document.addEventListener('keydown',e=>{
+  if(!document.body.classList.contains('tv'))return;
+  if(e.key==='Escape'){exitTV()}else if(e.key==='ArrowRight'){tvGo(TVI+1);tvTimers()}else if(e.key==='ArrowLeft'){tvGo(TVI-1);tvTimers()}else if(e.key===' '){e.preventDefault();TVPAUSE=!TVPAUSE;tvRender()}
+});
+document.addEventListener('fullscreenchange',()=>{if(document.fullscreenElement)TVFS=true;else if(TVFS&&document.body.classList.contains('tv')){TVFS=false;exitTV()}});
+ACT.tv=()=>{closeModals();location.hash='#/tv';const d=document.documentElement;if(d.requestFullscreen)d.requestFullscreen().then(()=>{TVFS=true}).catch(()=>{})};
+ACT['tv-exit']=()=>exitTV();
+ACT['tv-go']=a=>{tvGo(+a.dataset.i);tvTimers()};
+ACT['tv-pause']=()=>{TVPAUSE=!TVPAUSE;tvRender()};
+
+function tvPanel(title,unit,inner,style){return `<div class="panel" style="${style||''}"><h2>${title}${unit?` <span class="u">${unit}</span>`:''}</h2><div class="fill">${inner}</div></div>`}
+function tvRender(){
+  const st=$('#stage');if(!st)return;
+  const t=totals(),ms=monthly(12),L=ms.map(m=>m.label);
+  let body='';
+  if(TVI===0){
+    const rc=ranking('contratos',null,null),useC=rc.length>0,rows=(useC?rc:ranking('pedidos',null,null)).slice(0,8);
+    const ctrUF=Object.keys(UFS).map(u=>({l:u,v:ufStats(u).contratos})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v).slice(0,5);
+    body=`<div class="tvb" style="grid-template-columns:1.05fr 1fr 1.15fr;grid-template-rows:auto 1fr"><div style="grid-column:1/-1">${kpiGroups(true)}</div>
+      ${tvPanel('Presença no Brasil','integradores por estado',mapSVG('integradores',null,true),'')}
+      ${tvPanel('Principais integradores',useC?'contratos fechados':'pedidos',bars(rows.map(r=>({l:iName(r.int.id),v:r.v})),{lw:'44%',empty:'Os rankings aparecem quando houver registros.'}))}
+      <div style="display:grid;gap:20px;grid-template-rows:auto 1fr;min-height:0">${tvPanel('Contratos por estado','contratos',bars(ctrUF,{lw:'16%',empty:'Sem contratos registrados.'}))}
+      ${tvPanel('Pedidos, entregas e instalações','unidades · 12 meses',lineChart(L,[{name:'Solicitados',vals:ms.map(m=>m.solic),color:'#0b4f9e'},{name:'Entregues',vals:ms.map(m=>m.ent),color:'#d9822b'},{name:'Instalados',vals:ms.map(m=>m.inst),color:'#2a9d8f'}],{w:620,h:250,fs:16,tv:true,label:'Evolução mensal'}))}</div></div>`;
+  }else if(TVI===1){
+    const mt=(['contratos','inst','estoque','integradores'].find(k=>Object.keys(UFS).some(u=>ufStats(u)[k]>0)))||'integradores';
+    body=`<div class="tvb" style="grid-template-columns:1fr 1fr">${tvPanel('Mapa por estado',MAP_METRICS.find(m=>m[0]===mt)[1].toLowerCase(),mapSVG(mt,TVUF,true))}<div class="panel" style="overflow:hidden">${ufPanel(TVUF,{tv:1,max:8})}</div></div>`;
+  }else if(TVI===2){
+    const crit=DB.cfg.tvCrit||'contratos',cd=CRIT.find(c=>c[0]===crit),rows=ranking(crit,null,null);
+    const full=activeInts().map(i=>({int:i,s:intStats(i.id)})).sort((a,b)=>{const g=x=>crit==='ent'?x.s.ent:x.s[crit];return g(b)-g(a)}).slice(0,8);
+    body=`<div class="tvb" style="grid-template-rows:auto 1fr"><div class="panel"><h2>Pódio <span class="u">${esc(cd[1])}</span></h2>${rows.length?podium(rows,crit):empty('Sem registros para este critério.')}</div>
+      <div class="panel"><h2>Desempenho dos integradores <span class="u">ordenado por ${esc(cd[1].toLowerCase())}</span></h2>${full.length?table([{h:'#',f:r=>r._p},{h:'Integrador',f:r=>`<b>${esc(iName(r.int.id))}</b>`},{h:'Cidade / UF',f:r=>esc(cityUF(r.int))},{h:'Pedidos',r:1,f:r=>nf(r.s.pedidos)},{h:'Em estoque',r:1,f:r=>nf(r.s.estoque)},{h:'Instalados',r:1,f:r=>nf(r.s.inst)},{h:'Contratos',r:1,f:r=>nf(r.s.contratos)}],full.map((r,k)=>({...r,_p:k+1}))):empty('Nenhum integrador cadastrado.')}</div></div>`;
+  }else{
+    const C=calc().peds,ped=DB.peds.filter(p=>C[p.id].ativo);
+    const pend=ped.reduce((a,p)=>a+C[p.id].T.pend,0),aInst=ped.reduce((a,p)=>a+C[p.id].T.aInst,0);
+    const mes=ms[ms.length-1];
+    const list=ped.filter(p=>C[p.id].pendente).sort((a,b)=>a.data.localeCompare(b.data)).slice(0,7);
+    body=`<div class="tvb" style="grid-template-columns:1.35fr 1fr;grid-template-rows:auto 1fr"><div style="grid-column:1/-1"><div class="kg"><div class="kr" style="--n:4">${kpi('','Pedidos em aberto',t.pedAbertos,'',1)}${kpi('','Unidades pendentes de entrega',pend,pend?'warn':'',1)}${kpi('','Unidades aguardando instalação',aInst,aInst?'warn':'',1)}${kpi('','Instaladas neste mês',mes.inst,'ok',1)}</div></div></div>
+      ${tvPanel('Pedidos, entregas e instalações','unidades por mês',lineChart(L,[{name:'Solicitados',vals:ms.map(m=>m.solic),color:'#0b4f9e'},{name:'Entregues',vals:ms.map(m=>m.ent),color:'#d9822b'},{name:'Instalados',vals:ms.map(m=>m.inst),color:'#2a9d8f'}],{w:1000,h:610,fs:19,tv:true,label:'Evolução mensal'}))}
+      <div class="panel"><h2>Pedidos com pendências <span class="u">mais antigos primeiro</span></h2>${list.length?table([{h:'Pedido',f:r=>`<b>${esc(r.num)}</b>`},{h:'Integrador',f:r=>esc(iName(r.intId))},{h:'Pend.',r:1,f:r=>nf(C[r.id].T.pend+C[r.id].T.aInst)},{h:'Situação',f:r=>badge(C[r.id].st,stClass(C[r.id].st))}],list):empty('Nenhum pedido com pendências.')}</div></div>`;
+  }
+  st.innerHTML=`<div class="tvh">${logoHTML()}<h1>Painel Comercial</h1><div class="tvtabs">${TV_SCREENS.map((n,i)=>`<span class="${i===TVI?'on':''}">${n}</span>`).join('')}</div><div class="sp"></div><div class="upd">Dados atualizados em<b class="num">${DB.meta.updatedAt?fmtDT(DB.meta.updatedAt):'sem registros'}</b></div></div>${body}
+   <div class="tvf"><span>${DB.cfg.tvAuto?(TVPAUSE?'Alternância pausada':`Troca automática a cada ${DB.cfg.tvSec}s`):'Troca manual'} · ← → trocam a tela · Espaço pausa · Esc sai</span><span class="num">${TV_SCREENS.map((n,i)=>i===TVI?'●':'○').join(' ')}</span><span class="num">${fmtDT(nowISO())}</span></div>
+   <div class="tvx"><button class="btn" data-act="tv-pause">${TVPAUSE?'Retomar':'Pausar'}</button> <button class="btn" data-act="tv-exit">Sair do modo TV</button></div>`;
+  $$('[data-uf]',st).forEach(p=>p.onclick=()=>{TVUF=p.dataset.uf;tvRender()});
+}
+
+/* ===== Inicialização ===== */
+function syncFromStorage(){
+  try{const r=localStorage.getItem(LS_KEY);if(!r)return;const d=JSON.parse(r);if(d&&d.meta&&d.meta.updatedAt!==DB.meta.updatedAt){DB=Object.assign(emptyDB(),d);DB.meta=Object.assign(emptyDB().meta,d.meta);DB.cfg=Object.assign(emptyDB().cfg,d.cfg);DBV++;return true}}catch(e){}
+}
+addEventListener('storage',e=>{if(e.key===LS_KEY&&syncFromStorage()){refreshBrand();document.body.classList.contains('tv')?tvRender():render()}});
+function showLogin(message=''){
+  cloudReady=false;
+  document.body.classList.remove('tv');
+  $('#app').innerHTML=`<div class="auth-screen"><section class="auth-card"><div class="wm" style="margin-bottom:22px"><b>TRON</b><small>Controles Elétricos</small></div><h1>Painel Comercial</h1><p>Acesse com sua conta autorizada para consultar e atualizar os dados compartilhados com a TV da sala.</p><form id="loginForm"><div><label for="loginEmail">E-mail</label><input id="loginEmail" type="email" autocomplete="username" required></div><div><label for="loginPassword">Senha</label><input id="loginPassword" type="password" autocomplete="current-password" required></div><div class="auth-msg" id="loginMsg" role="alert">${esc(message)}</div><button class="btn pri" type="submit" id="loginBtn">Entrar no painel</button></form><p style="font-size:12px;margin-top:18px">O cadastro de usuários é controlado pelo administrador. Não compartilhe sua senha.</p></section></div>`;
+  $('#loginForm').addEventListener('submit',async e=>{
+    e.preventDefault();const btn=$('#loginBtn'),msg=$('#loginMsg');btn.disabled=true;btn.textContent='Verificando acesso…';msg.textContent='';
+    const {error}=await cloudClient.auth.signInWithPassword({email:$('#loginEmail').value.trim(),password:$('#loginPassword').value});
+    if(error){msg.textContent='Não foi possível entrar. Confira suas credenciais ou peça acesso ao administrador.';btn.disabled=false;btn.textContent='Entrar no painel';return}
+    await startAuthenticatedSession();
+  });
+}
+async function startAuthenticatedSession(){
+  try{
+    const {data:row,error}=await cloudClient.from('panel_state').select('id,data,updated_at').eq('id','main').maybeSingle();
+    if(error)throw error;
+    if(row&&row.data){
+      try{const local=localStorage.getItem(LS_KEY);if(local)localStorage.setItem(LS_KEY+'_pre_cloud_migration',local)}catch(e){}
+      const d=row.data;DB=Object.assign(emptyDB(),d);DB.meta=Object.assign(emptyDB().meta,d.meta);DB.cfg=Object.assign(emptyDB().cfg,d.cfg);DBV++;lastCloudStamp=row.updated_at||null;
+      try{localStorage.setItem(LS_KEY,JSON.stringify(DB))}catch(e){memOnly=true}
+    }else{
+      loadDB();
+      const {error:upErr}=await cloudClient.from('panel_state').upsert({id:'main',data:DB,updated_at:nowISO()},{onConflict:'id'});
+      if(upErr)throw upErr;
+    }
+    cloudReady=true;
+    if(!appInitialized){initShell();addEventListener('hashchange',render);appInitialized=true}
+    render();
+    if(cloudPoll)clearInterval(cloudPoll);
+    cloudPoll=setInterval(syncCloudState,10000);
+  }catch(err){console.error('Falha ao iniciar painel online:',err);showLogin('Não foi possível carregar os dados compartilhados. Verifique a configuração do Supabase e as permissões do banco.');await cloudClient.auth.signOut()}
+}
+async function syncCloudState(){
+  if(!cloudReady||cloudWriting||document.hidden)return;
+  const {data:row,error}=await cloudClient.from('panel_state').select('data,updated_at').eq('id','main').maybeSingle();
+  if(error){console.warn('Falha na leitura de sincronização:',error);return}
+  if(!row||!row.data)return;
+  const remoteDataStamp=row.data.meta&&row.data.meta.updatedAt||null;
+  if(remoteDataStamp && remoteDataStamp!==DB.meta.updatedAt){
+    DB=Object.assign(emptyDB(),row.data);DB.meta=Object.assign(emptyDB().meta,row.data.meta);DB.cfg=Object.assign(emptyDB().cfg,row.data.cfg);DBV++;lastCloudStamp=row.updated_at||null;
+    try{localStorage.setItem(LS_KEY,JSON.stringify(DB))}catch(e){memOnly=true}
+    refreshBrand();document.body.classList.contains('tv')?tvRender():render();
+  }
+}
+ACT.logout=async()=>{
+  if(!await askConfirm('Deseja encerrar sua sessão neste dispositivo?','Sair',0))return;
+  cloudReady=false;if(cloudPoll)clearInterval(cloudPoll);cloudPoll=null;
+  await cloudClient.auth.signOut();showLogin();
+};
+async function boot(){
+  const cfg=window.MONITRON_CONFIG||{};
+  if(!cfg.supabaseUrl||!cfg.supabaseAnonKey||cfg.supabaseUrl.includes('COLOQUE_')||cfg.supabaseAnonKey.includes('COLOQUE_')){
+    $('#app').innerHTML=`<div class="auth-screen"><section class="auth-card"><div class="wm" style="margin-bottom:22px"><b>TRON</b><small>Controles Elétricos</small></div><h1>Configuração necessária</h1><p>O painel foi preparado para autenticação e sincronização online, mas ainda falta configurar o projeto Supabase.</p><p>Abra o arquivo <b>config.js</b>, informe a URL do projeto e a chave pública (anon/publishable) e siga o guia README.md. Não publique dados reais antes de concluir o banco e as regras de acesso.</p></section></div>`;return;
+  }
+  if(!window.supabase||!window.supabase.createClient){$('#app').innerHTML='<div class="auth-screen"><section class="auth-card"><h1>Biblioteca de acesso indisponível</h1><p>Não foi possível carregar a biblioteca de autenticação. Verifique sua conexão e recarregue a página.</p></section></div>';return}
+  cloudClient=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  const {data:{session}}=await cloudClient.auth.getSession();
+  if(session)await startAuthenticatedSession();else showLogin();
+}
+boot();
+</script></body></html>
